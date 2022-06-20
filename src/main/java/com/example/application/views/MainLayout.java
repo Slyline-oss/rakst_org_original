@@ -4,6 +4,7 @@ import com.example.application.data.entity.User;
 import com.example.application.security.AuthenticatedUser;
 import com.example.application.views.about.AboutView;
 import com.example.application.views.listofparticipants.ListofparticipantsView;
+import com.example.application.views.previousExams.PreviousExamsView;
 import com.example.application.views.profile.ProfileView;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.applayout.AppLayout;
@@ -21,6 +22,8 @@ import com.vaadin.flow.component.html.ListItem;
 import com.vaadin.flow.component.html.Nav;
 import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.html.UnorderedList;
+import com.vaadin.flow.component.orderedlayout.FlexComponent;
+import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.RouterLink;
 import com.vaadin.flow.server.auth.AccessAnnotationChecker;
@@ -49,6 +52,7 @@ public class MainLayout extends AppLayout {
 
             link.add(new LineAwesomeIcon(iconClass), text);
             add(link);
+
         }
 
         public Class<?> getView() {
@@ -100,7 +104,7 @@ public class MainLayout extends AppLayout {
     }
 
     private Component createDrawerContent() {
-        H2 appName = new H2("My App");
+        H2 appName = new H2("Raksti");
         appName.addClassNames("app-name");
 
         com.vaadin.flow.component.html.Section section = new com.vaadin.flow.component.html.Section(appName,
@@ -134,15 +138,18 @@ public class MainLayout extends AppLayout {
 
                 new MenuItemInfo("About", "la la-file", AboutView.class), //
 
-                new MenuItemInfo("List of participants", "la la-columns", ListofparticipantsView.class), //
+                new MenuItemInfo("List of participants", "la la-columns", ListofparticipantsView.class),
+
+                new MenuItemInfo("Previous Exams View", "la la-columns", PreviousExamsView.class),
+                //
 
         };
     }
 
-    private Footer createFooter() {
-        Footer layout = new Footer();
+    private HorizontalLayout createFooter() {
+        HorizontalLayout layout = new HorizontalLayout();
+        layout.setJustifyContentMode(FlexComponent.JustifyContentMode.CENTER);
         layout.addClassNames("footer");
-
         Optional<User> maybeUser = authenticatedUser.get();
         if (maybeUser.isPresent()) {
             User user = maybeUser.get();
@@ -162,7 +169,8 @@ public class MainLayout extends AppLayout {
             layout.add(avatar, name);
         } else {
             Anchor loginLink = new Anchor("login", "Sign in");
-            layout.add(loginLink);
+            Anchor regLink = new Anchor("registration", "Sign up");
+            layout.add(loginLink, regLink);
         }
 
         return layout;

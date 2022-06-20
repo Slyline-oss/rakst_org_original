@@ -47,7 +47,7 @@ public class DataGenerator {
 
             logger.info("... generating 2 User entities...");
             User user = new User();
-            user.setName("John Normal");
+            user.setName("User");
             user.setUsername("user");
             user.setHashedPassword(passwordEncoder.encode("user"));
             user.setProfilePictureUrl(
@@ -55,7 +55,7 @@ public class DataGenerator {
             user.setRoles(Collections.singleton(Role.USER));
             userRepository.save(user);
             User admin = new User();
-            admin.setName("Emma Powerful");
+            admin.setName("Artjom");
             admin.setUsername("admin");
             admin.setHashedPassword(passwordEncoder.encode("admin"));
             admin.setProfilePictureUrl(

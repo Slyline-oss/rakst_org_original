@@ -15,6 +15,14 @@ import javax.persistence.Table;
 @Table(name = "application_user")
 public class User extends AbstractEntity {
 
+    public User(String username, String name, String hashedPassword, String email, Set<Role> roles) {
+        this.username = username;
+        this.name = name;
+        this.hashedPassword = hashedPassword;
+        this.email = email;
+        this.roles = roles;
+    }
+    private String email;
     private String username;
     private String name;
     @JsonIgnore
@@ -24,6 +32,10 @@ public class User extends AbstractEntity {
     private Set<Role> roles;
     @Lob
     private String profilePictureUrl;
+
+    public User() {
+
+    }
 
     public String getUsername() {
         return username;
@@ -55,5 +67,10 @@ public class User extends AbstractEntity {
     public void setProfilePictureUrl(String profilePictureUrl) {
         this.profilePictureUrl = profilePictureUrl;
     }
-
+    public String getEmail() {
+        return email;
+    }
+    public void setEmail(String email) {
+        this.email = email;
+    }
 }

@@ -1,7 +1,8 @@
 package com.example.application.views.listofparticipants;
 
 import com.example.application.data.entity.SamplePerson;
-import com.example.application.data.service.SamplePersonService;
+import com.example.application.data.entity.User;
+import com.example.application.data.service.UserService;
 import com.example.application.views.MainLayout;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.UI;
@@ -42,7 +43,7 @@ public class ListofparticipantsView extends Div implements BeforeEnterObserver {
     private final String SAMPLEPERSON_ID = "samplePersonID";
     private final String SAMPLEPERSON_EDIT_ROUTE_TEMPLATE = "listofparticipants/%s/edit";
 
-    private Grid<SamplePerson> grid = new Grid<>(SamplePerson.class, false);
+    private Grid<User> grid = new Grid<>(User.class, false);
 
     private TextField firstName;
     private TextField lastName;
@@ -55,15 +56,15 @@ public class ListofparticipantsView extends Div implements BeforeEnterObserver {
     private Button cancel = new Button("Cancel");
     private Button save = new Button("Save");
 
-    private BeanValidationBinder<SamplePerson> binder;
+    private BeanValidationBinder<User> binder;
 
-    private SamplePerson samplePerson;
+    private User user;
 
-    private final SamplePersonService samplePersonService;
+    private final UserService userService;
 
     @Autowired
-    public ListofparticipantsView(SamplePersonService samplePersonService) {
-        this.samplePersonService = samplePersonService;
+    public ListofparticipantsView(UserService userService) {
+        this.userService = userService;
         addClassNames("listofparticipants-view");
 
         // Create UI
@@ -78,19 +79,19 @@ public class ListofparticipantsView extends Div implements BeforeEnterObserver {
         grid.addColumn("firstName").setAutoWidth(true);
         grid.addColumn("lastName").setAutoWidth(true);
         grid.addColumn("email").setAutoWidth(true);
-        grid.addColumn("phone").setAutoWidth(true);
-        grid.addColumn("dateOfBirth").setAutoWidth(true);
-        grid.addColumn("occupation").setAutoWidth(true);
-        LitRenderer<SamplePerson> importantRenderer = LitRenderer.<SamplePerson>of(
-                "<vaadin-icon icon='vaadin:${item.icon}' style='width: var(--lumo-icon-size-s); height: var(--lumo-icon-size-s); color: ${item.color};'></vaadin-icon>")
-                .withProperty("icon", important -> important.isImportant() ? "check" : "minus").withProperty("color",
-                        important -> important.isImportant()
-                                ? "var(--lumo-primary-text-color)"
-                                : "var(--lumo-disabled-text-color)");
+//        grid.addColumn("phone").setAutoWidth(true);
+//        grid.addColumn("dateOfBirth").setAutoWidth(true);
+//        grid.addColumn("occupation").setAutoWidth(true);
+//        LitRenderer<User> importantRenderer = LitRenderer.<User>of(
+//                "<vaadin-icon icon='vaadin:${item.icon}' style='width: var(--lumo-icon-size-s); height: var(--lumo-icon-size-s); color: ${item.color};'></vaadin-icon>")
+//                .withProperty("icon", important -> important.isImportant() ? "check" : "minus").withProperty("color",
+//                        important -> important.isImportant()
+//                                ? "var(--lumo-primary-text-color)"
+//                                : "var(--lumo-disabled-text-color)");
 
-        grid.addColumn(importantRenderer).setHeader("Important").setAutoWidth(true);
+//        grid.addColumn(importantRenderer).setHeader("Important").setAutoWidth(true);
 
-        grid.setItems(query -> samplePersonService.list(
+        grid.setItems(query -> userService.list(
                 PageRequest.of(query.getPage(), query.getPageSize(), VaadinSpringDataHelpers.toSpringDataSort(query)))
                 .stream());
         grid.addThemeVariants(GridVariant.LUMO_NO_BORDER);
@@ -106,7 +107,7 @@ public class ListofparticipantsView extends Div implements BeforeEnterObserver {
         });
 
         // Configure Form
-        binder = new BeanValidationBinder<>(SamplePerson.class);
+        binder = new BeanValidationBinder<>(User.class);
 
         // Bind fields. This is where you'd define e.g. validation rules
 
@@ -119,12 +120,12 @@ public class ListofparticipantsView extends Div implements BeforeEnterObserver {
 
         save.addClickListener(e -> {
             try {
-                if (this.samplePerson == null) {
-                    this.samplePerson = new SamplePerson();
+                if (this.user == null) {
+                    this.user = new User();
                 }
-                binder.writeBean(this.samplePerson);
+                binder.writeBean(this.user);
 
-                samplePersonService.update(this.samplePerson);
+                userService.update(this.user);
                 clearForm();
                 refreshGrid();
                 Notification.show("SamplePerson details stored.");
@@ -140,7 +141,7 @@ public class ListofparticipantsView extends Div implements BeforeEnterObserver {
     public void beforeEnter(BeforeEnterEvent event) {
         Optional<UUID> samplePersonId = event.getRouteParameters().get(SAMPLEPERSON_ID).map(UUID::fromString);
         if (samplePersonId.isPresent()) {
-            Optional<SamplePerson> samplePersonFromBackend = samplePersonService.get(samplePersonId.get());
+            Optional<User> samplePersonFromBackend = userService.get(samplePersonId.get());
             if (samplePersonFromBackend.isPresent()) {
                 populateForm(samplePersonFromBackend.get());
             } else {
@@ -205,9 +206,9 @@ public class ListofparticipantsView extends Div implements BeforeEnterObserver {
         populateForm(null);
     }
 
-    private void populateForm(SamplePerson value) {
-        this.samplePerson = value;
-        binder.readBean(this.samplePerson);
+    private void populateForm(User value) {
+        this.user = value;
+        binder.readBean(this.user);
 
     }
 }

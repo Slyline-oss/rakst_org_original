@@ -154,22 +154,22 @@ public class MainLayout extends AppLayout {
         if (maybeUser.isPresent()) {
             User user = maybeUser.get();
 
-            Avatar avatar = new Avatar(user.getName(), user.getProfilePictureUrl());
+            Avatar avatar = new Avatar(user.getFirstName() + " " + user.getLastName(), user.getProfilePictureUrl());
             avatar.addClassNames("me-xs");
 
             ContextMenu userMenu = new ContextMenu(avatar);
             userMenu.setOpenOnClick(true);
-            userMenu.addItem("Logout", e -> {
+            userMenu.addItem("Iziet", e -> {
                 authenticatedUser.logout();
             });
 
-            Span name = new Span(user.getName());
+            Span name = new Span(user.getFirstName() + " " + user.getLastName());
             name.addClassNames("font-medium", "text-s", "text-secondary");
 
             layout.add(avatar, name);
         } else {
-            Anchor loginLink = new Anchor("login", "Sign in");
-            Anchor regLink = new Anchor("registration", "Sign up");
+            Anchor loginLink = new Anchor("login", "Pieslēgties");
+            Anchor regLink = new Anchor("registration", "Reģistrēties");
             layout.add(loginLink, regLink);
         }
 

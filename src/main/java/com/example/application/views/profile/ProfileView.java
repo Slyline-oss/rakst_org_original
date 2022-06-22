@@ -18,6 +18,7 @@ import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.RouteAlias;
 import com.vaadin.flow.server.auth.AnonymousAllowed;
 
+import javax.annotation.PostConstruct;
 import javax.annotation.security.RolesAllowed;
 import java.util.Optional;
 
@@ -27,17 +28,14 @@ import java.util.Optional;
 public class ProfileView extends VerticalLayout {
 
     private TextField changePassword;
-    private TextField user;
-    private Button sayHello;
     private AuthenticatedUser authenticatedUser;
-
 
     public ProfileView(AuthenticatedUser authenticatedUser) {
         this.authenticatedUser = authenticatedUser;
         Optional<User> maybeUser = authenticatedUser.get();
         if (maybeUser.isPresent()) {
             User user = maybeUser.get();
-            add(new Paragraph("Your name: " + user.getName()));
+            add(new Paragraph("Your name: " + user.getFirstName() + " " + user.getLastName()));
             add(new Paragraph("Your username: " + user.getUsername()));
             changePassword = new TextField();
             changePassword.setLabel("Change password");
@@ -55,6 +53,12 @@ public class ProfileView extends VerticalLayout {
         setSizeFull();
         setJustifyContentMode(JustifyContentMode.START);
         //getStyle().set("text-align", "center");
+
+        try {
+            throw new NullPointerException();
+        } catch(Exception e) {
+            System.out.println("Error occurred");
+        }
     }
 
 }

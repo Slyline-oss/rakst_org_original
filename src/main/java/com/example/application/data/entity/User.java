@@ -15,16 +15,18 @@ import javax.persistence.Table;
 @Table(name = "application_user")
 public class User extends AbstractEntity {
 
-    public User(String username, String name, String hashedPassword, String email, Set<Role> roles) {
+    public User(String username, String firstName, String lastName, String hashedPassword, String email, Set<Role> roles) {
         this.username = username;
-        this.name = name;
         this.hashedPassword = hashedPassword;
         this.email = email;
         this.roles = roles;
+        this.firstName = firstName;
+        this.lastName = lastName;
     }
     private String email;
     private String username;
-    private String name;
+    private String firstName;
+    private String lastName;
     @JsonIgnore
     private String hashedPassword;
     @Enumerated(EnumType.STRING)
@@ -42,12 +44,6 @@ public class User extends AbstractEntity {
     }
     public void setUsername(String username) {
         this.username = username;
-    }
-    public String getName() {
-        return name;
-    }
-    public void setName(String name) {
-        this.name = name;
     }
     public String getHashedPassword() {
         return hashedPassword;
@@ -72,5 +68,17 @@ public class User extends AbstractEntity {
     }
     public void setEmail(String email) {
         this.email = email;
+    }
+    public String getFirstName() {
+        return firstName;
+    }
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+    public String getLastName() {
+        return lastName;
+    }
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 }

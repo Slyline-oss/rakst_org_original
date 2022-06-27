@@ -49,4 +49,8 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     public void register(String firstName, String lastName, String email, String password1) {
         userRepository.save(new User(firstName, firstName, lastName, passwordEncoder.encode(password1), email, Set.of(Role.USER)));
     }
+
+    public void updatePassword(String email, String password) {
+       userRepository.setUsersPasswordByEmail(passwordEncoder.encode(password), email);
+    }
 }

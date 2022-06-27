@@ -35,7 +35,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 
 @PageTitle("List of participants")
-@Route(value = "listofparticipants/:samplePersonID?/:action?(edit)", layout = MainLayout.class)
+@Route(value = "listofparticipants/:userID?/:action?(edit)", layout = MainLayout.class)
 @RolesAllowed("ADMIN")
 @Uses(Icon.class)
 public class ListofparticipantsView extends Div implements BeforeEnterObserver {

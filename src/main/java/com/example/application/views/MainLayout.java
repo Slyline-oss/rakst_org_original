@@ -3,6 +3,7 @@ package com.example.application.views;
 import com.example.application.data.entity.User;
 import com.example.application.security.AuthenticatedUser;
 import com.example.application.views.about.AboutView;
+import com.example.application.views.edit.EditView;
 import com.example.application.views.listofparticipants.ListofparticipantsView;
 import com.example.application.views.previousExams.PreviousExamsView;
 import com.example.application.views.profile.ProfileView;
@@ -141,6 +142,8 @@ public class MainLayout extends AppLayout {
                 new MenuItemInfo("List of participants", "la la-columns", ListofparticipantsView.class),
 
                 new MenuItemInfo("Previous Exams View", "la la-columns", PreviousExamsView.class),
+
+                new MenuItemInfo("Edit View", "la la-edit", EditView.class),
                 //
 
         };

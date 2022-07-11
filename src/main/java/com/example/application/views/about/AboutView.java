@@ -9,7 +9,7 @@ import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.RouteAlias;
 import com.vaadin.flow.server.auth.AnonymousAllowed;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 
 @PageTitle("About")
@@ -18,13 +18,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 @AnonymousAllowed
 public class AboutView extends VerticalLayout {
 
-    @Autowired
-    private final AboutViewService aboutViewService;
 
     private Paragraph paragraph;
 
     public AboutView(AboutViewService aboutViewService) {
-        this.aboutViewService = aboutViewService;
         setSpacing(false);
 
         Image img = new Image("images/empty-plant.png", "placeholder plant");

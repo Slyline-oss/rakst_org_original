@@ -2,6 +2,7 @@ package com.example.application.views.about;
 
 import com.example.application.data.entity.Text;
 import com.example.application.data.service.TextRepository;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Component;
 
 import java.util.Objects;
@@ -18,6 +19,7 @@ public class AboutViewService {
         this.history = new String[3];
     }
 
+    @Cacheable(value = "about-info", key = "'AboutCache'+#textRepository")
     public String getText() {
         return history[0];
     }

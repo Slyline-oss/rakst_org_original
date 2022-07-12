@@ -9,6 +9,19 @@ server:
   port: 8080
 
 spring:
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: torino1337@gmail.com
+    password: zqgrwcuavprpshyi
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            required: true
+            enable: true
+
   mustache:
     check-template-location: false
   datasource:

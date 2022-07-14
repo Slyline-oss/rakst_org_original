@@ -23,6 +23,7 @@ public class User extends AbstractEntity {
         this.firstName = firstName;
         this.lastName = lastName;
     }
+    private String resetPasswordToken;
     private String email;
     private String username;
     private String firstName;
@@ -39,6 +40,12 @@ public class User extends AbstractEntity {
 
     }
 
+    public String getResetPasswordToken() {
+        return resetPasswordToken;
+    }
+    public void setResetPasswordToken(String resetPasswordToken) {
+        this.resetPasswordToken = resetPasswordToken;
+    }
     public String getUsername() {
         return username;
     }

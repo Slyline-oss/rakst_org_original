@@ -22,7 +22,7 @@ public class LoginView extends LoginOverlay {
         form.setSubmit("Pieslēgties");
         form.setTitle("");
         addForgotPasswordListener(e -> getUI().ifPresent(
-                ui -> ui.navigate("restore-password")
+                ui -> ui.navigate("forgot-password")
         ));
 
         i18n.setForm(form);

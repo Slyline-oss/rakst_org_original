@@ -114,9 +114,7 @@ public class RegistrationForm extends FormLayout {
         } else {
             userDetailsService.register(firstName, lastName, email, password1);
             Notification.show("Reģistrācija izdevās!").addThemeVariants(NotificationVariant.LUMO_SUCCESS);
-            getUI().ifPresent(ui -> {
-                ui.navigate("about");
-            });
+            getUI().ifPresent(ui -> ui.navigate("about"));
         }
     }
 

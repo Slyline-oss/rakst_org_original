@@ -11,31 +11,31 @@ import org.springframework.stereotype.Service;
 @Service("userService")
 public class UserService {
 
-    private final UserRepository repository;
+    private final UserRepository userRepository;
 
     @Autowired
-    public UserService(UserRepository repository) {
-        this.repository = repository;
+    public UserService(UserRepository userRepository) {
+        this.userRepository = userRepository;
     }
 
     public Optional<User> get(UUID id) {
-        return repository.findById(id);
+        return userRepository.findById(id);
     }
 
     public User update(User entity) {
-        return repository.save(entity);
+        return userRepository.save(entity);
     }
 
     public void delete(UUID id) {
-        repository.deleteById(id);
+        userRepository.deleteById(id);
     }
 
     public Page<User> list(Pageable pageable) {
-        return repository.findAll(pageable);
+        return userRepository.findAll(pageable);
     }
 
     public int count() {
-        return (int) repository.count();
+        return (int) userRepository.count();
     }
 
 }

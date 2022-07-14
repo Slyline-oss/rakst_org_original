@@ -53,4 +53,17 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     public void updatePassword(String email, String password) {
        userRepository.setUsersPasswordByEmail(passwordEncoder.encode(password), email);
     }
+
+
+    public void updateResetPasswordToken(String token, String email) {
+        User user = userRepository.findByEmail(email);
+        if (user != null) {
+            user.setResetPasswordToken(token);
+            userRepository.save(user);
+        }
+    }
+
+    public User getByResetPasswordToken(String token) {
+        return userRepository.findByResetPasswordToken(token);
+    }
 }

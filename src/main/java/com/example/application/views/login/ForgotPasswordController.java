@@ -44,8 +44,6 @@ public class ForgotPasswordController {
                 + "or you have not made the request.</p>";
         if (!emailAndPasswordValidation.validateEmail(emailText)) {
             Notification.show("Nepareizi ievadīts e-pasts!");
-        } else if (userRepository.findByEmail(emailText) == null) {
-            Notification.show("Nav tāda lietotāja!");
         } else {
             User user = userRepository.findByEmail(emailText);
             user.setResetPasswordToken(link);

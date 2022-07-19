@@ -19,7 +19,7 @@ public class AboutViewService {
         this.history = new String[3];
     }
 
-    @Cacheable(value = "about-info", key = "'AboutCache'+#textRepository")
+//    @Cacheable(value = "about-info", key = "'AboutCache'+#textRepository")
     public String getText() {
         return history[0];
     }

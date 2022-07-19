@@ -50,6 +50,14 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         userRepository.save(new User(firstName, firstName, lastName, passwordEncoder.encode(password1), email, Set.of(Role.USER)));
     }
 
+    public void registerAdmin(String email, String password) {
+        userRepository.save(new User("","","",  passwordEncoder.encode(password), email, Set.of(Role.ADMIN, Role.USER)));
+    }
+
+    public User findUserByEmail(String email) {
+        return userRepository.findByEmail(email);
+    }
+
     public void updatePassword(String email, String password) {
        userRepository.setUsersPasswordByEmail(passwordEncoder.encode(password), email);
     }

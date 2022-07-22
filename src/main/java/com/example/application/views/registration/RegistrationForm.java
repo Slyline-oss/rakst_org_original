@@ -34,6 +34,8 @@ public class RegistrationForm extends FormLayout {
 
     private Button submitButton;
 
+    private Button facebookLogin;
+
     private final UserDetailsServiceImpl userDetailsService;
     private final UserRepository userRepository;
     @Autowired
@@ -59,8 +61,11 @@ public class RegistrationForm extends FormLayout {
         submitButton = new Button("Pievienoties");
         submitButton.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
 
+        facebookLogin = new Button("Pievienoties ar Facebook");
+        facebookLogin.addThemeVariants(ButtonVariant.LUMO_TERTIARY);
+
         add(title, firstName, lastName, email, password, passwordConfirm, allowMarketing,
-                errorMessageField, submitButton);
+                errorMessageField, submitButton, facebookLogin);
 
         setMaxWidth("500px");
 
@@ -73,6 +78,10 @@ public class RegistrationForm extends FormLayout {
         setColspan(email, 2);
         setColspan(errorMessageField, 2);
         setColspan(submitButton, 2);
+
+        facebookLogin.addClickListener(e -> {
+            getUI().ifPresent(ui -> ui.navigate("/oauth2/authorization/facebook"));
+        });
 
         submitButton.addClickListener(e -> {
             register(firstName.getValue(), lastName.getValue(), email.getValue(), password.getValue(), passwordConfirm.getValue());

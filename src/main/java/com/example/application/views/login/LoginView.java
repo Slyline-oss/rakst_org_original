@@ -1,5 +1,6 @@
 package com.example.application.views.login;
 
+import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.login.LoginI18n;
 import com.vaadin.flow.component.login.LoginOverlay;
 import com.vaadin.flow.router.PageTitle;
@@ -21,6 +22,7 @@ public class LoginView extends LoginOverlay {
         form.setUsername("E-pasts");
         form.setSubmit("Pieslēgties");
         form.setTitle("");
+
         addForgotPasswordListener(e -> getUI().ifPresent(
                 ui -> ui.navigate("forgot-password")
         ));
@@ -33,8 +35,9 @@ public class LoginView extends LoginOverlay {
         i18n.setErrorMessage(i18nErrorMessage);
 
         setI18n(i18n);
+        Button facebookLogin = new Button();
+        facebookLogin.setText("Pieslēgties ar Facebook");
 
     }
-
 
 }

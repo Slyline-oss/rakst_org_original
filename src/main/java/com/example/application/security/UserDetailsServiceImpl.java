@@ -1,6 +1,7 @@
 package com.example.application.security;
 
 import com.example.application.data.Role;
+import com.example.application.data.entity.Provider;
 import com.example.application.data.entity.User;
 import com.example.application.data.service.UserRepository;
 import java.util.List;
@@ -74,4 +75,5 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     public User getByResetPasswordToken(String token) {
         return userRepository.findByResetPasswordToken(token);
     }
+
 }

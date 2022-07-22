@@ -35,6 +35,8 @@ public class User extends AbstractEntity {
     private Set<Role> roles;
     @Lob
     private String profilePictureUrl;
+    @Enumerated(EnumType.STRING)
+    private Provider provider;
 
     public User() {
 
@@ -87,5 +89,11 @@ public class User extends AbstractEntity {
     }
     public void setLastName(String lastName) {
         this.lastName = lastName;
+    }
+    public Provider getProvider() {
+        return provider;
+    }
+    public void setProvider(Provider provider) {
+        this.provider = provider;
     }
 }

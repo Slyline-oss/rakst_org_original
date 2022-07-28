@@ -162,6 +162,7 @@ public class MainLayout extends AppLayout {
 
             Avatar avatar = new Avatar(user.getFirstName() + " " + user.getLastName(), user.getProfilePictureUrl());
             avatar.addClassNames("me-xs");
+            avatar.setColorIndex(2);
 
             ContextMenu userMenu = new ContextMenu(avatar);
             userMenu.setOpenOnClick(true);

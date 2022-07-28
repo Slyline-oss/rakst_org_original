@@ -2,6 +2,8 @@ package com.example.application.data.entity;
 
 import com.example.application.data.Role;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import java.time.LocalDate;
 import java.util.Set;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
@@ -37,7 +39,9 @@ public class User extends AbstractEntity {
     private String profilePictureUrl;
     @Enumerated(EnumType.STRING)
     private Provider provider;
-
+    private LocalDate birthday;
+    private String telNumber;
+    private String language;
     public User() {
 
     }
@@ -95,5 +99,23 @@ public class User extends AbstractEntity {
     }
     public void setProvider(Provider provider) {
         this.provider = provider;
+    }
+    public LocalDate getBirthday() {
+        return birthday;
+    }
+    public void setBirthday(LocalDate birthday) {
+        this.birthday = birthday;
+    }
+    public String getTelNumber() {
+        return telNumber;
+    }
+    public void setTelNumber(String telNumber) {
+        this.telNumber = telNumber;
+    }
+    public String getLanguage() {
+        return language;
+    }
+    public void setLanguage(String language) {
+        this.language = language;
     }
 }

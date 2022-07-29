@@ -22,4 +22,12 @@ public class ExamService {
     public void save(String naming, String link, boolean finished, double duration) {
         examRepository.save(new Exam(naming, link, finished, duration));
     }
+
+    public void save(Exam exam) {
+        examRepository.save(exam);
+    }
+
+    public Exam getByFinished(boolean status) {
+        return examRepository.findByFinished(status);
+    }
 }

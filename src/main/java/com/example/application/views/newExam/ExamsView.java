@@ -12,7 +12,6 @@ import com.vaadin.flow.component.textfield.NumberField;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.annotation.security.RolesAllowed;
 
@@ -26,7 +25,7 @@ public class ExamsView extends VerticalLayout {
     private Button submitBut;
     private NumberField duration;
     private Button goToExam;
-    private String currentNaming;
+    private Button finishExam;
 
     private final ExamService examService;
 
@@ -37,6 +36,7 @@ public class ExamsView extends VerticalLayout {
         submitBut = new Button("Izveidot diktātu");
         duration = new NumberField("Diktāta ilgums (st.)");
         goToExam = new Button("Doties uz diktāta lapu");
+        finishExam = new Button("Apstāt diktātu");
 
         duration.setStep(0.5);
         duration.setMin(0.5);
@@ -55,9 +55,12 @@ public class ExamsView extends VerticalLayout {
         cancelButton.addThemeVariants(ButtonVariant.LUMO_ERROR);
         dialog.getFooter().add(cancelButton, saveButton);
 
+        finishExam.setEnabled(false);
+        finishExam.addClickListener(e -> stopExam());
+
         goToExam.setEnabled(false);
-        enableButton();
-        goToExam.addClickListener(e -> getUI().ifPresent(ui -> ui.navigate("exam/" + currentNaming)));
+        enableAndDisableButtons();
+        goToExam.addClickListener(e -> getUI().ifPresent(ui -> ui.navigate("exam/" + returnExamNaming())));
 
         submitBut.addClickListener(e -> {
             if (validateFields()) {
@@ -67,20 +70,37 @@ public class ExamsView extends VerticalLayout {
             }
         });
 
-        add(link, naming, duration, submitBut, goToExam);
+        add(link, naming, duration, submitBut, goToExam, finishExam);
     }
 
-    private void enableButton() {
-        Exam exam = examService.get(currentNaming);
+    private String returnExamNaming() {
+        Exam exam = examService.getByFinished(false);
+        return exam.getNaming();
+    }
+
+    private void enableAndDisableButtons() {
+        Exam exam = examService.getByFinished(false);
         if (exam != null) {
             goToExam.setEnabled(true);
+            finishExam.setEnabled(true);
+            submitBut.setEnabled(false);
         }
+    }
+
+    private void stopExam() {
+        Exam exam = examService.getByFinished(false);
+        exam.setFinished(true);
+        examService.save(exam);
+        goToExam.setEnabled(false);
+        finishExam.setEnabled(false);
+        submitBut.setEnabled(true);
     }
 
     private void createExam() {
         examService.save(naming.getValue(), link.getValue(), false, duration.getValue());
         goToExam.setEnabled(true);
-        currentNaming = naming.getValue();
+        finishExam.setEnabled(true);
+        submitBut.setEnabled(false);
         Notification.show("Diktāts izveidots").addThemeVariants(NotificationVariant.LUMO_SUCCESS);
     }
 

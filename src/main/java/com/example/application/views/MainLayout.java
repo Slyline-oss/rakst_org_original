@@ -6,6 +6,7 @@ import com.example.application.views.about.AboutView;
 import com.example.application.views.createUser.CreateUser;
 import com.example.application.views.edit.EditView;
 import com.example.application.views.listofparticipants.ListofparticipantsView;
+import com.example.application.views.newExam.ExamsView;
 import com.example.application.views.previousExams.PreviousExamsView;
 import com.example.application.views.profile.ProfileView;
 import com.vaadin.flow.component.Component;
@@ -147,7 +148,8 @@ public class MainLayout extends AppLayout {
                 new MenuItemInfo("Edit View", "la la-edit", EditView.class),
 
                 new MenuItemInfo("Create new User", "la la-pencil", CreateUser.class),
-                //
+
+                new MenuItemInfo("Exam", "la la-file-text-o", ExamsView.class)
 
         };
     }

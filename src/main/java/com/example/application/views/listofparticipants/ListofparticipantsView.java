@@ -79,17 +79,10 @@ public class ListofparticipantsView extends Div implements BeforeEnterObserver {
         grid.addColumn("firstName").setAutoWidth(true);
         grid.addColumn("lastName").setAutoWidth(true);
         grid.addColumn("email").setAutoWidth(true);
-//        grid.addColumn("phone").setAutoWidth(true);
-//        grid.addColumn("dateOfBirth").setAutoWidth(true);
-//        grid.addColumn("occupation").setAutoWidth(true);
-//        LitRenderer<User> importantRenderer = LitRenderer.<User>of(
-//                "<vaadin-icon icon='vaadin:${item.icon}' style='width: var(--lumo-icon-size-s); height: var(--lumo-icon-size-s); color: ${item.color};'></vaadin-icon>")
-//                .withProperty("icon", important -> important.isImportant() ? "check" : "minus").withProperty("color",
-//                        important -> important.isImportant()
-//                                ? "var(--lumo-primary-text-color)"
-//                                : "var(--lumo-disabled-text-color)");
+        grid.addColumn("telNumber").setAutoWidth(true);
+        grid.addColumn("birthday").setAutoWidth(true);
+        grid.addColumn("language").setAutoWidth(true);
 
-//        grid.addColumn(importantRenderer).setHeader("Important").setAutoWidth(true);
 
         grid.setItems(query -> userService.list(
                 PageRequest.of(query.getPage(), query.getPageSize(), VaadinSpringDataHelpers.toSpringDataSort(query)))

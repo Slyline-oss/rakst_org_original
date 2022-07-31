@@ -19,8 +19,8 @@ public class ExamService {
        return examRepository.findByNaming(naming);
     }
 
-    public void save(String naming, String link, boolean finished, double duration) {
-        examRepository.save(new Exam(naming, link, finished, duration));
+    public void save(String naming, String link, String embedLink, boolean finished, double duration) {
+        examRepository.save(new Exam(naming, link, embedLink, finished, duration));
     }
 
     public void save(Exam exam) {

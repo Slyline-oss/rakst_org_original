@@ -97,11 +97,25 @@ public class ExamsView extends VerticalLayout {
     }
 
     private void createExam() {
-        examService.save(naming.getValue(), link.getValue(), false, duration.getValue());
+        String modifiedLink = modifyLink();
+        examService.save(naming.getValue(), link.getValue(), modifiedLink, false, duration.getValue());
         goToExam.setEnabled(true);
         finishExam.setEnabled(true);
         submitBut.setEnabled(false);
         Notification.show("Diktāts izveidots").addThemeVariants(NotificationVariant.LUMO_SUCCESS);
+    }
+
+    private String modifyLink() {
+        String link = this.link.getValue().replace("watch?v=", "embed/");
+        int trig = 0;
+        for (int i = 0; i < link.length(); i++) {
+            if (link.charAt(i) == '&') {
+                trig = i;
+            }
+        }
+        StringBuilder buf = new StringBuilder(link);
+        buf.replace(trig, buf.length(),"");
+        return buf.toString();
     }
 
     private boolean validateFields() {

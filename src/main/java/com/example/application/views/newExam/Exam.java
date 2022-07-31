@@ -12,12 +12,14 @@ public class Exam {
     private String naming;
 
     private String link;
+    private String embedLink;
     private boolean finished;
     private double duration;
 
-    public Exam(String naming, String link, boolean finished, double duration) {
+    public Exam(String naming, String link, String embedLink, boolean finished, double duration) {
         this.naming = naming;
         this.link = link;
+        this.embedLink = embedLink;
         this.finished = finished;
         this.duration = duration;
     }
@@ -56,5 +58,13 @@ public class Exam {
 
     public void setDuration(double duration) {
         this.duration = duration;
+    }
+
+    public String getEmbedLink() {
+        return embedLink;
+    }
+
+    public void setEmbedLink(String embedLink) {
+        this.embedLink = embedLink;
     }
 }

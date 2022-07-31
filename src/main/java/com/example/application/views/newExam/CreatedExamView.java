@@ -1,6 +1,10 @@
 package com.example.application.views.newExam;
 
+import com.example.application.data.entity.ExamData;
+import com.example.application.data.entity.User;
+import com.example.application.data.service.ExamDataService;
 import com.example.application.data.service.ExamService;
+import com.example.application.security.AuthenticatedUser;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.dialog.Dialog;
@@ -16,6 +20,7 @@ import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 
 import javax.annotation.security.RolesAllowed;
+import java.util.Optional;
 
 @PageTitle("Exam")
 @Route("exam/:naming/")
@@ -26,9 +31,13 @@ public class CreatedExamView extends VerticalLayout implements BeforeEnterObserv
     private TextArea textArea;
 
     private final ExamService examService;
+    private final ExamDataService examDataService;
+    private final AuthenticatedUser authenticatedUser;
 
-    public CreatedExamView(ExamService examService) {
+    public CreatedExamView(ExamService examService, ExamDataService examDataService, AuthenticatedUser authenticatedUser) {
         this.examService = examService;
+        this.examDataService = examDataService;
+        this.authenticatedUser = authenticatedUser;
         textArea = new TextArea();
 
         textArea.setWidthFull();
@@ -45,6 +54,7 @@ public class CreatedExamView extends VerticalLayout implements BeforeEnterObserv
         dialog.setHeaderTitle("Iesniegt diktātu?");
         Button saveButton = new Button("Jā");
         saveButton.addClickListener(e -> {
+            saveContent();
             dialog.close();
             getUI().ifPresent(ui -> ui.navigate("about"));
             Notification notification = new Notification("Paldies par dalību latviešu diktātā!");
@@ -67,10 +77,29 @@ public class CreatedExamView extends VerticalLayout implements BeforeEnterObserv
         submitBut.addClickListener(e -> dialog.open());
     }
 
+    private void saveContent() {
+        Optional<User> maybeUser = authenticatedUser.get();
+        if (maybeUser.isPresent()) {
+            User user = maybeUser.get();
+            examDataService.save(user.getEmail(), textArea.getValue(), naming, true);
+        }
+    }
+
     @Override
     public void beforeEnter(BeforeEnterEvent beforeEnterEvent) {
         naming = beforeEnterEvent.getRouteParameters().get("naming").get();
         Exam exam = examService.get(naming);
+        String email = null;
+        boolean finished;
+        Optional<User> maybeUser = authenticatedUser.get();
+        if (maybeUser.isPresent()) {
+            User user = maybeUser.get();
+            email = user.getEmail();
+        }
+        ExamData examData = examDataService.get(email, naming);
+        if (examData != null && examData.isFinished()) {
+            beforeEnterEvent.forwardTo("about");
+        }
         if (exam == null || exam.isFinished()) {
             beforeEnterEvent.forwardTo("about");
         }

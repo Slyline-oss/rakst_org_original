@@ -33,16 +33,16 @@ import java.util.Optional;
 @RolesAllowed("USER")
 public class ProfileView extends VerticalLayout {
 
-    private final PasswordField password;
-    private final PasswordField newPassword;
+    private final PasswordField password = new PasswordField();;
+    private final PasswordField newPassword = new PasswordField();;
     private final AuthenticatedUser authenticatedUser;
-    private final TextField name;
-    private final TextField surname;
-    private final DatePicker birthDate;
+    private final TextField name = new TextField("Jūsu vārds:");
+    private final TextField surname = new TextField("Jūsu uzvārds:");;
+    private final DatePicker birthDate = new DatePicker();;
     private final Locale LATVIAN_LOCALE = new Locale("lv", "LV");
-    private final TextField telNumber;
-    private final Select<String> language;
-    private com.vaadin.flow.component.dialog.Dialog confirmationDialog;
+    private final TextField telNumber = new TextField("Jūsu telefona numurs:");;
+    private final Select<String> language = new Select<>();;
+    private com.vaadin.flow.component.dialog.Dialog confirmationDialog = new Dialog();;
 
     private final UserDetailsServiceImpl userDetailsService;
 
@@ -55,8 +55,8 @@ public class ProfileView extends VerticalLayout {
         this.authenticatedUser = authenticatedUser;
         this.userDetailsService = userDetailsService;
         this.emailAndPasswordValidation = emailAndPasswordValidation;
-        Optional<User> maybeUser = authenticatedUser.get();
-        maybeUser.ifPresent(value -> this.user = value);
+
+
 
         DatePicker.DatePickerI18n latvianI18n = new DatePicker.DatePickerI18n();
         latvianI18n.setMonthNames(List.of("Janvāris", "Februāris", "Marts", "Aprīlis", "Maijs",
@@ -67,22 +67,19 @@ public class ProfileView extends VerticalLayout {
         latvianI18n.setWeek("Nedēļa");
         latvianI18n.setToday("Šodien");
 
-        language = new Select<>();
         language.setLabel("Jūsu dzimtā valoda");
 
 
-        name = new TextField("Jūsu vārds:");
         name.setPlaceholder("Vārds");
 
-        surname = new TextField("Jūsu uzvārds:");
         surname.setPlaceholder("Uzvārds");
 
-        birthDate = new DatePicker();
         birthDate.setPlaceholder("DD.MM.YY");
         birthDate.setLabel("Dzimšanās diena");
         birthDate.setI18n(latvianI18n);
 
-        telNumber = new TextField("Jūsu telefona numurs:");
+
+        initializeUser();
 
         Button submitBut = new Button();
         submitBut.setText("Apstiprināt");
@@ -96,7 +93,6 @@ public class ProfileView extends VerticalLayout {
         layout.add(firstLayout, secondLayout);
         layout.setPadding(true);
 
-        confirmationDialog = new Dialog();
         confirmationDialog.setHeaderTitle("Saglabāt izmaiņas?");
         Button saveButton = new Button("Saglabāt");
         saveButton.addClickListener(e -> saveChanges());
@@ -106,12 +102,11 @@ public class ProfileView extends VerticalLayout {
         confirmationDialog.getFooter().add(cancelButton, saveButton);
 
 
-        password = new PasswordField();
         password.setLabel("Jūsu tekoša parole: ");
         password.setClearButtonVisible(true);
 
 
-        newPassword = new PasswordField();
+
         newPassword.setLabel("Jauna parole: ");
         newPassword.setClearButtonVisible(true);
         newPassword.setPattern("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#&()–[{}]:;',?/*~$^+=<>]).{8,20}$");
@@ -143,7 +138,6 @@ public class ProfileView extends VerticalLayout {
     }
 
 
-    @PostConstruct
     private void initializeUser() {
         Optional<User> maybeUser = authenticatedUser.get();
         if (maybeUser.isPresent()) {

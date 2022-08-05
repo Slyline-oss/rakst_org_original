@@ -9,4 +9,5 @@ public interface ExamDataRepository extends JpaRepository<ExamData, Long> {
 
     List<ExamData> findByEmail(String email);
     ExamData findByEmailAndNaming(String email, String naming);
+    List<ExamData> findAllByFinished(boolean finished);
 }

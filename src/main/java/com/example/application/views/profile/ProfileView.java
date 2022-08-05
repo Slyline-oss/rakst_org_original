@@ -68,7 +68,7 @@ public class ProfileView extends VerticalLayout {
         latvianI18n.setToday("Šodien");
 
         language.setLabel("Jūsu dzimtā valoda");
-
+        language.setPlaceholder("Telefona numurs");
 
         name.setPlaceholder("Vārds");
 
@@ -142,11 +142,11 @@ public class ProfileView extends VerticalLayout {
         Optional<User> maybeUser = authenticatedUser.get();
         if (maybeUser.isPresent()) {
             user = maybeUser.get();
-            name.setValue(user.getFirstName());
-            surname.setValue(user.getLastName());
+            name.setValue(user.getFirstName() == null ? "" : user.getFirstName());
+            surname.setValue(user.getLastName() == null ? "" : user.getLastName());
             birthDate.setLocale(LATVIAN_LOCALE);
             birthDate.setValue(user.getBirthday());
-            telNumber.setValue(user.getTelNumber());
+            telNumber.setValue(user.getTelNumber() == null ? "" : user.getTelNumber());
             language.setItems("Latviešu", "Krievu", "Vācu", "Angļu", "Citā svešvaloda");
             language.setValue(user.getLanguage());
         }

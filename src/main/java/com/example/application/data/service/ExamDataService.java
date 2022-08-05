@@ -22,6 +22,10 @@ public class ExamDataService {
         return examDataRepository.findByEmailAndNaming(email, naming);
     }
 
+    public List<ExamData> get(boolean finished) {
+        return examDataRepository.findAllByFinished(finished);
+    }
+
     public void save(String email, String textData, String naming) {
         examDataRepository.save(new ExamData(email, textData, naming));
     }

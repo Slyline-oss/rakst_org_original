@@ -5,10 +5,13 @@ import com.example.application.security.AuthenticatedUser;
 import com.example.application.views.about.AboutView;
 import com.example.application.views.createUser.CreateUser;
 import com.example.application.views.edit.EditView;
+import com.example.application.views.examResults.ExamResultsView;
 import com.example.application.views.listofparticipants.ListofparticipantsView;
 import com.example.application.views.newExam.ExamsView;
+import com.example.application.views.participateInExam.ParticipateInExamView;
 import com.example.application.views.previousExams.PreviousExamsView;
 import com.example.application.views.profile.ProfileView;
+import com.example.application.views.userExamHistory.UserExamHistoryView;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.applayout.AppLayout;
 import com.vaadin.flow.component.applayout.DrawerToggle;
@@ -149,7 +152,14 @@ public class MainLayout extends AppLayout {
 
                 new MenuItemInfo("Create new User", "la la-pencil", CreateUser.class),
 
-                new MenuItemInfo("Exam", "la la-file-text-o", ExamsView.class)
+                new MenuItemInfo("Exam", "la la-file-text-o", ExamsView.class),
+
+                new MenuItemInfo("Participate in Exam", "la la-edit", ParticipateInExamView.class),
+
+                new MenuItemInfo("My Exam history", "la la-eye", UserExamHistoryView.class),
+
+                new MenuItemInfo("Exam results", "la la-certificate", ExamResultsView.class),
+                //
 
         };
     }

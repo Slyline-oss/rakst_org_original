@@ -4,6 +4,8 @@ import com.example.application.views.newExam.Exam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 
 @Service(value = "examservice")
 public class ExamService {
@@ -29,5 +31,9 @@ public class ExamService {
 
     public Exam getByFinished(boolean status) {
         return examRepository.findByFinished(status);
+    }
+
+    public List<Exam> get() {
+        return examRepository.findAll();
     }
 }

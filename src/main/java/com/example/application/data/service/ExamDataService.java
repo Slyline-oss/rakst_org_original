@@ -18,23 +18,23 @@ public class ExamDataService {
         return examDataRepository.findByEmail(email);
     }
 
-    public ExamData get(String email, String naming) {
-        return examDataRepository.findByEmailAndNaming(email, naming);
+    public ExamData get(String email, Long examId) {
+        return examDataRepository.findByEmailAndExamId(email, examId);
     }
 
     public List<ExamData> get(boolean finished) {
         return examDataRepository.findAllByFinished(finished);
     }
 
-    public void save(String email, String textData, String naming) {
-        examDataRepository.save(new ExamData(email, textData, naming));
+    public void save(String email, String textData, Long examId) {
+        examDataRepository.save(new ExamData(email, textData, examId));
     }
 
     public void save(ExamData examData) {
         examDataRepository.save(examData);
     }
 
-    public void save(String email, String textData, String naming, boolean finished) {
-        examDataRepository.save(new ExamData(email, textData, naming, finished));
+    public void save(String email, String textData, Long examId, boolean finished) {
+        examDataRepository.save(new ExamData(email, textData, examId, finished));
     }
 }

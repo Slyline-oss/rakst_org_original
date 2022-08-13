@@ -1,16 +1,19 @@
 package com.example.application.views.newExam;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import org.springframework.lang.Nullable;
+
+import javax.persistence.*;
 
 @Entity
 @Table(name = "exams")
 public class Exam {
 
     @Id
-    private String naming;
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @Column(nullable = false)
+    private Long id;
 
+    private String naming;
     private String link;
     private String embedLink;
     private boolean finished;
@@ -66,5 +69,13 @@ public class Exam {
 
     public void setEmbedLink(String embedLink) {
         this.embedLink = embedLink;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 }

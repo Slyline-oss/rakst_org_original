@@ -5,10 +5,12 @@ import com.example.application.security.AuthenticatedUser;
 import com.example.application.security.UserDetailsServiceImpl;
 import com.example.application.views.MainLayout;
 import com.example.application.views.registration.EmailAndPasswordValidation;
+import com.vaadin.flow.component.Text;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.datepicker.DatePicker;
 import com.vaadin.flow.component.dialog.Dialog;
+import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.H5;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.notification.NotificationVariant;
@@ -28,9 +30,9 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
 
-@PageTitle("Profile")
+@PageTitle("Profils")
 @Route(value = "profile/:samplePersonID?/:action?(edit)", layout = MainLayout.class)
-@RolesAllowed("USER")
+@RolesAllowed({"USER", "ADMIN"})
 public class ProfileView extends VerticalLayout {
 
     private final PasswordField password = new PasswordField();;
@@ -51,7 +53,7 @@ public class ProfileView extends VerticalLayout {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    public ProfileView(AuthenticatedUser authenticatedUser, UserDetailsServiceImpl userDetailsService, EmailAndPasswordValidation emailAndPasswordValidation) {
+    public ProfileView(AuthenticatedUser authenticatedUser, UserDetailsServiceImpl userDetailsService, EmailAndPasswordValidation emailAndPasswordValidation, ProfileViewService profileViewService) {
         this.authenticatedUser = authenticatedUser;
         this.userDetailsService = userDetailsService;
         this.emailAndPasswordValidation = emailAndPasswordValidation;
@@ -68,7 +70,9 @@ public class ProfileView extends VerticalLayout {
         latvianI18n.setToday("Šodien");
 
         language.setLabel("Jūsu dzimtā valoda");
-        language.setPlaceholder("Telefona numurs");
+        language.setPlaceholder("Valoda");
+
+        telNumber.setPlaceholder("Telefona numurs");
 
         name.setPlaceholder("Vārds");
 
@@ -79,6 +83,12 @@ public class ProfileView extends VerticalLayout {
         birthDate.setI18n(latvianI18n);
 
 
+        //Important notification
+        Div notification = new Div();
+        notification.add(new H5("Svarīgie ziņojumi:"));
+        Text notificationText = new Text(profileViewService.getText());
+        notification.add(notificationText);
+
         initializeUser();
 
         Button submitBut = new Button();
@@ -88,9 +98,11 @@ public class ProfileView extends VerticalLayout {
         HorizontalLayout layout = new HorizontalLayout();
         VerticalLayout firstLayout = new VerticalLayout();
         VerticalLayout secondLayout = new VerticalLayout();
+        VerticalLayout thirdLayout = new VerticalLayout();
         firstLayout.add(name, birthDate, submitBut);
         secondLayout.add(surname, telNumber, language);
-        layout.add(firstLayout, secondLayout);
+        thirdLayout.add(notification);
+        layout.add(firstLayout, secondLayout, thirdLayout);
         layout.setPadding(true);
 
         confirmationDialog.setHeaderTitle("Saglabāt izmaiņas?");

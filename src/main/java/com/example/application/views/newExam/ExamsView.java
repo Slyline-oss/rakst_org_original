@@ -15,7 +15,7 @@ import com.vaadin.flow.router.Route;
 
 import javax.annotation.security.RolesAllowed;
 
-@PageTitle("Exam")
+@PageTitle("Diktāts")
 @Route(value = "create-exam", layout = MainLayout.class)
 @RolesAllowed("ADMIN")
 public class ExamsView extends VerticalLayout {
@@ -42,6 +42,7 @@ public class ExamsView extends VerticalLayout {
         duration.setMin(0.5);
         duration.setMax(5);
         duration.setHasControls(true);
+
 
         Dialog dialog = new Dialog();
         dialog.setHeaderTitle("Sākt diktātu?");

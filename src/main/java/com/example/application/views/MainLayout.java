@@ -3,6 +3,7 @@ package com.example.application.views;
 import com.example.application.data.entity.User;
 import com.example.application.security.AuthenticatedUser;
 import com.example.application.views.about.AboutView;
+import com.example.application.views.allExams.CreatedExams;
 import com.example.application.views.createUser.CreateUser;
 import com.example.application.views.edit.EditView;
 import com.example.application.views.examResults.ExamResultsView;
@@ -140,25 +141,26 @@ public class MainLayout extends AppLayout {
 
     private MenuItemInfo[] createMenuItems() {
         return new MenuItemInfo[]{ //
-                new MenuItemInfo("Profile", "la la-globe", ProfileView.class), //
+                new MenuItemInfo("Profils", "la la-globe", ProfileView.class), //
 
-                new MenuItemInfo("About", "la la-file", AboutView.class), //
+                new MenuItemInfo("Sākumlapa", "la la-file", AboutView.class), //
 
-                new MenuItemInfo("List of participants", "la la-columns", ListofparticipantsView.class),
+                new MenuItemInfo("Lietotāju saraksts", "la la-columns", ListofparticipantsView.class),
 
-                new MenuItemInfo("Previous Exams View", "la la-columns", PreviousExamsView.class),
+                new MenuItemInfo("Rediģēt sākumlapu", "la la-edit", EditView.class),
 
-                new MenuItemInfo("Edit View", "la la-edit", EditView.class),
+                new MenuItemInfo("Izveidot jaunu adminu", "la la-pencil", CreateUser.class),
 
-                new MenuItemInfo("Create new User", "la la-pencil", CreateUser.class),
+                new MenuItemInfo("Diktāts", "la la-file-text-o", ExamsView.class),
 
-                new MenuItemInfo("Exam", "la la-file-text-o", ExamsView.class),
+                new MenuItemInfo("Piedalīties diktātā tiešsaistē", "la la-edit", ParticipateInExamView.class),
 
-                new MenuItemInfo("Participate in Exam", "la la-edit", ParticipateInExamView.class),
+                new MenuItemInfo("Manu diktātu vēsture", "la la-eye", UserExamHistoryView.class),
 
-                new MenuItemInfo("My Exam history", "la la-eye", UserExamHistoryView.class),
+                new MenuItemInfo("Diktātu rezultāti", "la la-certificate", ExamResultsView.class),
 
-                new MenuItemInfo("Exam results", "la la-certificate", ExamResultsView.class),
+                new MenuItemInfo("Izveidotie diktāti", "la la-file-text", CreatedExams.class),
+
                 //
 
         };

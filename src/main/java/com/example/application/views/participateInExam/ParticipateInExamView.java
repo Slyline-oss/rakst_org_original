@@ -15,7 +15,7 @@ import com.vaadin.flow.router.Route;
 import javax.annotation.security.RolesAllowed;
 import java.util.Optional;
 
-@PageTitle("Participate in Exam")
+@PageTitle("Piedalīties diktātā tiešsaistē")
 @Route(value = "participate-in-exam", layout = MainLayout.class)
 @RolesAllowed("USER")
 public class ParticipateInExamView extends VerticalLayout {

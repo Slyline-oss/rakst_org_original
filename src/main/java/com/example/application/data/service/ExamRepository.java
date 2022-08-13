@@ -7,4 +7,5 @@ public interface ExamRepository extends JpaRepository<Exam, String> {
 
     Exam findByNaming(String naming);
     Exam findByFinished(boolean status);
+    
 }

@@ -30,6 +30,7 @@ public class CreatedExamView extends VerticalLayout implements BeforeEnterObserv
     private String naming;
     private TextArea textArea;
 
+
     private final ExamService examService;
     private final ExamDataService examDataService;
     private final AuthenticatedUser authenticatedUser;
@@ -74,14 +75,17 @@ public class CreatedExamView extends VerticalLayout implements BeforeEnterObserv
 
         add(title, iFrame, textArea, submitBut);
 
+        setHorizontalComponentAlignment(Alignment.CENTER);
+
         submitBut.addClickListener(e -> dialog.open());
     }
 
     private void saveContent() {
         Optional<User> maybeUser = authenticatedUser.get();
+        Exam exam = examService.get(naming);
         if (maybeUser.isPresent()) {
             User user = maybeUser.get();
-            examDataService.save(user.getEmail(), textArea.getValue(), naming, true);
+            examDataService.save(user.getEmail(), textArea.getValue(), exam.getId(), true);
         }
     }
 
@@ -96,7 +100,7 @@ public class CreatedExamView extends VerticalLayout implements BeforeEnterObserv
             User user = maybeUser.get();
             email = user.getEmail();
         }
-        ExamData examData = examDataService.get(email, naming);
+        ExamData examData = examDataService.get(email, exam.getId());
         if (examData != null && examData.isFinished()) {
             beforeEnterEvent.forwardTo("about");
         }

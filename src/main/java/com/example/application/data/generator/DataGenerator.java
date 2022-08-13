@@ -57,10 +57,11 @@ public class DataGenerator {
             User admin = new User();
             admin.setFirstName("Admin");
             admin.setEmail("admin");
+            admin.setLastName("super");
             admin.setHashedPassword(passwordEncoder.encode("admin"));
             admin.setProfilePictureUrl(
                     "https://images.unsplash.com/photo-1607746882042-944635dfe10e?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=128&h=128&q=80");
-            admin.setRoles(Set.of(Role.USER, Role.ADMIN));
+            admin.setRoles(Set.of(Role.ADMIN, Role.USER));
             userRepository.save(admin);
 
             logger.info("Generated demo data");

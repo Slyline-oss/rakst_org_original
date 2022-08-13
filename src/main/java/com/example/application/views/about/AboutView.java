@@ -12,7 +12,7 @@ import com.vaadin.flow.server.auth.AnonymousAllowed;
 import org.springframework.stereotype.Component;
 
 
-@PageTitle("About")
+@PageTitle("Sākumlapa")
 @Route(value = "about", layout = MainLayout.class)
 @RouteAlias(value = "", layout = MainLayout.class)
 @AnonymousAllowed

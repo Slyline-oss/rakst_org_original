@@ -1,7 +1,6 @@
-package com.example.application.views.examResults;
+package com.example.application.views.allExams;
 
-import com.example.application.data.entity.ExamData;
-import com.example.application.data.service.ExamDataService;
+import com.example.application.data.service.ExamService;
 import com.example.application.views.MainLayout;
 import com.example.application.views.newExam.Exam;
 import com.vaadin.flow.component.Component;
@@ -15,43 +14,41 @@ import com.vaadin.flow.component.textfield.TextFieldVariant;
 import com.vaadin.flow.data.value.ValueChangeMode;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.annotation.security.RolesAllowed;
 import java.util.List;
-import java.util.Locale;
 import java.util.function.Consumer;
 
-@PageTitle("Diktātu rezultāti")
-@Route(value = "exam-results", layout = MainLayout.class)
+@PageTitle("Izveidotie diktāti")
+@Route(value = "list-of-exams", layout = MainLayout.class)
 @RolesAllowed("ADMIN")
-public class ExamResultsView extends VerticalLayout {
+public class CreatedExams extends VerticalLayout {
 
-    private Grid<ExamData> grid = new Grid<>(ExamData.class, false);
+    private final ExamService examService;
 
-    private final ExamDataService examDataService;
+    private Grid<Exam> grid = new Grid<>(Exam.class, false);
 
-    @Autowired
-    public ExamResultsView(ExamDataService examDataService) {
-        this.examDataService = examDataService;
+    public CreatedExams(ExamService examService) {
+        this.examService = examService;
 
-        Grid.Column<ExamData> emailColumn = grid.addColumn(ExamData::getEmail).setAutoWidth(true).setSortable(true);
-        Grid.Column<ExamData> namingColumn = grid.addColumn(ExamData::getExamId).setAutoWidth(true).setSortable(true);
+        Grid.Column<Exam> idColumn = grid.addColumn(Exam::getId).setAutoWidth(true).setSortable(true);
+        Grid.Column<Exam> namingColumn = grid.addColumn(Exam::getNaming).setAutoWidth(true).setSortable(true);
+        Grid.Column<Exam> linkColumn = grid.addColumn(Exam::getLink).setAutoWidth(true);
 
-        List<ExamData> examResults = examDataService.get(true);
-        GridListDataView<ExamData> dataView = grid.setItems(examResults);
-        ExamDataFilter examDataFilter = new ExamDataFilter(dataView);
+        List<Exam> exams = examService.get();
+        GridListDataView<Exam> dataView = grid.setItems(exams);
+        ExamFilter examFilter = new ExamFilter(dataView);
 
         grid.getHeaderRows().clear();
         HeaderRow headerRow = grid.appendHeaderRow();
 
         headerRow.getCell(namingColumn).setComponent(
-                createFilterHeader("Exam name", examDataFilter::setNaming));
-        headerRow.getCell(emailColumn).setComponent(
-                createFilterHeader("Email", examDataFilter::setEmail));
+                createFilterHeader("Diktāta nosaukums", examFilter::setNaming));
+        headerRow.getCell(linkColumn).setComponent(
+                createFilterHeader("Diktāta saite", examFilter::setLink));
+        headerRow.getCell(idColumn).setText("Diktāta id");
 
         add(grid);
-
     }
 
     private static Component createFilterHeader(String labelText,
@@ -75,20 +72,15 @@ public class ExamResultsView extends VerticalLayout {
     }
 
 
-    private static class ExamDataFilter {
-        private final GridListDataView<ExamData> dataView;
+    private static class ExamFilter {
+        private final GridListDataView<Exam> dataView;
 
-        private String email;
         private String naming;
+        private String link;
 
-        private ExamDataFilter(GridListDataView<ExamData> dataView) {
+        private ExamFilter(GridListDataView<Exam> dataView) {
             this.dataView = dataView;
             this.dataView.addFilter(this::test);
-        }
-
-        public void setEmail(String email) {
-            this.email = email;
-            this.dataView.refreshAll();
         }
 
         public void setNaming(String naming) {
@@ -96,17 +88,23 @@ public class ExamResultsView extends VerticalLayout {
             this.dataView.refreshAll();
         }
 
-        public boolean test(ExamData examData) {
-            boolean matchesEmail = matches(examData.getEmail(), email);
-            boolean matchesNaming = matches(String.valueOf(examData.getExamId()), naming);
-
-            return matchesEmail && matchesNaming;
+        public void setLink(String link) {
+            this.link = link;
+            this.dataView.refreshAll();
         }
+
+
+        public boolean test(Exam exam) {
+            boolean matchesNaming = matches(exam.getNaming(), naming);
+            boolean matchesLink = matches(exam.getLink(), link);
+
+            return matchesLink && matchesNaming;
+        }
+
 
         private boolean matches(String value, String searchTerm) {
-            return searchTerm == null || searchTerm.isEmpty() || value.toLowerCase(Locale.ROOT).
-                    contains(searchTerm.toLowerCase(Locale.ROOT));
+            return searchTerm == null || searchTerm.isEmpty() || value
+                    .toLowerCase().contains(searchTerm.toLowerCase());
         }
-
     }
 }

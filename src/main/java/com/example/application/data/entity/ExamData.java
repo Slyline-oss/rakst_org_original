@@ -14,19 +14,19 @@ public class ExamData {
     @Column(columnDefinition = "TEXT")
     private String textData;
     private String result;
-    private String naming;
+    private Long examId;
     private boolean finished;
 
-    public ExamData(String email, String textData, String naming) {
+    public ExamData(String email, String textData, Long examId) {
         this.email = email;
         this.textData = textData;
-        this.naming = naming;
+        this.examId = examId;
     }
 
-    public ExamData(String email, String textData, String naming, boolean finished) {
+    public ExamData(String email, String textData, Long examId, boolean finished) {
         this.email = email;
         this.textData = textData;
-        this.naming = naming;
+        this.examId = examId;
         this.finished = finished;
     }
 
@@ -34,12 +34,12 @@ public class ExamData {
     }
 
 
-    public String getNaming() {
-        return naming;
+    public Long getExamId() {
+        return examId;
     }
 
-    public void setNaming(String naming) {
-        this.naming = naming;
+    public void setExamId(Long id) {
+        this.examId = id;
     }
 
     public boolean isFinished() {
@@ -75,10 +75,10 @@ public class ExamData {
     }
 
     public Long getId() {
-        return id;
+        return examId;
     }
 
     public void setId(Long id) {
-        this.id = id;
+        this.examId = id;
     }
 }

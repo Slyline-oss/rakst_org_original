@@ -10,7 +10,7 @@ import com.vaadin.flow.router.Route;
 
 import javax.annotation.security.RolesAllowed;
 
-@PageTitle("Create New User")
+@PageTitle("Izveidot jaunu adminu")
 @Route(value = "create-user", layout = MainLayout.class)
 @RolesAllowed("ADMIN")
 public class CreateUser extends VerticalLayout {

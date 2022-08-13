@@ -8,6 +8,6 @@ import java.util.List;
 public interface ExamDataRepository extends JpaRepository<ExamData, Long> {
 
     List<ExamData> findByEmail(String email);
-    ExamData findByEmailAndNaming(String email, String naming);
+    ExamData findByEmailAndExamId(String email, Long id);
     List<ExamData> findAllByFinished(boolean finished);
 }

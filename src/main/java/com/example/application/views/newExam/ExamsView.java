@@ -26,6 +26,7 @@ public class ExamsView extends VerticalLayout {
     private NumberField duration;
     private Button goToExam;
     private Button finishExam;
+    private Button allowToShow;
 
     private final ExamService examService;
 
@@ -36,14 +37,15 @@ public class ExamsView extends VerticalLayout {
         submitBut = new Button("Izveidot diktātu");
         duration = new NumberField("Diktāta ilgums (st.)");
         goToExam = new Button("Doties uz diktāta lapu");
-        finishExam = new Button("Apstāt diktātu");
+        finishExam = new Button("Apstādināt diktātu");
+        allowToShow = new Button("Uzsākt diktātu");
 
         duration.setStep(0.5);
         duration.setMin(0.5);
         duration.setMax(5);
         duration.setHasControls(true);
 
-
+        //confirmation dialog
         Dialog dialog = new Dialog();
         dialog.setHeaderTitle("Sākt diktātu?");
         Button saveButton = new Button("Jā");
@@ -56,12 +58,15 @@ public class ExamsView extends VerticalLayout {
         cancelButton.addThemeVariants(ButtonVariant.LUMO_ERROR);
         dialog.getFooter().add(cancelButton, saveButton);
 
+        allowToShow.setEnabled(false);
+        allowToShow.addClickListener(e -> showExamForParticipants());
+
         finishExam.setEnabled(false);
         finishExam.addClickListener(e -> stopExam());
 
         goToExam.setEnabled(false);
         enableAndDisableButtons();
-        goToExam.addClickListener(e -> getUI().ifPresent(ui -> ui.navigate("exam/" + returnExamNaming())));
+        goToExam.addClickListener(e -> getUI().ifPresent(ui -> ui.navigate("exam-current")));
 
         submitBut.addClickListener(e -> {
             if (validateFields()) {
@@ -71,7 +76,13 @@ public class ExamsView extends VerticalLayout {
             }
         });
 
-        add(link, naming, duration, submitBut, goToExam, finishExam);
+        add(link, naming, duration, submitBut, goToExam, finishExam, allowToShow);
+    }
+
+    private void showExamForParticipants() {
+        Exam exam = examService.getByFinished(false);
+        exam.setAllowToShow(true);
+        examService.save(exam);
     }
 
     private String returnExamNaming() {
@@ -85,6 +96,7 @@ public class ExamsView extends VerticalLayout {
             goToExam.setEnabled(true);
             finishExam.setEnabled(true);
             submitBut.setEnabled(false);
+            allowToShow.setEnabled(true);
         }
     }
 
@@ -99,10 +111,11 @@ public class ExamsView extends VerticalLayout {
 
     private void createExam() {
         String modifiedLink = modifyLink();
-        examService.save(naming.getValue(), link.getValue(), modifiedLink, false, duration.getValue());
+        examService.save(naming.getValue(), link.getValue(), modifiedLink, false, duration.getValue(), false);
         goToExam.setEnabled(true);
         finishExam.setEnabled(true);
         submitBut.setEnabled(false);
+        allowToShow.setEnabled(true);
         Notification.show("Diktāts izveidots").addThemeVariants(NotificationVariant.LUMO_SUCCESS);
     }
 

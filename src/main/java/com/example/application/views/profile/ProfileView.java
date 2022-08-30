@@ -24,7 +24,6 @@ import com.vaadin.flow.router.Route;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import javax.annotation.PostConstruct;
 import javax.annotation.security.RolesAllowed;
 import java.util.List;
 import java.util.Locale;

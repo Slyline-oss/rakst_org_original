@@ -1,5 +1,6 @@
 package com.example.application.views.newExam;
 
+import com.example.application.data.Role;
 import com.example.application.data.entity.ExamData;
 import com.example.application.data.entity.User;
 import com.example.application.data.service.ExamDataService;
@@ -23,11 +24,10 @@ import javax.annotation.security.RolesAllowed;
 import java.util.Optional;
 
 @PageTitle("Exam")
-@Route("exam/:naming/")
-@RolesAllowed("USER")
+@Route("exam-current")
+@RolesAllowed({"USER", "ADMIN"})
 public class CreatedExamView extends VerticalLayout implements BeforeEnterObserver {
 
-    private String naming;
     private TextArea textArea;
 
 
@@ -82,7 +82,7 @@ public class CreatedExamView extends VerticalLayout implements BeforeEnterObserv
 
     private void saveContent() {
         Optional<User> maybeUser = authenticatedUser.get();
-        Exam exam = examService.get(naming);
+        Exam exam = examService.getByFinished(false);
         if (maybeUser.isPresent()) {
             User user = maybeUser.get();
             examDataService.save(user.getEmail(), textArea.getValue(), exam.getId(), true);
@@ -91,21 +91,25 @@ public class CreatedExamView extends VerticalLayout implements BeforeEnterObserv
 
     @Override
     public void beforeEnter(BeforeEnterEvent beforeEnterEvent) {
-        naming = beforeEnterEvent.getRouteParameters().get("naming").get();
-        Exam exam = examService.get(naming);
+        Exam exam = examService.getByFinished(false);
         String email = null;
         boolean finished;
         Optional<User> maybeUser = authenticatedUser.get();
         if (maybeUser.isPresent()) {
             User user = maybeUser.get();
             email = user.getEmail();
-        }
-        ExamData examData = examDataService.get(email, exam.getId());
-        if (examData != null && examData.isFinished()) {
-            beforeEnterEvent.forwardTo("about");
+            if (user.getRoles().contains(Enum.valueOf(Role.class,"USER")) && !exam.isAllowToShow()) {
+                beforeEnterEvent.forwardTo("about");
+            }
         }
         if (exam == null || exam.isFinished()) {
             beforeEnterEvent.forwardTo("about");
         }
+
+        ExamData examData = examDataService.get(email, exam.getId());
+        if (examData != null && examData.isFinished()) {
+            beforeEnterEvent.forwardTo("about");
+        }
+
     }
 }

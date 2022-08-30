@@ -17,14 +17,16 @@ public class Exam {
     private String link;
     private String embedLink;
     private boolean finished;
+    private boolean allowToShow;
     private double duration;
 
-    public Exam(String naming, String link, String embedLink, boolean finished, double duration) {
+    public Exam(String naming, String link, String embedLink, boolean finished, double duration, boolean allowToShow) {
         this.naming = naming;
         this.link = link;
         this.embedLink = embedLink;
         this.finished = finished;
         this.duration = duration;
+        this.allowToShow = allowToShow;
     }
 
     public Exam() {
@@ -77,5 +79,13 @@ public class Exam {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public boolean isAllowToShow() {
+        return allowToShow;
+    }
+
+    public void setAllowToShow(boolean allowToShow) {
+        this.allowToShow = allowToShow;
     }
 }

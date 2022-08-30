@@ -1,27 +1,43 @@
 package com.example.application.views.about;
 
+import com.example.application.data.Role;
+import com.example.application.data.entity.ExamData;
+import com.example.application.data.entity.User;
+import com.example.application.data.service.ExamDataService;
+import com.example.application.data.service.ExamService;
+import com.example.application.security.AuthenticatedUser;
 import com.example.application.views.MainLayout;
+import com.example.application.views.newExam.CreatedExamView;
+import com.example.application.views.newExam.Exam;
 import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.html.Image;
 import com.vaadin.flow.component.html.Paragraph;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
-import com.vaadin.flow.router.PageTitle;
-import com.vaadin.flow.router.Route;
-import com.vaadin.flow.router.RouteAlias;
+import com.vaadin.flow.router.*;
 import com.vaadin.flow.server.auth.AnonymousAllowed;
-import org.springframework.stereotype.Component;
+
+import javax.annotation.security.RolesAllowed;
+import java.util.Optional;
 
 
 @PageTitle("Sākumlapa")
-@Route(value = "about", layout = MainLayout.class)
-@RouteAlias(value = "", layout = MainLayout.class)
+@Route(value = "/", layout = MainLayout.class)
+@RouteAlias(value = "about", layout = MainLayout.class)
 @AnonymousAllowed
-public class AboutView extends VerticalLayout {
+public class AboutView extends VerticalLayout implements BeforeEnterObserver {
 
 
     private Paragraph paragraph;
 
-    public AboutView(AboutViewService aboutViewService) {
+    private final ExamService examService;
+    private final ExamDataService examDataService;
+    private final AuthenticatedUser authenticatedUser;
+
+    public AboutView(AboutViewService aboutViewService, ExamService examService, ExamDataService examDataService, AuthenticatedUser authenticatedUser) {
+        this.examService = examService;
+        this.examDataService = examDataService;
+        this.authenticatedUser = authenticatedUser;
+
         setSpacing(false);
 
         Image img = new Image("images/empty-plant.png", "placeholder plant");
@@ -49,4 +65,18 @@ public class AboutView extends VerticalLayout {
     }
 
 
+    @Override
+    public void beforeEnter(BeforeEnterEvent beforeEnterEvent) {
+        Exam exam = examService.getByFinished(false);
+        if (exam != null && !exam.isFinished() && exam.isAllowToShow()) {
+            Optional<User> maybeUser = authenticatedUser.get();
+            if (maybeUser.isPresent()) {
+                User user = maybeUser.get();
+                ExamData examData = examDataService.get(user.getEmail(), exam.getId());
+                if (examData == null && user.getRoles().contains(Enum.valueOf(Role.class, "USER"))) {
+                    beforeEnterEvent.forwardTo("exam-current");
+                }
+            }
+        }
+    }
 }

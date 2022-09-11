@@ -17,7 +17,8 @@ import javax.persistence.Table;
 @Table(name = "application_user")
 public class User extends AbstractEntity {
 
-    public User(String username, String firstName, String lastName, String hashedPassword, String email, Set<Role> roles) {
+    //registration not anonymous
+    public User(String username, String firstName, String lastName, String hashedPassword, String email, Set<Role> roles, String emailConfirmationToken) {
         this.username = username;
         this.hashedPassword = hashedPassword;
         this.email = email;
@@ -25,6 +26,18 @@ public class User extends AbstractEntity {
         this.firstName = firstName;
         this.lastName = lastName;
         this.anonymous = false;
+        this.emailConfirmationToken = emailConfirmationToken;
+        this.confirmed = false;
+    }
+
+    //admin registration
+    public User(String username, String firstName, String lastName, String hashedPassword, String email, Set<Role> roles) {
+        this.email = email;
+        this.username = username;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.hashedPassword = hashedPassword;
+        this.roles = roles;
     }
 
     public User(String email, String firstName, String lastName, String hashedPassword, LocalDate birthday, String telNumber, String language, Set<Role> roles) {
@@ -39,6 +52,7 @@ public class User extends AbstractEntity {
         this.anonymous = false;
     }
 
+    //manual user creation
     public User(String email, String firstName, String lastName,String hashedPassword,  Set<Role> roles, LocalDate birthday, String telNumber, String language, String age, String country, String city, String education, String gender) {
         this.email = email;
         this.firstName = firstName;
@@ -56,13 +70,16 @@ public class User extends AbstractEntity {
         this.anonymous = false;
     }
 
-    public User(String email, String hashedPassword) {
+    //Registration anonymous
+    public User(String email, String hashedPassword, String emailConfirmationToken) {
         this.email = email;
         this.hashedPassword = hashedPassword;
         this.anonymous = true;
         this.roles = Set.of(Role.USER);
         this.firstName = "Anonims";
         this.lastName = "Anonims";
+        this.emailConfirmationToken = emailConfirmationToken;
+        this.confirmed = true;
     }
 
     private String resetPasswordToken;
@@ -88,6 +105,8 @@ public class User extends AbstractEntity {
     private String education;
     private String gender;
     private boolean anonymous;
+    private boolean confirmed;
+    private String emailConfirmationToken;
 
     public User() {
 
@@ -201,4 +220,17 @@ public class User extends AbstractEntity {
     public void setAnonymous(boolean anonymous) {
         this.anonymous = anonymous;
     }
+    public boolean isConfirmed() {
+        return confirmed;
+    }
+    public void setConfirmed(boolean confirmed) {
+        this.confirmed = confirmed;
+    }
+    public String getEmailConfirmationToken() {
+        return emailConfirmationToken;
+    }
+    public void setEmailConfirmationToken(String emailConfirmationToken) {
+        this.emailConfirmationToken = emailConfirmationToken;
+    }
+
 }

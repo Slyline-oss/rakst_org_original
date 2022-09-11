@@ -1,7 +1,6 @@
 package com.example.application.views.login;
 
 import com.example.application.data.entity.User;
-import com.example.application.data.service.UserRepository;
 import com.example.application.security.UserDetailsServiceImpl;
 import com.example.application.views.registration.EmailAndPasswordValidation;
 import com.vaadin.flow.component.button.Button;

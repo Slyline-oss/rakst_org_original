@@ -17,4 +17,5 @@ public interface UserRepository extends JpaRepository<User, UUID> {
     void setUsersPasswordByEmail(String password, String email);
 
     User findByResetPasswordToken(String token);
+    User findByEmailConfirmationToken(String token);
 }

@@ -49,12 +49,12 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     }
 
-    public void register(String firstName, String lastName, String email, String password1) {
-        userRepository.save(new User(firstName, firstName, lastName, passwordEncoder.encode(password1), email, Set.of(Role.USER)));
+    public void register(String firstName, String lastName, String email, String password1, String emailConfirmationToken) {
+        userRepository.save(new User(firstName, firstName, lastName, passwordEncoder.encode(password1), email, Set.of(Role.USER), emailConfirmationToken));
     }
 
-    public void register(String email, String password) {
-        userRepository.save(new User(email, passwordEncoder.encode(password)));
+    public void register(String email, String password, String emailConfirmationToken) {
+        userRepository.save(new User(email, passwordEncoder.encode(password), emailConfirmationToken));
     }
 
     public void register(String email, String firstName, String lastName, String password, LocalDate birthday, String telNumber, String language) {
@@ -72,6 +72,10 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     public User findUserByEmail(String email) {
         return userRepository.findByEmail(email);
+    }
+
+    public User findByEmailConfirmationToken(String token) {
+        return userRepository.findByEmailConfirmationToken(token);
     }
 
     public void updatePassword(String email, String password) {

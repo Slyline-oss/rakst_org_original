@@ -2,6 +2,7 @@ package com.example.application.views.registration;
 
 import com.example.application.data.entity.User;
 import com.example.application.data.service.UserRepository;
+import com.example.application.emailSender.EmailSenderService;
 import com.example.application.security.UserDetailsServiceImpl;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
@@ -15,6 +16,8 @@ import com.vaadin.flow.component.textfield.EmailField;
 import com.vaadin.flow.component.textfield.PasswordField;
 import com.vaadin.flow.component.textfield.TextField;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import java.util.UUID;
 
 public class RegistrationForm extends FormLayout {
 
@@ -42,11 +45,14 @@ public class RegistrationForm extends FormLayout {
     private final UserRepository userRepository;
     @Autowired
     private final EmailAndPasswordValidation emailAndPasswordValidation;
+    private final EmailSenderService emailSenderService;
 
-    public RegistrationForm(UserDetailsServiceImpl userDetailsService, UserRepository userRepository, EmailAndPasswordValidation emailAndPasswordValidation) {
+    public RegistrationForm(UserDetailsServiceImpl userDetailsService, UserRepository userRepository, EmailAndPasswordValidation emailAndPasswordValidation, EmailSenderService emailSenderService) {
         this.userDetailsService = userDetailsService;
         this.userRepository = userRepository;
         this.emailAndPasswordValidation = emailAndPasswordValidation;
+        this.emailSenderService = emailSenderService;
+
         title = new H3("Reģistrācijas forma");
         firstName = new TextField("Vārds");
         lastName = new TextField("Uzvārds");
@@ -130,10 +136,23 @@ public class RegistrationForm extends FormLayout {
             Notification.show("Parolei jābūt vismāz 8 simbolu garai, iekļaujot lielus, mazus burtus un vienu speciālu" +
                     "simbolu (#, $, %, ..)");
         } else {
-            userDetailsService.register(firstName, lastName, email, password1);
-            Notification.show("Reģistrācija izdevās!").addThemeVariants(NotificationVariant.LUMO_SUCCESS);
+            String token = UUID.randomUUID().toString();
+            userDetailsService.register(firstName, lastName, email, password1, token);
+            Notification notification = new Notification("Reģistrācija izdevās! Lūdzu, apstipriniet e-pastu! Jums ir sūtīta vēstu uz noradīto e-pastu");
+            sendEmail(token, email);
+            notification.addThemeVariants(NotificationVariant.LUMO_SUCCESS);
+            notification.setDuration(10000);
+            notification.setPosition(Notification.Position.TOP_STRETCH);
+            notification.open();
             getUI().ifPresent(ui -> ui.navigate("about"));
         }
+    }
+
+    private void sendEmail(String token, String email) {
+        String subject = "Raksti.org - e-pasta apstiprināšana";
+        String content = "Sveiki! Apsveicām ar reģistrāciju! Klikšķiniet uz saiti " + "http://localhost:8080/confirm-email/" +
+                token + " un apstipriniet savu e-pastu!";
+        emailSenderService.sendEmail(email, content, subject);
     }
 
     public void register(String email, String password1, String password2) {
@@ -152,8 +171,14 @@ public class RegistrationForm extends FormLayout {
             Notification.show("Parolei jābūt vismāz 8 simbolu garai, iekļaujot lielus, mazus burtus un vienu speciālu" +
                     "simbolu (#, $, %, ..)");
         } else {
-            userDetailsService.register(email, password1);
-            Notification.show("Reģistrācija izdevās!").addThemeVariants(NotificationVariant.LUMO_SUCCESS);
+            String token = UUID.randomUUID().toString();
+            userDetailsService.register(email, password1, token);
+            Notification notification = new Notification("Reģistrācija izdevās! Lūdzu, apstipriniet e-pastu, lai pieslēgtos profilā! Jums ir sūtīta vēstu uz noradīto e-pastu");
+            sendEmail(token, email);
+            notification.addThemeVariants(NotificationVariant.LUMO_SUCCESS);
+            notification.setDuration(10000);
+            notification.setPosition(Notification.Position.TOP_STRETCH);
+            notification.open();
             getUI().ifPresent(ui -> ui.navigate("about"));
         }
     }

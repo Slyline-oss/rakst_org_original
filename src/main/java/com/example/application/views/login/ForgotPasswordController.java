@@ -40,8 +40,8 @@ public class ForgotPasswordController {
                 + "<p>Click the link below to change your password:</p>"
                 + "<p><a href=\"" +"http://localhost:8080/reset-password/" + link + "\">Change my password</a></p>"
                 + "<br>"
-                + "<p>Ignore this email if you do remember your password, "
-                + "or you have not made the request.</p>";
+                + "Ignore this email if you do remember your password, "
+                + "or you have not made the request.";
         if (!emailAndPasswordValidation.validateEmail(emailText)) {
             Notification.show("Nepareizi ievadīts e-pasts!");
         } else {

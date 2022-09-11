@@ -1,7 +1,5 @@
 package com.example.application.views.newExam;
 
-import org.springframework.lang.Nullable;
-
 import javax.persistence.*;
 
 @Entity
@@ -18,19 +16,30 @@ public class Exam {
     private String embedLink;
     private boolean finished;
     private boolean allowToShow;
+    private boolean allowToWrite;
     private double duration;
 
-    public Exam(String naming, String link, String embedLink, boolean finished, double duration, boolean allowToShow) {
+    public Exam(String naming, String link, String embedLink, boolean finished, double duration, boolean allowToShow, boolean allowToWrite) {
         this.naming = naming;
         this.link = link;
         this.embedLink = embedLink;
         this.finished = finished;
         this.duration = duration;
         this.allowToShow = allowToShow;
+        this.allowToWrite = allowToWrite;
     }
+
 
     public Exam() {
 
+    }
+
+    public boolean isAllowToWrite() {
+        return allowToWrite;
+    }
+
+    public void setAllowToWrite(boolean allowToWrite) {
+        this.allowToWrite = allowToWrite;
     }
 
     public String getNaming() {

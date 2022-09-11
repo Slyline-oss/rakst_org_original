@@ -77,7 +77,10 @@ public class CreatedExamView extends VerticalLayout implements BeforeEnterObserv
 
         setHorizontalComponentAlignment(Alignment.CENTER);
 
-        submitBut.addClickListener(e -> dialog.open());
+        submitBut.addClickListener(e -> {
+            if (exam.isAllowToWrite()) dialog.open();
+            else Notification.show("Pagaidām nevar iesniegt diktātu!").addThemeVariants(NotificationVariant.LUMO_PRIMARY);
+        });
     }
 
     private void saveContent() {

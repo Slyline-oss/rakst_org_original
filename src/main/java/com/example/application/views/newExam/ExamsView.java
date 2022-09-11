@@ -27,6 +27,7 @@ public class ExamsView extends VerticalLayout {
     private Button goToExam;
     private Button finishExam;
     private Button allowToShow;
+    private Button allowToWrite;
 
     private final ExamService examService;
 
@@ -39,6 +40,7 @@ public class ExamsView extends VerticalLayout {
         goToExam = new Button("Doties uz diktāta lapu");
         finishExam = new Button("Apstādināt diktātu");
         allowToShow = new Button("Uzsākt diktātu");
+        allowToWrite = new Button("Ļaut iesniegt diktātu");
 
         duration.setStep(0.5);
         duration.setMin(0.5);
@@ -58,6 +60,9 @@ public class ExamsView extends VerticalLayout {
         cancelButton.addThemeVariants(ButtonVariant.LUMO_ERROR);
         dialog.getFooter().add(cancelButton, saveButton);
 
+        allowToWrite.setEnabled(false);
+        allowToWrite.addClickListener(e -> enableToFinishExam());
+
         allowToShow.setEnabled(false);
         allowToShow.addClickListener(e -> showExamForParticipants());
 
@@ -76,12 +81,18 @@ public class ExamsView extends VerticalLayout {
             }
         });
 
-        add(link, naming, duration, submitBut, goToExam, finishExam, allowToShow);
+        add(link, naming, duration, submitBut, goToExam, finishExam, allowToShow, allowToWrite);
     }
 
     private void showExamForParticipants() {
         Exam exam = examService.getByFinished(false);
         exam.setAllowToShow(true);
+        examService.save(exam);
+    }
+
+    private void enableToFinishExam() {
+        Exam exam = examService.getByFinished(false);
+        exam.setAllowToWrite(true);
         examService.save(exam);
     }
 
@@ -97,6 +108,7 @@ public class ExamsView extends VerticalLayout {
             finishExam.setEnabled(true);
             submitBut.setEnabled(false);
             allowToShow.setEnabled(true);
+            allowToWrite.setEnabled(true);
         }
     }
 
@@ -107,11 +119,13 @@ public class ExamsView extends VerticalLayout {
         goToExam.setEnabled(false);
         finishExam.setEnabled(false);
         submitBut.setEnabled(true);
+        allowToShow.setEnabled(false);
+        allowToWrite.setEnabled(false);
     }
 
     private void createExam() {
         String modifiedLink = modifyLink();
-        examService.save(naming.getValue(), link.getValue(), modifiedLink, false, duration.getValue(), false);
+        examService.save(naming.getValue(), link.getValue(), modifiedLink, false, duration.getValue(), false, false);
         goToExam.setEnabled(true);
         finishExam.setEnabled(true);
         submitBut.setEnabled(false);

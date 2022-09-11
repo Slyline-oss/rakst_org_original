@@ -4,6 +4,8 @@ import com.example.application.data.Role;
 import com.example.application.data.entity.Provider;
 import com.example.application.data.entity.User;
 import com.example.application.data.service.UserRepository;
+
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -49,6 +51,19 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     public void register(String firstName, String lastName, String email, String password1) {
         userRepository.save(new User(firstName, firstName, lastName, passwordEncoder.encode(password1), email, Set.of(Role.USER)));
+    }
+
+    public void register(String email, String password) {
+        userRepository.save(new User(email, passwordEncoder.encode(password)));
+    }
+
+    public void register(String email, String firstName, String lastName, String password, LocalDate birthday, String telNumber, String language) {
+        userRepository.save(new User(email, firstName, lastName, passwordEncoder.encode(password), birthday, telNumber, language, Set.of(Role.USER)));
+    }
+
+    public void register(String email, String firstName, String lastName, String password, LocalDate birthday, String telNumber, String language, String
+                         country, String city, String age, String education, String gender) {
+        userRepository.save(new User(email, firstName, lastName, passwordEncoder.encode(password), Set.of(Role.USER), birthday, telNumber, language, age, country, city, education, gender));
     }
 
     public void registerAdmin(String email, String password) {

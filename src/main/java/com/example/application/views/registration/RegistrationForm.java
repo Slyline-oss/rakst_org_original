@@ -30,6 +30,8 @@ public class RegistrationForm extends FormLayout {
 
     private Checkbox allowMarketing;
 
+    private Checkbox anonymous;
+
     private Span errorMessageField;
 
     private Button submitButton;
@@ -53,6 +55,9 @@ public class RegistrationForm extends FormLayout {
         allowMarketing = new Checkbox("Allow Marketing Emails?");
         allowMarketing.getStyle().set("margin-top", "10px");
 
+        anonymous = new Checkbox("Reģistrēties anonimi?");
+        anonymous.getStyle().set("margin-top", "10px");
+
         password = new PasswordField("Parole");
         passwordConfirm = new PasswordField("Apstipriniet paroli");
 
@@ -64,7 +69,7 @@ public class RegistrationForm extends FormLayout {
         facebookLogin = new Button("Pievienoties ar Facebook");
         facebookLogin.addThemeVariants(ButtonVariant.LUMO_TERTIARY);
 
-        add(title, firstName, lastName, email, password, passwordConfirm, allowMarketing,
+        add(title, firstName, lastName, email, password, passwordConfirm, allowMarketing, anonymous,
                 errorMessageField, submitButton, facebookLogin);
 
         setMaxWidth("500px");
@@ -78,6 +83,16 @@ public class RegistrationForm extends FormLayout {
         setColspan(email, 2);
         setColspan(errorMessageField, 2);
         setColspan(submitButton, 2);
+
+        anonymous.addValueChangeListener(e -> {
+           if (anonymous.getValue()) {
+               firstName.setEnabled(false);
+               lastName.setEnabled(false);
+           } else {
+               firstName.setEnabled(true);
+               lastName.setEnabled(true);
+           }
+        });
 
         facebookLogin.addClickListener(e -> {
             getUI().ifPresent(ui -> ui.navigate("/oauth2/authorization/facebook"));
@@ -125,6 +140,10 @@ public class RegistrationForm extends FormLayout {
             Notification.show("Reģistrācija izdevās!").addThemeVariants(NotificationVariant.LUMO_SUCCESS);
             getUI().ifPresent(ui -> ui.navigate("about"));
         }
+    }
+
+    public void register(String email, String password1, String password2) {
+
     }
 
 }

@@ -41,8 +41,13 @@ public class ProfileView extends VerticalLayout {
     private final TextField surname = new TextField("Jūsu uzvārds:");;
     private final DatePicker birthDate = new DatePicker();;
     private final Locale LATVIAN_LOCALE = new Locale("lv", "LV");
-    private final TextField telNumber = new TextField("Jūsu telefona numurs:");;
-    private final Select<String> language = new Select<>();;
+    private final TextField telNumber = new TextField("Jūsu telefona numurs:");
+    private final TextField age = new TextField("Jūsu vecums:");
+    private final TextField city = new TextField("Jūsu pilsēta:");
+    private final Select<String> gender = new Select<>();
+    private final Select<String> country = new Select<>();
+    private final Select<String> education = new Select<>();
+    private final Select<String> language = new Select<>();
     private com.vaadin.flow.component.dialog.Dialog confirmationDialog = new Dialog();;
 
     private final UserDetailsServiceImpl userDetailsService;
@@ -88,7 +93,9 @@ public class ProfileView extends VerticalLayout {
         Text notificationText = new Text(profileViewService.getText());
         notification.add(notificationText);
 
+        makeFields();
         initializeUser();
+
 
         Button submitBut = new Button();
         submitBut.setText("Apstiprināt");
@@ -98,10 +105,12 @@ public class ProfileView extends VerticalLayout {
         VerticalLayout firstLayout = new VerticalLayout();
         VerticalLayout secondLayout = new VerticalLayout();
         VerticalLayout thirdLayout = new VerticalLayout();
+        VerticalLayout fourthLayout = new VerticalLayout();
         firstLayout.add(name, birthDate, submitBut);
-        secondLayout.add(surname, telNumber, language);
-        thirdLayout.add(notification);
-        layout.add(firstLayout, secondLayout, thirdLayout);
+        secondLayout.add(surname, telNumber, language, country);
+        thirdLayout.add(age, city, gender, education);
+        fourthLayout.add(notification);
+        layout.add(firstLayout, secondLayout, thirdLayout, fourthLayout);
         layout.setPadding(true);
 
         confirmationDialog.setHeaderTitle("Saglabāt izmaiņas?");
@@ -139,13 +148,29 @@ public class ProfileView extends VerticalLayout {
         setJustifyContentMode(JustifyContentMode.START);
         //getStyle().set("text-align", "center");
 
-//        completeProfileNotification();
+        completeProfileNotification();
 
         try {
             throw new NullPointerException();
         } catch(Exception e) {
             System.out.println("Error occurred");
         }
+    }
+
+    private void makeFields() {
+        country.setLabel("Jūsu dzimtā valsts");
+        country.setPlaceholder("Valsts");
+        country.setItems("Latvija", "Lietuva", "Igaunija", "Ukraina", "Vācija", "Polija", "Lielbritānija", "Citā valsts");
+
+        city.setPlaceholder("Pilsēta");
+
+        gender.setLabel("Jūsu dzimums");
+        gender.setPlaceholder("Dzimums");
+        gender.setItems("Vīriešu", "Sieviešu", "Cits");
+
+        education.setLabel("Jūsu izglītība");
+        education.setPlaceholder("Izglītība");
+        education.setItems("Pamatizglītība", "Vidējā izglītība", "Bakalaurs", "Maģistrs", "Doktors");
     }
 
 
@@ -160,6 +185,11 @@ public class ProfileView extends VerticalLayout {
             telNumber.setValue(user.getTelNumber() == null ? "" : user.getTelNumber());
             language.setItems("Latviešu", "Krievu", "Vācu", "Angļu", "Citā svešvaloda");
             language.setValue(user.getLanguage());
+            age.setValue(user.getAge() == null ? "" : user.getAge());
+            country.setValue(user.getCountry());
+            city.setValue(user.getCity() == null ? "" : user.getCity());
+            gender.setValue(user.getGender());
+            education.setValue(user.getEducation());
         }
     }
 
@@ -174,6 +204,11 @@ public class ProfileView extends VerticalLayout {
             newUser.setLastName(surname.getValue());
             newUser.setBirthday(birthDate.getValue());
             newUser.setTelNumber(telNumber.getValue());
+            newUser.setAge(age.getValue());
+            newUser.setCountry(country.getValue());
+            newUser.setCity(city.getValue());
+            newUser.setGender(gender.getValue());
+            newUser.setEducation(education.getValue());
             userDetailsService.updateUser(newUser);
             confirmationDialog.close();
             Notification.show("Jūsu dati veiksmīgi saglabāti!").addThemeVariants(NotificationVariant.LUMO_SUCCESS);
@@ -182,9 +217,11 @@ public class ProfileView extends VerticalLayout {
 
 
     private void completeProfileNotification() {
-        if (language.getValue() == null || name.getValue() == null || surname.getValue() == null
-        || birthDate.getValue() == null || telNumber.getValue() == null) {
-            Notification.show("Lūdzu papildiniet informāciju profilā!");
+        if (language.getValue() == "" || name.getValue() == "" || surname.getValue() == ""
+        || birthDate.getValue() == null || telNumber.getValue() == "" || age.getValue() == ""
+        || country.getValue() == null || city.getValue() == "" || gender.getValue() == null ||
+        education.getValue() == null) {
+            Notification.show("Lūdzu papildiniet informāciju profilā!").addThemeVariants(NotificationVariant.LUMO_CONTRAST);
         }
     }
 

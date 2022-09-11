@@ -82,6 +82,11 @@ public class ListofparticipantsView extends Div implements BeforeEnterObserver {
         grid.addColumn("telNumber").setAutoWidth(true);
         grid.addColumn("birthday").setAutoWidth(true);
         grid.addColumn("language").setAutoWidth(true);
+        grid.addColumn("country").setAutoWidth(true);
+        grid.addColumn("city").setAutoWidth(true);
+        grid.addColumn("age").setAutoWidth(true);
+        grid.addColumn("education").setAutoWidth(true);
+        grid.addColumn("gender").setAutoWidth(true);
 
 
         grid.setItems(query -> userService.list(

@@ -149,7 +149,7 @@ public class MainLayout extends AppLayout {
 
                 new MenuItemInfo("Rediģēt sākumlapu", "la la-edit", EditView.class),
 
-                new MenuItemInfo("Izveidot jaunu adminu", "la la-pencil", CreateUser.class),
+                new MenuItemInfo("Izveidot jaunu adminu/lietotāju", "la la-pencil", CreateUser.class),
 
                 new MenuItemInfo("Diktāts", "la la-file-text-o", ExamsView.class),
 

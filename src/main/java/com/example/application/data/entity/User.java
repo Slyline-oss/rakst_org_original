@@ -25,6 +25,40 @@ public class User extends AbstractEntity {
         this.firstName = firstName;
         this.lastName = lastName;
     }
+
+    public User(String email, String firstName, String lastName, String hashedPassword, LocalDate birthday, String telNumber, String language, Set<Role> roles) {
+        this.email = email;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.hashedPassword = hashedPassword;
+        this.birthday = birthday;
+        this.telNumber = telNumber;
+        this.language = language;
+        this.roles = roles;
+    }
+
+    public User(String email, String firstName, String lastName,String hashedPassword,  Set<Role> roles, LocalDate birthday, String telNumber, String language, String age, String country, String city, String education, String gender) {
+        this.email = email;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.hashedPassword = hashedPassword;
+        this.roles = roles;
+        this.birthday = birthday;
+        this.telNumber = telNumber;
+        this.language = language;
+        this.age = age;
+        this.country = country;
+        this.city = city;
+        this.education = education;
+        this.gender = gender;
+    }
+
+    public User(String email, String hashedPassword) {
+        this.email = email;
+        this.hashedPassword = hashedPassword;
+        this.anonymous = true;
+    }
+
     private String resetPasswordToken;
     private String email;
     private String username;
@@ -42,6 +76,13 @@ public class User extends AbstractEntity {
     private LocalDate birthday;
     private String telNumber;
     private String language;
+    private String age;
+    private String country;
+    private String city;
+    private String education;
+    private String gender;
+    private boolean anonymous;
+
     public User() {
 
     }
@@ -117,5 +158,35 @@ public class User extends AbstractEntity {
     }
     public void setLanguage(String language) {
         this.language = language;
+    }
+    public String getAge() {
+        return age;
+    }
+    public void setAge(String age) {
+        this.age = age;
+    }
+    public String getCountry() {
+        return country;
+    }
+    public void setCountry(String country) {
+        this.country = country;
+    }
+    public String getCity() {
+        return city;
+    }
+    public void setCity(String city) {
+        this.city = city;
+    }
+    public String getEducation() {
+        return education;
+    }
+    public void setEducation(String education) {
+        this.education = education;
+    }
+    public String getGender() {
+        return gender;
+    }
+    public void setGender(String gender) {
+        this.gender = gender;
     }
 }

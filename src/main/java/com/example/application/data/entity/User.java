@@ -24,6 +24,7 @@ public class User extends AbstractEntity {
         this.roles = roles;
         this.firstName = firstName;
         this.lastName = lastName;
+        this.anonymous = false;
     }
 
     public User(String email, String firstName, String lastName, String hashedPassword, LocalDate birthday, String telNumber, String language, Set<Role> roles) {
@@ -35,6 +36,7 @@ public class User extends AbstractEntity {
         this.telNumber = telNumber;
         this.language = language;
         this.roles = roles;
+        this.anonymous = false;
     }
 
     public User(String email, String firstName, String lastName,String hashedPassword,  Set<Role> roles, LocalDate birthday, String telNumber, String language, String age, String country, String city, String education, String gender) {
@@ -51,12 +53,16 @@ public class User extends AbstractEntity {
         this.city = city;
         this.education = education;
         this.gender = gender;
+        this.anonymous = false;
     }
 
     public User(String email, String hashedPassword) {
         this.email = email;
         this.hashedPassword = hashedPassword;
         this.anonymous = true;
+        this.roles = Set.of(Role.USER);
+        this.firstName = "Anonims";
+        this.lastName = "Anonims";
     }
 
     private String resetPasswordToken;
@@ -188,5 +194,11 @@ public class User extends AbstractEntity {
     }
     public void setGender(String gender) {
         this.gender = gender;
+    }
+    public boolean isAnonymous() {
+        return anonymous;
+    }
+    public void setAnonymous(boolean anonymous) {
+        this.anonymous = anonymous;
     }
 }

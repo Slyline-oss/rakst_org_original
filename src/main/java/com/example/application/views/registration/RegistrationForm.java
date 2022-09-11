@@ -88,6 +88,8 @@ public class RegistrationForm extends FormLayout {
            if (anonymous.getValue()) {
                firstName.setEnabled(false);
                lastName.setEnabled(false);
+               firstName.setValue("");
+               lastName.setValue("");
            } else {
                firstName.setEnabled(true);
                lastName.setEnabled(true);
@@ -99,26 +101,18 @@ public class RegistrationForm extends FormLayout {
         });
 
         submitButton.addClickListener(e -> {
-            register(firstName.getValue(), lastName.getValue(), email.getValue(), password.getValue(), passwordConfirm.getValue());
+            if (anonymous.getValue()) {
+                register(email.getValue(), password.getValue(), passwordConfirm.getValue());
+            } else {
+                register(firstName.getValue(), lastName.getValue(), email.getValue(), password.getValue(), passwordConfirm.getValue());
+            }
         });
-    }
-
-
-    public PasswordField getPasswordField() {
-        return password;
-    }
-
-    public PasswordField getPasswordConfirmField() {
-        return passwordConfirm;
     }
 
     public Span getErrorMessageField() {
         return errorMessageField;
     }
 
-    public Button getSubmitButton() {
-        return submitButton;
-    }
 
     public void register(String firstName, String lastName, String email, String password1, String password2) {
         User user = userRepository.findByEmail(email);
@@ -143,7 +137,25 @@ public class RegistrationForm extends FormLayout {
     }
 
     public void register(String email, String password1, String password2) {
-
+        User user = userRepository.findByEmail(email);
+        if (user != null) {
+            Notification.show("Tāds lietotājs jau pastāv").addThemeVariants(NotificationVariant.LUMO_ERROR);
+        } else if(email.trim().isEmpty()) {
+            Notification.show("Aizpildiet visus laukus").addThemeVariants(NotificationVariant.LUMO_ERROR);
+        } else if(password1.isEmpty()) {
+            Notification.show("Parole ir tukša").addThemeVariants(NotificationVariant.LUMO_ERROR);
+        } else if (!password1.equals(password2)) {
+            Notification.show("Paroles nesakrīt!").addThemeVariants(NotificationVariant.LUMO_ERROR);
+        } else if(!emailAndPasswordValidation.validateEmail(email)) {
+            Notification.show("Ievadiet pareizo e-pastu");
+        } else if(!emailAndPasswordValidation.validatePassword(password1)) {
+            Notification.show("Parolei jābūt vismāz 8 simbolu garai, iekļaujot lielus, mazus burtus un vienu speciālu" +
+                    "simbolu (#, $, %, ..)");
+        } else {
+            userDetailsService.register(email, password1);
+            Notification.show("Reģistrācija izdevās!").addThemeVariants(NotificationVariant.LUMO_SUCCESS);
+            getUI().ifPresent(ui -> ui.navigate("about"));
+        }
     }
 
 }

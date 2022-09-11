@@ -8,6 +8,7 @@ import com.example.application.views.registration.EmailAndPasswordValidation;
 import com.vaadin.flow.component.Text;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
+import com.vaadin.flow.component.checkbox.Checkbox;
 import com.vaadin.flow.component.datepicker.DatePicker;
 import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.html.Div;
@@ -48,6 +49,7 @@ public class ProfileView extends VerticalLayout {
     private final Select<String> country = new Select<>();
     private final Select<String> education = new Select<>();
     private final Select<String> language = new Select<>();
+    private final Checkbox anonymous = new Checkbox("Anonims");
     private com.vaadin.flow.component.dialog.Dialog confirmationDialog = new Dialog();;
 
     private final UserDetailsServiceImpl userDetailsService;
@@ -121,10 +123,21 @@ public class ProfileView extends VerticalLayout {
         cancelButton.addThemeVariants(ButtonVariant.LUMO_ERROR);
         confirmationDialog.getFooter().add(cancelButton, saveButton);
 
+        anonymous.addValueChangeListener(e -> {
+           if (anonymous.getValue()) {
+               name.setEnabled(false);
+               surname.setEnabled(false);
+               changeUserStatus(true);
+           } else {
+               name.setEnabled(true);
+               surname.setEnabled(true);
+               changeUserStatus(false);
+           }
+        });
+
 
         password.setLabel("Jūsu tekoša parole: ");
         password.setClearButtonVisible(true);
-
 
 
         newPassword.setLabel("Jauna parole: ");
@@ -140,6 +153,7 @@ public class ProfileView extends VerticalLayout {
 
         add(new H5("Jūsu dati:"));
         add(layout);
+        add(anonymous);
         add(new H5("Pamainīt paroli"));
         add(password);
         add(newPassword);
@@ -156,6 +170,23 @@ public class ProfileView extends VerticalLayout {
             System.out.println("Error occurred");
         }
     }
+
+    private void changeUserStatus(boolean status) {
+        Optional<User> maybeUser = authenticatedUser.get();
+        if (maybeUser.isPresent()) {
+            User user = maybeUser.get();
+            if (status) {
+                user.setAnonymous(true);
+                user.setFirstName("Anonims");
+                user.setLastName("Anonims");
+                userDetailsService.updateUser(user);
+            } else {
+                user.setAnonymous(false);
+                userDetailsService.updateUser(user);
+            }
+        }
+    }
+
 
     private void makeFields() {
         country.setLabel("Jūsu dzimtā valsts");
@@ -190,6 +221,12 @@ public class ProfileView extends VerticalLayout {
             city.setValue(user.getCity() == null ? "" : user.getCity());
             gender.setValue(user.getGender());
             education.setValue(user.getEducation());
+
+            if (user.isAnonymous()) {
+                name.setEnabled(false);
+                surname.setEnabled(false);
+                anonymous.setValue(true);
+            }
         }
     }
 

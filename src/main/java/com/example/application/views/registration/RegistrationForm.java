@@ -138,7 +138,7 @@ public class RegistrationForm extends FormLayout {
         } else {
             String token = UUID.randomUUID().toString();
             userDetailsService.register(firstName, lastName, email, password1, token);
-            Notification notification = new Notification("Reģistrācija izdevās! Lūdzu, apstipriniet e-pastu! Jums ir sūtīta vēstu uz noradīto e-pastu");
+            Notification notification = new Notification("Reģistrācija izdevās! Lūdzu, apstipriniet e-pastu! Jums ir sūtīta vēstule uz noradīto e-pastu");
             sendEmail(token, email);
             notification.addThemeVariants(NotificationVariant.LUMO_SUCCESS);
             notification.setDuration(10000);
@@ -173,7 +173,7 @@ public class RegistrationForm extends FormLayout {
         } else {
             String token = UUID.randomUUID().toString();
             userDetailsService.register(email, password1, token);
-            Notification notification = new Notification("Reģistrācija izdevās! Lūdzu, apstipriniet e-pastu, lai pieslēgtos profilā! Jums ir sūtīta vēstu uz noradīto e-pastu");
+            Notification notification = new Notification("Reģistrācija izdevās! Lūdzu, apstipriniet e-pastu, lai pieslēgtos profilā! Jums ir sūtīta vēstule uz noradīto e-pastu");
             sendEmail(token, email);
             notification.addThemeVariants(NotificationVariant.LUMO_SUCCESS);
             notification.setDuration(10000);

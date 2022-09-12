@@ -79,7 +79,7 @@ public class User extends AbstractEntity {
         this.firstName = "Anonims";
         this.lastName = "Anonims";
         this.emailConfirmationToken = emailConfirmationToken;
-        this.confirmed = true;
+        this.confirmed = false;
     }
 
     private String resetPasswordToken;

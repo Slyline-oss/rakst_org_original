@@ -5,8 +5,11 @@ import com.example.application.views.MainLayout;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.dialog.Dialog;
+import com.vaadin.flow.component.icon.Icon;
+import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.notification.NotificationVariant;
+import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.NumberField;
 import com.vaadin.flow.component.textfield.TextField;
@@ -20,14 +23,14 @@ import javax.annotation.security.RolesAllowed;
 @RolesAllowed("ADMIN")
 public class ExamsView extends VerticalLayout {
 
-    private TextField link;
-    private TextField naming;
-    private Button submitBut;
-    private NumberField duration;
-    private Button goToExam;
-    private Button finishExam;
-    private Button allowToShow;
-    private Button allowToWrite;
+    private final TextField link;
+    private final TextField naming;
+    private final Button submitBut;
+    private final Button goToExam;
+    private final Button finishExam;
+    private final Button allowToShow;
+    private final Button allowToWrite;
+
 
     private final ExamService examService;
 
@@ -35,17 +38,14 @@ public class ExamsView extends VerticalLayout {
         this.examService = examService;
         link = new TextField("Saite uz video");
         naming = new TextField("Diktāta nosaukums");
-        submitBut = new Button("Izveidot diktātu");
-        duration = new NumberField("Diktāta ilgums (st.)");
+        submitBut = new Button("Izveidot diktātu", new Icon(VaadinIcon.CHECK));
         goToExam = new Button("Doties uz diktāta lapu");
         finishExam = new Button("Apstādināt diktātu");
-        allowToShow = new Button("Uzsākt diktātu");
-        allowToWrite = new Button("Ļaut iesniegt diktātu");
+        allowToShow = new Button("Uzsākt diktātu", new Icon(VaadinIcon.CHECK));
+        allowToWrite = new Button("Ļaut iesniegt diktātu", new Icon(VaadinIcon.CHECK));
 
-        duration.setStep(0.5);
-        duration.setMin(0.5);
-        duration.setMax(5);
-        duration.setHasControls(true);
+        iconStatus();
+        fillFields();
 
         //confirmation dialog
         Dialog dialog = new Dialog();
@@ -53,6 +53,7 @@ public class ExamsView extends VerticalLayout {
         Button saveButton = new Button("Jā");
         saveButton.addClickListener(e -> {
             createExam();
+            submitBut.getIcon().setVisible(true);
             dialog.close();
         });
         saveButton.addThemeVariants(ButtonVariant.LUMO_SUCCESS);
@@ -81,25 +82,46 @@ public class ExamsView extends VerticalLayout {
             }
         });
 
-        add(link, naming, duration, submitBut, goToExam, finishExam, allowToShow, allowToWrite);
+        add(link, naming, goToExam);
+
+        HorizontalLayout hr = new HorizontalLayout();
+        VerticalLayout vl1 = new VerticalLayout();
+        vl1.add(submitBut, allowToShow, allowToWrite, finishExam);
+        hr.add(vl1);
+        hr.setPadding(true);
+        add(hr);
+    }
+
+    private void iconStatus() {
+        Exam exam = examService.getByFinished(false);
+        if (exam != null) {
+            submitBut.getIcon().setVisible(true);
+            allowToWrite.getIcon().setVisible(exam.isAllowToWrite());
+            allowToShow.getIcon().setVisible(exam.isAllowToShow());
+        }
+        else {
+            submitBut.getIcon().setVisible(false);
+            allowToShow.getIcon().setVisible(false);
+            allowToWrite.getIcon().setVisible(false);
+        }
     }
 
     private void showExamForParticipants() {
         Exam exam = examService.getByFinished(false);
         exam.setAllowToShow(true);
+        allowToShow.getIcon().setVisible(true);
         examService.save(exam);
+        showNotification("Dalibnieki var pievienoties!");
     }
 
     private void enableToFinishExam() {
         Exam exam = examService.getByFinished(false);
         exam.setAllowToWrite(true);
+        allowToWrite.getIcon().setVisible(true);
         examService.save(exam);
+        showNotification("Atļauts rakstīt diktātu!");
     }
 
-    private String returnExamNaming() {
-        Exam exam = examService.getByFinished(false);
-        return exam.getNaming();
-    }
 
     private void enableAndDisableButtons() {
         Exam exam = examService.getByFinished(false);
@@ -109,6 +131,7 @@ public class ExamsView extends VerticalLayout {
             submitBut.setEnabled(false);
             allowToShow.setEnabled(true);
             allowToWrite.setEnabled(true);
+            iconStatus();
         }
     }
 
@@ -121,16 +144,32 @@ public class ExamsView extends VerticalLayout {
         submitBut.setEnabled(true);
         allowToShow.setEnabled(false);
         allowToWrite.setEnabled(false);
+        turnOffIconsAll();
+        showNotification("Diktāts pabeigts");
+        naming.setValue("");
+        link.setValue("");
     }
+
+
+    private void fillFields() {
+        Exam exam = examService.getByFinished(false);
+        if (exam != null) {
+            naming.setValue(exam.getNaming());
+            link.setValue(exam.getLink());
+        }
+    }
+
 
     private void createExam() {
         String modifiedLink = modifyLink();
-        examService.save(naming.getValue(), link.getValue(), modifiedLink, false, duration.getValue(), false, false);
+        examService.save(naming.getValue(), link.getValue(), modifiedLink, false, false, false);
         goToExam.setEnabled(true);
         finishExam.setEnabled(true);
         submitBut.setEnabled(false);
         allowToShow.setEnabled(true);
-        Notification.show("Diktāts izveidots").addThemeVariants(NotificationVariant.LUMO_SUCCESS);
+        allowToWrite.setEnabled(true);
+        turnOffIcons();
+        showNotification("Diktāts izveidots!");
     }
 
     private String modifyLink() {
@@ -147,6 +186,25 @@ public class ExamsView extends VerticalLayout {
     }
 
     private boolean validateFields() {
-        return !link.getValue().isEmpty() && !naming.getValue().isEmpty() && !duration.isEmpty();
+        return !link.getValue().isEmpty() && !naming.getValue().isEmpty();
+    }
+
+    private void turnOffIconsAll() {
+        submitBut.getIcon().setVisible(false);
+        allowToShow.getIcon().setVisible(false);
+        allowToWrite.getIcon().setVisible(false);
+    }
+
+    private void turnOffIcons() {
+        allowToShow.getIcon().setVisible(false);
+        allowToWrite.getIcon().setVisible(false);
+    }
+
+    private void showNotification(String text) {
+        Notification notification = new Notification(text);
+        notification.addThemeVariants(NotificationVariant.LUMO_SUCCESS);
+        notification.setPosition(Notification.Position.TOP_CENTER);
+        notification.setDuration(7000);
+        notification.open();
     }
 }

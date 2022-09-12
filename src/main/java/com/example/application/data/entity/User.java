@@ -38,6 +38,7 @@ public class User extends AbstractEntity {
         this.lastName = lastName;
         this.hashedPassword = hashedPassword;
         this.roles = roles;
+        this.confirmed = true;
     }
 
     public User(String email, String firstName, String lastName, String hashedPassword, LocalDate birthday, String telNumber, String language, Set<Role> roles) {
@@ -50,6 +51,7 @@ public class User extends AbstractEntity {
         this.language = language;
         this.roles = roles;
         this.anonymous = false;
+        this.confirmed = true;
     }
 
     //manual user creation
@@ -68,6 +70,7 @@ public class User extends AbstractEntity {
         this.education = education;
         this.gender = gender;
         this.anonymous = false;
+        this.confirmed = true;
     }
 
     //Registration anonymous

@@ -17,14 +17,12 @@ public class Exam {
     private boolean finished;
     private boolean allowToShow;
     private boolean allowToWrite;
-    private double duration;
 
-    public Exam(String naming, String link, String embedLink, boolean finished, double duration, boolean allowToShow, boolean allowToWrite) {
+    public Exam(String naming, String link, String embedLink, boolean finished, boolean allowToShow, boolean allowToWrite) {
         this.naming = naming;
         this.link = link;
         this.embedLink = embedLink;
         this.finished = finished;
-        this.duration = duration;
         this.allowToShow = allowToShow;
         this.allowToWrite = allowToWrite;
     }
@@ -64,14 +62,6 @@ public class Exam {
 
     public void setFinished(boolean finished) {
         this.finished = finished;
-    }
-
-    public double getDuration() {
-        return duration;
-    }
-
-    public void setDuration(double duration) {
-        this.duration = duration;
     }
 
     public String getEmbedLink() {

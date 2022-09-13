@@ -1,10 +1,5 @@
-package com.example.application.views.offlineExam;
+package org.raksti.web.views.offlineExam;
 
-import com.example.application.data.entity.OfflineExam;
-import com.example.application.data.entity.User;
-import com.example.application.data.service.OfflineExamService;
-import com.example.application.security.AuthenticatedUser;
-import com.example.application.views.MainLayout;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.html.Label;
@@ -14,6 +9,11 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import org.jsoup.internal.StringUtil;
+import org.raksti.web.data.entity.OfflineExam;
+import org.raksti.web.data.entity.User;
+import org.raksti.web.data.service.OfflineExamService;
+import org.raksti.web.security.AuthenticatedUser;
+import org.raksti.web.views.MainLayout;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -55,7 +55,7 @@ public class OfflineExamsView extends VerticalLayout {
                 //TODO: do some magic here to register participation :)
                 // fix the travesty below :(
                 // because right now this is broken ! ! !
-                logger.info("slots: " + offlineExamService.findById(offlineExam.getId()).getAvailableSlots());
+//                logger.info("slots: " + offlineExamService.findById(offlineExam.getId()).getAvailableSlots());
                 Integer availableSlots = offlineExam.getAvailableSlots();
                 if (availableSlots < 1) {
                     participate.setEnabled(false);

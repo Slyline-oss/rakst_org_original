@@ -1,13 +1,13 @@
-package com.example.application.views.offlineExam;
+package org.raksti.web.views.offlineExam;
 
-import com.example.application.data.entity.OfflineExam;
-import com.example.application.data.entity.User;
-import com.example.application.data.service.OfflineExamService;
-import com.example.application.views.MainLayout;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
+import org.raksti.web.data.entity.OfflineExam;
+import org.raksti.web.data.entity.User;
+import org.raksti.web.data.service.OfflineExamService;
+import org.raksti.web.views.MainLayout;
 
 import javax.annotation.security.RolesAllowed;
 import java.util.ArrayList;

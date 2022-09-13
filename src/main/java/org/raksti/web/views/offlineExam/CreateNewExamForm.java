@@ -1,8 +1,5 @@
-package com.example.application.views.offlineExam;
+package org.raksti.web.views.offlineExam;
 
-import com.example.application.data.entity.OfflineExam;
-import com.example.application.data.service.OfflineExamService;
-import com.example.application.views.MainLayout;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.formlayout.FormLayout;
@@ -14,6 +11,9 @@ import com.vaadin.flow.component.textfield.IntegerField;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
+import org.raksti.web.data.entity.OfflineExam;
+import org.raksti.web.data.service.OfflineExamService;
+import org.raksti.web.views.MainLayout;
 
 import javax.annotation.security.RolesAllowed;
 

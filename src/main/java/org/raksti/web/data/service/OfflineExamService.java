@@ -1,6 +1,6 @@
-package com.example.application.data.service;
+package org.raksti.web.data.service;
 
-import com.example.application.data.entity.OfflineExam;
+import org.raksti.web.data.entity.OfflineExam;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

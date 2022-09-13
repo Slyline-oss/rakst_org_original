@@ -1,6 +1,7 @@
-package com.example.application.data.entity;
+package org.raksti.web.data.entity;
 
 import org.jsoup.internal.StringUtil;
+import org.raksti.web.data.entity.User;
 
 import javax.persistence.*;
 import java.util.HashSet;

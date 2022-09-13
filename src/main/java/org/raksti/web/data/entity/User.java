@@ -4,14 +4,9 @@ import org.raksti.web.data.Role;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.time.LocalDate;
+import java.util.HashSet;
 import java.util.Set;
-import javax.persistence.ElementCollection;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
-import javax.persistence.Lob;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "application_user")
@@ -110,6 +105,9 @@ public class User extends AbstractEntity {
     private boolean anonymous;
     private boolean confirmed;
     private String emailConfirmationToken;
+    @JsonIgnore
+    @ManyToMany(mappedBy = "participants", fetch = FetchType.EAGER)
+    private Set<OfflineExam> offlineExams= new HashSet();
 
     public User() {
 
@@ -236,4 +234,11 @@ public class User extends AbstractEntity {
         this.emailConfirmationToken = emailConfirmationToken;
     }
 
+    public Set<OfflineExam> getOfflineExams() {
+        return offlineExams;
+    }
+
+    public void setOfflineExams(Set<OfflineExam> offlineExams) {
+        this.offlineExams = offlineExams;
+    }
 }

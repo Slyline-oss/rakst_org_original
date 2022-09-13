@@ -9,6 +9,9 @@ import org.raksti.web.views.edit.EditView;
 import org.raksti.web.views.examResults.ExamResultsView;
 import org.raksti.web.views.listofparticipants.ListofparticipantsView;
 import org.raksti.web.views.newExam.ExamsView;
+import org.raksti.web.views.offlineExam.CreateNewExamForm;
+import org.raksti.web.views.offlineExam.OfflineExamsView;
+import org.raksti.web.views.offlineExam.ParticipantsView;
 import org.raksti.web.views.participateInExam.ParticipateInExamView;
 import org.raksti.web.views.profile.ProfileView;
 import org.raksti.web.views.sendEmailsPage.EmailSenderView;
@@ -161,7 +164,10 @@ public class MainLayout extends AppLayout {
 
                 new MenuItemInfo("Izveidotie diktāti", "la la-file-text", CreatedExams.class),
 
-                new MenuItemInfo("Sūtīt vēstules", "la la-file", EmailSenderView.class)
+                new MenuItemInfo("Sūtīt vēstules", "la la-file", EmailSenderView.class),
+                new MenuItemInfo("Create New Offline Exam", "la la-file-text", CreateNewExamForm.class),
+                new MenuItemInfo("Offline Exams", "la la-file-text", OfflineExamsView.class),
+                new MenuItemInfo("Participants", "la la-file-text", ParticipantsView.class)
 
                 //
 

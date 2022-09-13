@@ -11,6 +11,7 @@ import org.raksti.web.views.listofparticipants.ListofparticipantsView;
 import org.raksti.web.views.newExam.ExamsView;
 import org.raksti.web.views.participateInExam.ParticipateInExamView;
 import org.raksti.web.views.profile.ProfileView;
+import org.raksti.web.views.sendEmailsPage.EmailSenderView;
 import org.raksti.web.views.userExamHistory.UserExamHistoryView;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.applayout.AppLayout;

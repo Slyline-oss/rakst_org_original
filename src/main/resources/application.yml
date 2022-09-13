@@ -1,6 +1,6 @@
 vaadin:
   launch-browser: true
-  whitelisted-packages: com.vaadin,org.vaadin,dev.hilla,com.example.application
+  whitelisted-packages: com.vaadin,org.vaadin,dev.hilla,org.raksti.web
 
 server:
   error:

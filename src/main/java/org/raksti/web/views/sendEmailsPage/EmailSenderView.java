@@ -1,10 +1,10 @@
-package com.example.application.views.sendEmailsPage;
+package org.raksti.web.views.sendEmailsPage;
 
-import com.example.application.data.entity.User;
-import com.example.application.data.service.UserRepository;
-import com.example.application.emailSender.EmailSenderService;
-import com.example.application.security.UserDetailsServiceImpl;
-import com.example.application.views.MainLayout;
+import org.raksti.web.data.entity.User;
+import org.raksti.web.data.service.UserRepository;
+import org.raksti.web.emailSender.EmailSenderService;
+import org.raksti.web.security.UserDetailsServiceImpl;
+import org.raksti.web.views.MainLayout;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;

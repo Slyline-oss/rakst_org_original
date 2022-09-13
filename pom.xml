@@ -3,7 +3,7 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <!-- Project from https://start.vaadin.com/project/456f3930-ee45-41bb-9efb-1cb212df5244 -->
-    <groupId>com.example.application</groupId>
+    <groupId>org.raksti.web</groupId>
     <artifactId>myapp</artifactId>
     <name>My App</name>
     <version>1.0-SNAPSHOT</version>

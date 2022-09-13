@@ -19,3 +19,4 @@ public interface UserRepository extends JpaRepository<User, UUID> {
     User findByResetPasswordToken(String token);
     User findByEmailConfirmationToken(String token);
 }
+

@@ -160,6 +160,8 @@ public class MainLayout extends AppLayout {
 
                 new MenuItemInfo("Izveidotie diktāti", "la la-file-text", CreatedExams.class),
 
+                new MenuItemInfo("Sūtīt vēstules", "la la-file", EmailSenderView.class)
+
                 //
 
         };

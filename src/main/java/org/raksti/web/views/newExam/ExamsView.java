@@ -110,7 +110,7 @@ public class ExamsView extends VerticalLayout {
         exam.setAllowToShow(true);
         allowToShow.getIcon().setVisible(true);
         examService.save(exam);
-        showNotification("Dalibnieki var pievienoties!");
+        showNotification("Dalībnieki var pievienoties!");
     }
 
     private void enableToFinishExam() {

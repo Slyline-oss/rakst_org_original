@@ -1,5 +1,6 @@
 package com.example.application.views.profile;
 
+import com.example.application.data.entity.OfflineExam;
 import com.example.application.data.entity.User;
 import com.example.application.security.AuthenticatedUser;
 import com.example.application.security.UserDetailsServiceImpl;
@@ -10,6 +11,7 @@ import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.datepicker.DatePicker;
 import com.vaadin.flow.component.dialog.Dialog;
+import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.H5;
 import com.vaadin.flow.component.notification.Notification;
@@ -57,6 +59,7 @@ public class ProfileView extends VerticalLayout {
         this.userDetailsService = userDetailsService;
         this.emailAndPasswordValidation = emailAndPasswordValidation;
 
+        add(getOfflineExams());
 
 
         DatePicker.DatePickerI18n latvianI18n = new DatePicker.DatePickerI18n();
@@ -146,6 +149,16 @@ public class ProfileView extends VerticalLayout {
         } catch(Exception e) {
             System.out.println("Error occurred");
         }
+    }
+
+    private Grid<OfflineExam> getOfflineExams() {
+        Grid<OfflineExam> myExams = new Grid<>(OfflineExam.class);
+        myExams.removeAllColumns();
+        myExams.addColumn(OfflineExam::getCity).setHeader("City");
+        myExams.addColumn(OfflineExam::getAddress).setHeader("Address");
+        myExams.getColumns().forEach(offlineExamColumn -> offlineExamColumn.setAutoWidth(true));
+        myExams.setItems(authenticatedUser.get().get().getOfflineExams());
+        return myExams;
     }
 
 

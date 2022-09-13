@@ -4,14 +4,9 @@ import com.example.application.data.Role;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.time.LocalDate;
+import java.util.HashSet;
 import java.util.Set;
-import javax.persistence.ElementCollection;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
-import javax.persistence.Lob;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "application_user")
@@ -42,6 +37,9 @@ public class User extends AbstractEntity {
     private LocalDate birthday;
     private String telNumber;
     private String language;
+    @JsonIgnore
+    @ManyToMany(mappedBy = "participants", fetch = FetchType.EAGER)
+    private Set<OfflineExam> offlineExams= new HashSet();
     public User() {
 
     }
@@ -117,5 +115,13 @@ public class User extends AbstractEntity {
     }
     public void setLanguage(String language) {
         this.language = language;
+    }
+
+    public Set<OfflineExam> getOfflineExams() {
+        return offlineExams;
+    }
+
+    public void setOfflineExams(Set<OfflineExam> offlineExams) {
+        this.offlineExams = offlineExams;
     }
 }

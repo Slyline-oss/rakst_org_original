@@ -9,8 +9,10 @@ import com.example.application.views.edit.EditView;
 import com.example.application.views.examResults.ExamResultsView;
 import com.example.application.views.listofparticipants.ListofparticipantsView;
 import com.example.application.views.newExam.ExamsView;
+import com.example.application.views.offlineExam.CreateNewExamForm;
+import com.example.application.views.offlineExam.ParticipantsView;
+import com.example.application.views.offlineExam.OfflineExamsView;
 import com.example.application.views.participateInExam.ParticipateInExamView;
-import com.example.application.views.previousExams.PreviousExamsView;
 import com.example.application.views.profile.ProfileView;
 import com.example.application.views.userExamHistory.UserExamHistoryView;
 import com.vaadin.flow.component.Component;
@@ -21,7 +23,6 @@ import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.contextmenu.ContextMenu;
 import com.vaadin.flow.component.dependency.NpmPackage;
 import com.vaadin.flow.component.html.Anchor;
-import com.vaadin.flow.component.html.Footer;
 import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.html.Header;
@@ -160,7 +161,9 @@ public class MainLayout extends AppLayout {
                 new MenuItemInfo("Diktātu rezultāti", "la la-certificate", ExamResultsView.class),
 
                 new MenuItemInfo("Izveidotie diktāti", "la la-file-text", CreatedExams.class),
-
+                new MenuItemInfo("Create New Offline Exam", "la la-file-text", CreateNewExamForm.class),
+                new MenuItemInfo("Offline Exams", "la la-file-text", OfflineExamsView.class),
+                new MenuItemInfo("Participants", "la la-file-text", ParticipantsView.class)
                 //
 
         };

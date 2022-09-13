@@ -12,6 +12,7 @@ import com.example.application.views.newExam.ExamsView;
 import com.example.application.views.participateInExam.ParticipateInExamView;
 import com.example.application.views.previousExams.PreviousExamsView;
 import com.example.application.views.profile.ProfileView;
+import com.example.application.views.sendEmailsPage.EmailSenderView;
 import com.example.application.views.userExamHistory.UserExamHistoryView;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.applayout.AppLayout;
@@ -160,6 +161,8 @@ public class MainLayout extends AppLayout {
                 new MenuItemInfo("Diktātu rezultāti", "la la-certificate", ExamResultsView.class),
 
                 new MenuItemInfo("Izveidotie diktāti", "la la-file-text", CreatedExams.class),
+
+                new MenuItemInfo("Sūtīt vēstules", "la la-file", EmailSenderView.class)
 
                 //
 

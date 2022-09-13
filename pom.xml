@@ -4,8 +4,8 @@
     <modelVersion>4.0.0</modelVersion>
     <!-- Project from https://start.vaadin.com/project/456f3930-ee45-41bb-9efb-1cb212df5244 -->
     <groupId>org.raksti.web</groupId>
-    <artifactId>myapp</artifactId>
-    <name>My App</name>
+    <artifactId>app</artifactId>
+    <name>Raksti.org</name>
     <version>1.0-SNAPSHOT</version>
     <packaging>jar</packaging>
 

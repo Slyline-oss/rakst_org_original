@@ -3,8 +3,8 @@ package com.example.application.views.sendEmailsPage;
 import com.example.application.data.entity.User;
 import com.example.application.data.service.UserRepository;
 import com.example.application.emailSender.EmailSenderService;
-import com.example.application.security.UserDetailsServiceImpl;
 import com.example.application.views.MainLayout;
+import com.example.application.views.registration.EmailAndPasswordValidation;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
@@ -18,7 +18,6 @@ import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 
 import javax.annotation.security.RolesAllowed;
-import java.util.ArrayList;
 import java.util.List;
 
 @PageTitle("Send Emails Page")
@@ -28,19 +27,22 @@ public class EmailSenderView extends VerticalLayout {
 
     private final EmailSenderService emailSenderService;
     private final UserRepository userRepository;
+    private final EmailAndPasswordValidation emailAndPasswordValidation;
 
     private final RichTextEditor rte = new RichTextEditor();
     private final Button send = new Button("Sūtīt e-mailu");
     private final TextField subject = new TextField("Virsraksts");
     private final MultiFileMemoryBuffer mfmb = new MultiFileMemoryBuffer();
     private final Upload upload = new Upload(mfmb);
-    private String fileName;
+    private String fileName = "";
     private List<User> listOfUses;
 
-    public EmailSenderView(EmailSenderService emailSenderService, UserRepository userRepository) {
+
+    public EmailSenderView(EmailSenderService emailSenderService, UserRepository userRepository, EmailAndPasswordValidation emailAndPasswordValidation) {
 
         this.emailSenderService = emailSenderService;
         this.userRepository = userRepository;
+        this.emailAndPasswordValidation = emailAndPasswordValidation;
 
 
         makeLayout();
@@ -74,7 +76,12 @@ public class EmailSenderView extends VerticalLayout {
 
     private void sendEmail() {
         for (int i = 0; i < listOfUses.size(); i++) {
-            emailSenderService.sendEmailWithAttachment(listOfUses.get(i).getEmail(), rte.getHtmlValue(), subject.getValue(), fileName);
+            User user = listOfUses.get(i);
+            boolean checkEmail = emailAndPasswordValidation.validateEmail(user.getEmail());
+            if (checkEmail) {
+                emailSenderService.sendEmailWithAttachment(user.getEmail(), rte.getHtmlValue(), subject.getValue(), fileName);
+            }
+
         }
     }
 

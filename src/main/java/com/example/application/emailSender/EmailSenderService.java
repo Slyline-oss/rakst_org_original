@@ -52,8 +52,11 @@ public class EmailSenderService {
             mimeMessageHelper.setText(body, true);
             mimeMessage.setSubject(subject);
 
-            FileSystemResource file = new FileSystemResource(new File(attachment));
-            mimeMessageHelper.addAttachment(Objects.requireNonNull(file.getFilename()), file);
+
+            if (!attachment.equals("")) {
+                FileSystemResource file = new FileSystemResource(new File(attachment));
+                mimeMessageHelper.addAttachment(Objects.requireNonNull(file.getFilename()), file);
+            }
 
             mailSender.send(mimeMessage);
             System.out.println("Successfully sent");

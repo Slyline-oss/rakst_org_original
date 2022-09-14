@@ -12,6 +12,7 @@ import org.raksti.web.views.newExam.ExamsView;
 import org.raksti.web.views.offlineExam.CreateNewExamForm;
 import org.raksti.web.views.offlineExam.OfflineExamsView;
 import org.raksti.web.views.offlineExam.ParticipantsView;
+import org.raksti.web.views.offlineLocation.OfflineLocationAdminView;
 import org.raksti.web.views.participateInExam.ParticipateInExamView;
 import org.raksti.web.views.profile.ProfileView;
 import org.raksti.web.views.sendEmailsPage.EmailSenderView;
@@ -167,7 +168,8 @@ public class MainLayout extends AppLayout {
                 new MenuItemInfo("Sūtīt vēstules", "la la-file", EmailSenderView.class),
                 new MenuItemInfo("Create New Offline Exam", "la la-file-text", CreateNewExamForm.class),
                 new MenuItemInfo("Offline Exams", "la la-file-text", OfflineExamsView.class),
-                new MenuItemInfo("Participants", "la la-file-text", ParticipantsView.class)
+                new MenuItemInfo("Participants", "la la-file-text", ParticipantsView.class),
+                new MenuItemInfo("Offline Locations Admin", "la la-file-text", OfflineLocationAdminView.class)
 
                 //
 

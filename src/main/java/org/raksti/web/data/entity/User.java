@@ -109,6 +109,10 @@ public class User extends AbstractEntity {
     @ManyToMany(mappedBy = "participants", fetch = FetchType.EAGER)
     private Set<OfflineExam> offlineExams= new HashSet();
 
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "offline_location_id", referencedColumnName = "id")
+    private OfflineLocation offlineLocation;
+
     public User() {
 
     }

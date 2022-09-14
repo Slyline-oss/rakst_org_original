@@ -30,7 +30,7 @@ public class OfflineLocationService {
         offlineLocationRepository.save(offlineLocation);
     }
 
-    public void update(OfflineLocation offlineLocation) {
-
+    public void delete(OfflineLocation offlineLocation) {
+        offlineLocationRepository.delete(offlineLocation);
     }
 }

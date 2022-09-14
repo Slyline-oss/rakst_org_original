@@ -16,7 +16,6 @@ import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import org.raksti.web.data.entity.OfflineLocation;
 import org.raksti.web.data.service.OfflineLocationService;
-import org.raksti.web.security.AuthenticatedUser;
 import org.raksti.web.views.MainLayout;
 
 import javax.annotation.security.RolesAllowed;
@@ -28,16 +27,18 @@ public class OfflineLocationAdminView extends VerticalLayout {
     private final OfflineLocationService offlineLocationService;
     private final Grid<OfflineLocation> offlineExamGrid = new Grid<>(OfflineLocation.class);
     private final Dialog dialog = new Dialog();
+    private OfflineLocationForm offlineLocationForm = new OfflineLocationForm();
 
     public OfflineLocationAdminView(OfflineLocationService offlineLocationService) {
         this.offlineLocationService = offlineLocationService;
 
-        dialog.add(createDialogLayout());
+        dialog.add(offlineLocationForm);
+        configureForm();
 
-        Button button = new Button("Add Location", e -> dialog.open());
+        Button addOfflineLocationButton = new Button("Add Location", e -> addNewLocation());
 
         getData();
-        add(dialog, button, offlineExamGrid);
+        add(dialog, addOfflineLocationButton, offlineExamGrid);
     }
 
     private void getData() {
@@ -47,53 +48,53 @@ public class OfflineLocationAdminView extends VerticalLayout {
         offlineExamGrid.addColumn(OfflineLocation::getSlotsTotal).setHeader("Slots Total");
         offlineExamGrid.addColumn(OfflineLocation::getSlotsTaken).setHeader("Slots Taken");
 
-        offlineExamGrid.setItems(offlineLocationService.getAll());
+        offlineExamGrid.addComponentColumn(offlineLocation -> {
+            Button editButton = new Button("edit");
+            editButton.addClickListener(buttonClickEvent -> editOfflineLocation(offlineLocation));
+            Button deleteButton = new Button("delete");
+            deleteButton.addClickListener(buttonClickEvent -> deleteOfflineLocation(offlineLocation));
+            return new HorizontalLayout(editButton, deleteButton);
+        }).setHeader("Action");
+
+        updateList();
 
     }
 
-    private VerticalLayout createDialogLayout() {
-        dialog.setHeaderTitle("new Location Details");
+    private void configureForm() {
+        offlineLocationForm.addListener(OfflineLocationForm.SaveEvent.class, this::saveOfflineLocation);
+        offlineLocationForm.addListener(OfflineLocationForm.CloseEvent.class, this::closeDialog);
+    }
 
-        Button closeButton = new Button(new Icon("lumo", "cross"), (e) -> dialog.close());
-        closeButton.addThemeVariants(ButtonVariant.LUMO_TERTIARY);
-        dialog.getHeader().add(closeButton);
+    private void saveOfflineLocation(OfflineLocationForm.SaveEvent event) {
+        offlineLocationService.save(event.getOfflineLocation());
+        dialog.close();
+        updateList();
+    }
 
-        TextField countryField = new TextField("Country");
-        TextField cityField = new TextField("City");
-        TextField addressField = new TextField("Address");
-        IntegerField totalSlots = new IntegerField("Total Slots");
-        totalSlots.setHasControls(true);
-        totalSlots.setMin(1);
+    private void deleteOfflineLocation(OfflineLocation offlineLocation) {
+        offlineLocationService.delete(offlineLocation);
+        updateList();
+    }
 
-        VerticalLayout fieldLayout = new VerticalLayout(countryField, cityField, addressField, totalSlots);
+    private void closeDialog(OfflineLocationForm.CloseEvent event) {
+        dialog.close();
+    }
 
-        Button addLocation = new Button("Add");
-        addLocation.addClickListener(buttonClickEvent -> {
-            if (countryField.isEmpty() || cityField.isEmpty() || addressField.isEmpty() || totalSlots.isEmpty()) {
-                showNotification("Fill in all fields!", NotificationVariant.LUMO_ERROR);
-            } else {
-                if (offlineLocationService.getAllByCountyAndByCityAndByAddress(countryField.getValue(), cityField.getValue(), addressField.getValue()).size() > 0) {
-                    showNotification("this location already exist", NotificationVariant.LUMO_ERROR);
-                } else {
-                    offlineLocationService.save(new OfflineLocation(countryField.getValue(), cityField.getValue(), addressField.getValue(), totalSlots.getValue()));
-                    dialog.close();
-                    getData();
-                }
-            }
-        });
-        Button cancel = new Button("cancel");
-        cancel.addClickListener(buttonClickEvent -> dialog.close());
+    private void editOfflineLocation(OfflineLocation offlineLocation) {
+        if (offlineLocation == null) {
+            dialog.close();
+        } else {
+            offlineLocationForm.setOfflineLocation(offlineLocation);
+            dialog.open();
+        }
+    }
 
-        HorizontalLayout buttonsLayout = new HorizontalLayout(addLocation, cancel);
+    private void addNewLocation() {
+        editOfflineLocation(new OfflineLocation());
+    }
 
-        VerticalLayout dialogLayout = new VerticalLayout(fieldLayout, buttonsLayout);
-
-        fieldLayout.setSpacing(false);
-        fieldLayout.setPadding(false);
-        fieldLayout.setAlignItems(FlexComponent.Alignment.STRETCH);
-        fieldLayout.getStyle().set("width", "300px").set("max-width", "100%");
-
-        return dialogLayout;
+    private void updateList() {
+        offlineExamGrid.setItems(offlineLocationService.getAll());
     }
 
     private void showNotification(String message, NotificationVariant notificationVariant) {

@@ -5,32 +5,44 @@ import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.html.Paragraph;
 import com.vaadin.flow.component.notification.Notification;
+import com.vaadin.flow.component.notification.NotificationVariant;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import org.raksti.web.data.Role;
 import org.raksti.web.data.entity.OfflineLocation;
+import org.raksti.web.data.entity.User;
 import org.raksti.web.data.service.OfflineLocationService;
+import org.raksti.web.data.service.UserRepository;
 import org.raksti.web.security.AuthenticatedUser;
 import org.raksti.web.views.MainLayout;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.annotation.security.RolesAllowed;
+import java.util.UUID;
 
-@PageTitle("Offline Locations Admin")
-@Route(value = "offline-locations-admin", layout = MainLayout.class)
+@PageTitle("Offline Locations")
+@Route(value = "offline-locations", layout = MainLayout.class)
 @RolesAllowed({"USER", "ADMIN"})
-public class OfflineLocationAdminView extends VerticalLayout {
+public class OfflineLocationView extends VerticalLayout {
+
+    Logger logger = LoggerFactory.getLogger(getClass());
     private final AuthenticatedUser authenticatedUser;
+    private final UserRepository userRepository;
+    private final User user;
     private final OfflineLocationService offlineLocationService;
     private final Grid<OfflineLocation> offlineExamGrid = new Grid<>(OfflineLocation.class);
     private final Dialog offlineLocationDialog = new Dialog();
     private final Dialog confirmationDialog = new Dialog();
     private final OfflineLocationForm offlineLocationForm = new OfflineLocationForm();
 
-    public OfflineLocationAdminView(AuthenticatedUser authenticatedUser, OfflineLocationService offlineLocationService) {
+    public OfflineLocationView(AuthenticatedUser authenticatedUser, UserRepository userRepository, OfflineLocationService offlineLocationService) {
         this.authenticatedUser = authenticatedUser;
+        this.userRepository = userRepository;
         this.offlineLocationService = offlineLocationService;
+        this.user = authenticatedUser.get().get();
 
         offlineLocationDialog.add(offlineLocationForm);
         configureForm();
@@ -51,10 +63,12 @@ public class OfflineLocationAdminView extends VerticalLayout {
         offlineExamGrid.addColumn(OfflineLocation::getCity).setHeader("City").setSortable(true);
         offlineExamGrid.addColumn(OfflineLocation::getAddress).setHeader("Address").setSortable(true);
         offlineExamGrid.addColumn(OfflineLocation::getSlotsTotal).setHeader("Slots Total").setSortable(true);
-        offlineExamGrid.addColumn(OfflineLocation::getSlotsTaken).setHeader("Slots Taken").setSortable(true);
+        offlineExamGrid.addColumn(offlineLocation -> {
+            return offlineLocation.getSlotsTotal() - offlineLocation.getSlotsTaken();
+        }).setHeader("Slots Remaining").setSortable(true);
         offlineExamGrid.addComponentColumn(offlineLocation -> {
             Button participate = new Button("participate");
-            participate.addClickListener(buttonClickEvent -> participate(offlineLocation));
+            participate.addClickListener(buttonClickEvent -> participate(offlineLocation.getId()));
             return participate;
         });
 
@@ -126,9 +140,32 @@ public class OfflineLocationAdminView extends VerticalLayout {
         offlineExamGrid.setItems(offlineLocationService.getAll());
     }
 
-    private void participate(OfflineLocation offlineLocation) {
-        OfflineLocation preloadedLocation = offlineLocation;
-        OfflineLocation uptodateLocation = offlineLocationService.getById(offlineLocation.getId());
-        Notification notification = Notification.show("upd, slots taken: " + uptodateLocation.getSlotsTaken());
+    private void participate(UUID offlineLocationId) {
+        OfflineLocation offlineLocation = offlineLocationService.getById(offlineLocationId);
+        if (offlineLocation.getSlotsTaken() < offlineLocation.getSlotsTotal() && user.getOfflineLocation() == null) {
+            user.setOfflineLocation(offlineLocation);
+            userRepository.save(user);
+            //TODO: implement email notification sending
+
+            offlineLocation.setSlotsTaken(offlineLocation.getSlotsTaken()+1);
+            offlineLocation.getParticipants().add(user);
+            offlineLocationService.save(offlineLocation);
+            showNotification("upd, slots taken: " + offlineLocation.getSlotsTaken());
+//            updateList();
+        } else {
+            showNotification("out of slots");
+//            updateList();
+        }
+        updateList();
+        logger.info(offlineLocationService.getById(offlineLocationId).getParticipants().stream().map(User::getEmail).findAny().toString());
+    }
+
+    private void showNotification(String message) {
+        Notification notification = Notification.show(message);
+    }
+
+    private void showNotification(String message, NotificationVariant notificationVariant) {
+        Notification notification = Notification.show(message);
+        notification.addThemeVariants(notificationVariant);
     }
 }

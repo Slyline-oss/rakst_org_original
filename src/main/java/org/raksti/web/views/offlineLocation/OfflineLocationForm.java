@@ -64,8 +64,9 @@ public class OfflineLocationForm extends FormLayout {
 
     private void validateAndSave() {
         if (countryField.isEmpty() || cityField.isEmpty() || addressField.isEmpty() || totalSlots.isEmpty()) {
-            Notification notification = Notification.show("All fields must be filled in!");
-            notification.addThemeVariants(NotificationVariant.LUMO_ERROR);
+            showNotification("All fields must be filled in!", NotificationVariant.LUMO_ERROR);
+        } else if (totalSlots.getValue() < offlineLocation.getSlotsTaken()) {
+            showNotification("The number of available slots cannot be less than the number of slots already taken! Slots already taken: " + offlineLocation.getSlotsTaken(), NotificationVariant.LUMO_ERROR);
         } else {
             try {
                 binder.writeBean(offlineLocation);
@@ -74,6 +75,15 @@ public class OfflineLocationForm extends FormLayout {
                 e.printStackTrace();
             }
         }
+    }
+
+    private void showNotification(String message) {
+        Notification notification = Notification.show(message);
+    }
+
+    private void showNotification(String message, NotificationVariant notificationVariant) {
+        Notification notification = Notification.show(message);
+        notification.addThemeVariants(notificationVariant);
     }
 
     // Events

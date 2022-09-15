@@ -1,5 +1,18 @@
 package org.raksti.web.views;
 
+import com.vaadin.flow.component.Component;
+import com.vaadin.flow.component.applayout.AppLayout;
+import com.vaadin.flow.component.applayout.DrawerToggle;
+import com.vaadin.flow.component.avatar.Avatar;
+import com.vaadin.flow.component.button.ButtonVariant;
+import com.vaadin.flow.component.contextmenu.ContextMenu;
+import com.vaadin.flow.component.dependency.NpmPackage;
+import com.vaadin.flow.component.html.*;
+import com.vaadin.flow.component.orderedlayout.FlexComponent;
+import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
+import com.vaadin.flow.router.PageTitle;
+import com.vaadin.flow.router.RouterLink;
+import com.vaadin.flow.server.auth.AccessAnnotationChecker;
 import org.raksti.web.data.entity.User;
 import org.raksti.web.security.AuthenticatedUser;
 import org.raksti.web.views.about.AboutView;
@@ -9,34 +22,12 @@ import org.raksti.web.views.edit.EditView;
 import org.raksti.web.views.examResults.ExamResultsView;
 import org.raksti.web.views.listofparticipants.ListofparticipantsView;
 import org.raksti.web.views.newExam.ExamsView;
-import org.raksti.web.views.offlineExam.CreateNewExamForm;
-import org.raksti.web.views.offlineExam.OfflineExamsView;
-import org.raksti.web.views.offlineExam.ParticipantsView;
-import org.raksti.web.views.offlineLocation.OfflineLocationAdminView;
+import org.raksti.web.views.offlineLocation.OfflineLocationParticipantsView;
+import org.raksti.web.views.offlineLocation.OfflineLocationView;
 import org.raksti.web.views.participateInExam.ParticipateInExamView;
 import org.raksti.web.views.profile.ProfileView;
 import org.raksti.web.views.sendEmailsPage.EmailSenderView;
 import org.raksti.web.views.userExamHistory.UserExamHistoryView;
-import com.vaadin.flow.component.Component;
-import com.vaadin.flow.component.applayout.AppLayout;
-import com.vaadin.flow.component.applayout.DrawerToggle;
-import com.vaadin.flow.component.avatar.Avatar;
-import com.vaadin.flow.component.button.ButtonVariant;
-import com.vaadin.flow.component.contextmenu.ContextMenu;
-import com.vaadin.flow.component.dependency.NpmPackage;
-import com.vaadin.flow.component.html.Anchor;
-import com.vaadin.flow.component.html.H1;
-import com.vaadin.flow.component.html.H2;
-import com.vaadin.flow.component.html.Header;
-import com.vaadin.flow.component.html.ListItem;
-import com.vaadin.flow.component.html.Nav;
-import com.vaadin.flow.component.html.Span;
-import com.vaadin.flow.component.html.UnorderedList;
-import com.vaadin.flow.component.orderedlayout.FlexComponent;
-import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
-import com.vaadin.flow.router.PageTitle;
-import com.vaadin.flow.router.RouterLink;
-import com.vaadin.flow.server.auth.AccessAnnotationChecker;
 
 import java.util.Optional;
 
@@ -166,10 +157,8 @@ public class MainLayout extends AppLayout {
                 new MenuItemInfo("Izveidotie diktāti", "la la-file-text", CreatedExams.class),
 
                 new MenuItemInfo("Sūtīt vēstules", "la la-file", EmailSenderView.class),
-                new MenuItemInfo("Create New Offline Exam", "la la-file-text", CreateNewExamForm.class),
-                new MenuItemInfo("Offline Exams", "la la-file-text", OfflineExamsView.class),
-                new MenuItemInfo("Participants", "la la-file-text", ParticipantsView.class),
-                new MenuItemInfo("Offline Locations Admin", "la la-file-text", OfflineLocationAdminView.class)
+                new MenuItemInfo("Participants", "la la-file-text", OfflineLocationParticipantsView.class),
+                new MenuItemInfo("Offline Locations", "la la-file-text", OfflineLocationView.class)
 
                 //
 

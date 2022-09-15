@@ -1,5 +1,6 @@
 package org.raksti.web.data.entity;
 
+import org.hibernate.annotations.Proxy;
 import org.raksti.web.data.Role;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -105,13 +106,9 @@ public class User extends AbstractEntity {
     private boolean anonymous;
     private boolean confirmed;
     private String emailConfirmationToken;
-    @JsonIgnore
-    @ManyToMany(mappedBy = "participants", fetch = FetchType.EAGER)
-    private Set<OfflineExam> offlineExams= new HashSet();
-
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "offline_location_id", referencedColumnName = "id")
-    private OfflineLocation offlineLocation;
+    private OfflineLocation offlineLocation = null;
 
     public User() {
 
@@ -238,11 +235,11 @@ public class User extends AbstractEntity {
         this.emailConfirmationToken = emailConfirmationToken;
     }
 
-    public Set<OfflineExam> getOfflineExams() {
-        return offlineExams;
+    public OfflineLocation getOfflineLocation() {
+        return offlineLocation;
     }
 
-    public void setOfflineExams(Set<OfflineExam> offlineExams) {
-        this.offlineExams = offlineExams;
+    public void setOfflineLocation(OfflineLocation offlineLocation) {
+        this.offlineLocation = offlineLocation;
     }
 }

@@ -1,8 +1,10 @@
 package org.raksti.web.data.generator;
 
 import org.raksti.web.data.Role;
+import org.raksti.web.data.entity.OfflineLocation;
 import org.raksti.web.data.entity.SamplePerson;
 import org.raksti.web.data.entity.User;
+import org.raksti.web.data.service.OfflineLocationRepository;
 import org.raksti.web.data.service.SamplePersonRepository;
 import org.raksti.web.data.service.UserRepository;
 import com.vaadin.exampledata.DataType;
@@ -10,6 +12,7 @@ import com.vaadin.exampledata.ExampleDataGenerator;
 import com.vaadin.flow.spring.annotation.SpringComponent;
 import java.time.LocalDateTime;
 import java.util.Collections;
+import java.util.List;
 import java.util.Set;
 
 import org.slf4j.Logger;
@@ -23,7 +26,7 @@ public class DataGenerator {
 
     @Bean
     public CommandLineRunner loadData(PasswordEncoder passwordEncoder, SamplePersonRepository samplePersonRepository,
-            UserRepository userRepository) {
+                                      UserRepository userRepository, OfflineLocationRepository offlineLocationRepository) {
         return args -> {
             Logger logger = LoggerFactory.getLogger(getClass());
             if (samplePersonRepository.count() != 0L) {
@@ -68,6 +71,10 @@ public class DataGenerator {
             userRepository.save(admin);
 
             logger.info("Generated demo data");
+
+            OfflineLocation loc1 = new OfflineLocation("Some imaginary country", "Some imaginary city", "Some imaginary street in an imaginary city in an imaginary country...", 10);
+            OfflineLocation loc2 = new OfflineLocation("Some other imaginary country", "Some other imaginary city", "Some other imaginary street in an imaginary city in an imaginary country...", 1);
+            offlineLocationRepository.saveAll(List.of(loc1, loc2));
         };
     }
 

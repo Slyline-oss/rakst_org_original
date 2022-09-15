@@ -6,6 +6,8 @@ import com.vaadin.flow.component.Key;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.formlayout.FormLayout;
+import com.vaadin.flow.component.notification.Notification;
+import com.vaadin.flow.component.notification.NotificationVariant;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.textfield.IntegerField;
 import com.vaadin.flow.component.textfield.TextField;
@@ -32,6 +34,10 @@ public class OfflineLocationForm extends FormLayout {
         binder.bind(cityField, OfflineLocation::getCity, OfflineLocation::setCity);
         binder.bind(addressField, OfflineLocation::getAddress, OfflineLocation::setAddress);
         binder.bind(totalSlots, OfflineLocation::getSlotsTotal, OfflineLocation::setSlotsTotal);
+
+        totalSlots.setHasControls(true);
+        totalSlots.setMin(1);
+
         add(countryField, cityField, addressField, totalSlots, createButtonsLayout());
     }
 
@@ -57,17 +63,22 @@ public class OfflineLocationForm extends FormLayout {
     }
 
     private void validateAndSave() {
-        try {
-            binder.writeBean(offlineLocation);
-            fireEvent(new SaveEvent(this, offlineLocation));
-        } catch (ValidationException e) {
-            e.printStackTrace();
+        if (countryField.isEmpty() || cityField.isEmpty() || addressField.isEmpty() || totalSlots.isEmpty()) {
+            Notification notification = Notification.show("All fields must be filled in!");
+            notification.addThemeVariants(NotificationVariant.LUMO_ERROR);
+        } else {
+            try {
+                binder.writeBean(offlineLocation);
+                fireEvent(new SaveEvent(this, offlineLocation));
+            } catch (ValidationException e) {
+                e.printStackTrace();
+            }
         }
     }
 
     // Events
     public static abstract class OfflineLocationFormEvent extends ComponentEvent<OfflineLocationForm> {
-        private OfflineLocation offlineLocation;
+        private final OfflineLocation offlineLocation;
 
         protected OfflineLocationFormEvent(OfflineLocationForm source, OfflineLocation offlineLocation) {
             super(source, false);

@@ -1,6 +1,9 @@
 package org.raksti.web.views.profile;
 
+import com.vaadin.flow.component.html.*;
+import org.raksti.web.data.entity.OfflineLocation;
 import org.raksti.web.data.entity.User;
+import org.raksti.web.data.service.OfflineLocationService;
 import org.raksti.web.security.AuthenticatedUser;
 import org.raksti.web.security.UserDetailsServiceImpl;
 import org.raksti.web.views.MainLayout;
@@ -11,8 +14,6 @@ import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.checkbox.Checkbox;
 import com.vaadin.flow.component.datepicker.DatePicker;
 import com.vaadin.flow.component.dialog.Dialog;
-import com.vaadin.flow.component.html.Div;
-import com.vaadin.flow.component.html.H5;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.notification.NotificationVariant;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
@@ -35,6 +36,7 @@ import java.util.Optional;
 @RolesAllowed({"USER", "ADMIN"})
 public class ProfileView extends VerticalLayout {
 
+    private final OfflineLocationService offlineLocationService;
     private final PasswordField password = new PasswordField();;
     private final PasswordField newPassword = new PasswordField();;
     private final AuthenticatedUser authenticatedUser;
@@ -59,11 +61,11 @@ public class ProfileView extends VerticalLayout {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    public ProfileView(AuthenticatedUser authenticatedUser, UserDetailsServiceImpl userDetailsService, EmailAndPasswordValidation emailAndPasswordValidation, ProfileViewService profileViewService) {
+    public ProfileView(AuthenticatedUser authenticatedUser, UserDetailsServiceImpl userDetailsService, EmailAndPasswordValidation emailAndPasswordValidation, ProfileViewService profileViewService, OfflineLocationService offlineLocationService) {
         this.authenticatedUser = authenticatedUser;
         this.userDetailsService = userDetailsService;
         this.emailAndPasswordValidation = emailAndPasswordValidation;
-
+        this.offlineLocationService = offlineLocationService;
 
 
         DatePicker.DatePickerI18n latvianI18n = new DatePicker.DatePickerI18n();
@@ -151,6 +153,31 @@ public class ProfileView extends VerticalLayout {
 
         btnPassword.addClickListener(buttonClickEvent -> changePassword(password.getValue(), newPassword.getValue()));
 
+        if (user.getOfflineLocation() != null) {
+            VerticalLayout participationNotificationLayout = new VerticalLayout();
+            participationNotificationLayout.getElement().getStyle().set("background", "lavenderblush");
+            Label participationNotificationHeader = new Label("You are registered to participate in the event at the following location:");
+            Label participationNotificationFooter = new Label("You can cancel you participation, and free up your slot at this location for someone else by clicking the button below.");
+
+            UnorderedList locationInfo = new UnorderedList();
+            locationInfo.getElement().getStyle().set("list-style", "none");
+            ListItem offlineLocationCountry = new ListItem ("Country: " + user.getOfflineLocation().getCountry());
+            ListItem offlineLocationCity = new ListItem ("City: " + user.getOfflineLocation().getCity());
+            ListItem offlineLocationAddress = new ListItem ("Address: " + user.getOfflineLocation().getAddress());
+            locationInfo.add(offlineLocationCountry, offlineLocationCity, offlineLocationAddress);
+
+            Button retractParticipation = new Button("Retract Participation");
+            retractParticipation.addClickListener(buttonClickEvent -> {
+                OfflineLocation offlineLocation = user.getOfflineLocation();
+                offlineLocation.setSlotsTaken(offlineLocation.getSlotsTaken()-1);
+                offlineLocationService.save(offlineLocation);
+                user.setOfflineLocation(null);
+                userDetailsService.updateUser(user);
+                participationNotificationLayout.setVisible(false);
+            });
+            participationNotificationLayout.add(participationNotificationHeader, locationInfo, participationNotificationFooter, retractParticipation);
+            add(participationNotificationLayout);
+        }
         add(new H5("Jūsu dati:"));
         add(layout);
         add(anonymous);

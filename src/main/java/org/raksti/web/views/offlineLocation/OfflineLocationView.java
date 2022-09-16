@@ -63,9 +63,7 @@ public class OfflineLocationView extends VerticalLayout {
         offlineExamGrid.addColumn(OfflineLocation::getCity).setHeader("City").setSortable(true);
         offlineExamGrid.addColumn(OfflineLocation::getAddress).setHeader("Address").setSortable(true);
         offlineExamGrid.addColumn(OfflineLocation::getSlotsTotal).setHeader("Slots Total").setSortable(true);
-        offlineExamGrid.addColumn(offlineLocation -> {
-            return offlineLocation.getSlotsTotal() - offlineLocation.getSlotsTaken();
-        }).setHeader("Slots Remaining").setSortable(true);
+        offlineExamGrid.addColumn(offlineLocation -> offlineLocation.getSlotsTotal() - offlineLocation.getSlotsTaken()).setHeader("Slots Remaining").setSortable(true);
         offlineExamGrid.addComponentColumn(offlineLocation -> {
             Button participate = new Button("participate");
             participate.addClickListener(buttonClickEvent -> participate(offlineLocation.getId()));
@@ -105,9 +103,13 @@ public class OfflineLocationView extends VerticalLayout {
         Button confirm = new Button("Yes");
         confirm.getElement().getStyle().set("margin-left", "auto");
         confirm.addClickListener(buttonClickEvent -> {
-            offlineLocationService.delete(offlineLocation);
-            confirmationDialog.close();
-            updateList();
+            if (offlineLocation.getSlotsTaken() > 0) {
+                showNotification("Cannot delete location with active participants!", NotificationVariant.LUMO_ERROR);
+            } else {
+                offlineLocationService.delete(offlineLocation);
+                confirmationDialog.close();
+                updateList();
+            }
         });
         Button decline = new Button("No");
         decline.getElement().getStyle().set("margin-right", "auto");
@@ -142,7 +144,7 @@ public class OfflineLocationView extends VerticalLayout {
 
     private void participate(UUID offlineLocationId) {
         OfflineLocation offlineLocation = offlineLocationService.getById(offlineLocationId);
-        if (offlineLocation.getSlotsTaken() < offlineLocation.getSlotsTotal() && user.getOfflineLocation() == null) {
+        if (validateParticipationConditions(offlineLocation)) {
             user.setOfflineLocation(offlineLocation);
             userRepository.save(user);
             //TODO: implement email notification sending
@@ -151,13 +153,8 @@ public class OfflineLocationView extends VerticalLayout {
             offlineLocation.getParticipants().add(user);
             offlineLocationService.save(offlineLocation);
             showNotification("upd, slots taken: " + offlineLocation.getSlotsTaken());
-//            updateList();
-        } else {
-            showNotification("out of slots");
-//            updateList();
         }
         updateList();
-        logger.info(offlineLocationService.getById(offlineLocationId).getParticipants().stream().map(User::getEmail).findAny().toString());
     }
 
     private void showNotification(String message) {
@@ -167,5 +164,17 @@ public class OfflineLocationView extends VerticalLayout {
     private void showNotification(String message, NotificationVariant notificationVariant) {
         Notification notification = Notification.show(message);
         notification.addThemeVariants(notificationVariant);
+    }
+
+    private boolean validateParticipationConditions(OfflineLocation offlineLocation) {
+        if (offlineLocation.getSlotsTaken() >= offlineLocation.getSlotsTotal()) {
+            showNotification("out of slots");
+            return false;
+        }
+        if (user.getOfflineLocation() != null) {
+            showNotification("Already participating in another location!");
+            return false;
+        }
+        return true;
     }
 }

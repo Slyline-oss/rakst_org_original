@@ -15,6 +15,7 @@ import org.raksti.web.data.entity.OfflineLocation;
 import org.raksti.web.data.entity.User;
 import org.raksti.web.data.service.OfflineLocationService;
 import org.raksti.web.data.service.UserRepository;
+import org.raksti.web.emailSender.EmailSenderService;
 import org.raksti.web.security.AuthenticatedUser;
 import org.raksti.web.views.MainLayout;
 import org.slf4j.Logger;
@@ -30,6 +31,7 @@ public class OfflineLocationView extends VerticalLayout {
 
     Logger logger = LoggerFactory.getLogger(getClass());
     private final AuthenticatedUser authenticatedUser;
+    private final EmailSenderService emailSenderService;
     private final UserRepository userRepository;
     private final User user;
     private final OfflineLocationService offlineLocationService;
@@ -38,8 +40,9 @@ public class OfflineLocationView extends VerticalLayout {
     private final Dialog confirmationDialog = new Dialog();
     private final OfflineLocationForm offlineLocationForm = new OfflineLocationForm();
 
-    public OfflineLocationView(AuthenticatedUser authenticatedUser, UserRepository userRepository, OfflineLocationService offlineLocationService) {
+    public OfflineLocationView(AuthenticatedUser authenticatedUser, EmailSenderService emailSenderService, UserRepository userRepository, OfflineLocationService offlineLocationService) {
         this.authenticatedUser = authenticatedUser;
+        this.emailSenderService = emailSenderService;
         this.userRepository = userRepository;
         this.offlineLocationService = offlineLocationService;
         this.user = authenticatedUser.get().get();
@@ -147,7 +150,7 @@ public class OfflineLocationView extends VerticalLayout {
         if (validateParticipationConditions(offlineLocation)) {
             user.setOfflineLocation(offlineLocation);
             userRepository.save(user);
-            //TODO: implement email notification sending
+            emailSenderService.sendEmail(user.getEmail(), getParticipationNotificationEmailBody(offlineLocation), "offline participation notification");
 
             offlineLocation.setSlotsTaken(offlineLocation.getSlotsTaken()+1);
             offlineLocation.getParticipants().add(user);
@@ -155,6 +158,16 @@ public class OfflineLocationView extends VerticalLayout {
             showNotification("upd, slots taken: " + offlineLocation.getSlotsTaken());
         }
         updateList();
+    }
+
+    private String getParticipationNotificationEmailBody(OfflineLocation offlineLocation) {
+        String country = offlineLocation.getCountry();
+        String city = offlineLocation.getCity();
+        String address = offlineLocation.getAddress();
+        return "Some message about participation here :)\n" +
+                "Country: " + country + "\n" +
+                "City: " + city + "\n" +
+                "Address: " + address;
     }
 
     private void showNotification(String message) {

@@ -19,31 +19,24 @@ import javax.annotation.security.RolesAllowed;
 public class ParticipateInExamView extends VerticalLayout {
 
     private final ExamService examService;
-    private final ExamDataService examDataService;
-    private final AuthenticatedUser authenticatedUser;
 
-    public ParticipateInExamView(ExamService examService, ExamDataService examDataService, AuthenticatedUser authenticatedUser) {
+    public ParticipateInExamView(ExamService examService) {
         this.examService = examService;
-        this.examDataService = examDataService;
-        this.authenticatedUser = authenticatedUser;
 
         H3 title = new H3("Diktāta pieejamība: ");
         Button goToExam = new Button("Sākt diktātu");
         goToExam.setEnabled(false);
-        String naming = enableButton(goToExam);
-        goToExam.addClickListener(e -> getUI().ifPresent(ui -> ui.navigate("exam/" + naming)));
+        enableButton(goToExam);
+        goToExam.addClickListener(e -> getUI().ifPresent(ui -> ui.navigate("exam-current")));
 
         add(title, goToExam);
 
     }
 
-    private String enableButton(Button button) {
+    private void enableButton(Button button) {
         Exam exam = examService.getByFinished(false);
-        if (exam != null) {
+        if (exam != null && exam.isAllowToShow()) {
             button.setEnabled(true);
-            return exam.getNaming();
         }
-
-        return "";
     }
 }

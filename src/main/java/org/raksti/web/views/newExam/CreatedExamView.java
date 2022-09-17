@@ -1,11 +1,7 @@
 package org.raksti.web.views.newExam;
 
-import com.vaadin.flow.component.Key;
-import com.vaadin.flow.component.ShortcutEventListener;
-import com.vaadin.flow.component.Shortcuts;
-import com.vaadin.flow.component.UI;
+
 import com.vaadin.flow.data.value.ValueChangeMode;
-import org.aspectj.weaver.ast.Not;
 import org.raksti.web.data.Role;
 import org.raksti.web.data.entity.ExamData;
 import org.raksti.web.data.entity.User;
@@ -50,6 +46,8 @@ public class CreatedExamView extends VerticalLayout implements BeforeEnterObserv
         textArea.setWidthFull();
         textArea.setLabel("Rakstiet šeit diktātu");
 
+        restoreContent();
+
         Exam exam = examService.getByFinished(false);
         String link = exam.getEmbedLink();
         String naming = exam.getNaming();
@@ -88,7 +86,7 @@ public class CreatedExamView extends VerticalLayout implements BeforeEnterObserv
             else Notification.show("Pagaidām nevar iesniegt diktātu!").addThemeVariants(NotificationVariant.LUMO_PRIMARY);
         });
 
-//        UI.getCurrent().addShortcutListener(this::autoSaveContent, Key.SPACE).allowBrowserDefault();
+
 
         textArea.setValueChangeTimeout(60000);
         textArea.setValueChangeMode(ValueChangeMode.TIMEOUT);
@@ -96,6 +94,19 @@ public class CreatedExamView extends VerticalLayout implements BeforeEnterObserv
            autoSaveContent();
         });
 
+    }
+
+
+    private void restoreContent() {
+        Optional<User> maybeUser = authenticatedUser.get();
+        Exam exam = examService.getByFinished(false);
+        if (maybeUser.isPresent()) {
+            User user = maybeUser.get();
+            ExamData examData = examDataService.get(user.getEmail(), exam.getId());
+            if (examData != null) {
+                textArea.setValue(examData.getTextData() == null ? "" : examData.getTextData());
+            }
+        }
     }
 
 
@@ -142,9 +153,11 @@ public class CreatedExamView extends VerticalLayout implements BeforeEnterObserv
                 beforeEnterEvent.forwardTo("about");
             }
         }
+
         if (exam == null || exam.isFinished()) {
             beforeEnterEvent.forwardTo("about");
         }
+
 
         ExamData examData = examDataService.get(email, exam.getId());
         if (examData != null && examData.isFinished()) {

@@ -1,5 +1,6 @@
 package org.raksti.web.views.sendEmailsPage;
 
+import com.vaadin.flow.component.textfield.TextArea;
 import  org.raksti.web.data.entity.User;
 import org.raksti.web.data.service.UserRepository;
 import  org.raksti.web.emailSender.EmailSenderService;
@@ -29,13 +30,13 @@ public class EmailSenderView extends VerticalLayout {
     private final UserRepository userRepository;
     private final EmailAndPasswordValidation emailAndPasswordValidation;
 
-    private final RichTextEditor rte = new RichTextEditor();
+    private final TextArea rte = new TextArea();
     private final Button send = new Button("Sūtīt e-mailu");
     private final TextField subject = new TextField("Virsraksts");
     private final MultiFileMemoryBuffer mfmb = new MultiFileMemoryBuffer();
     private final Upload upload = new Upload(mfmb);
     private String fileName = "";
-    private List<User> listOfUses;
+    private List<User> listOfUsers;
 
 
     public EmailSenderView(EmailSenderService emailSenderService, UserRepository userRepository, EmailAndPasswordValidation emailAndPasswordValidation) {
@@ -46,7 +47,7 @@ public class EmailSenderView extends VerticalLayout {
 
 
         makeLayout();
-        listOfUses = userRepository.findAll();
+        listOfUsers = userRepository.findAll();
 
         upload.addSucceededListener(e -> fileName = e.getFileName());
         send.addClickListener(e -> {
@@ -75,11 +76,11 @@ public class EmailSenderView extends VerticalLayout {
     }
 
     private void sendEmail() {
-        for (int i = 0; i < listOfUses.size(); i++) {
-            User user = listOfUses.get(i);
+        for (int i = 0; i < listOfUsers.size(); i++) {
+            User user = listOfUsers.get(i);
             boolean checkEmail = emailAndPasswordValidation.validateEmail(user.getEmail());
             if (checkEmail) {
-                emailSenderService.sendEmailWithAttachment(user.getEmail(), rte.getHtmlValue(), subject.getValue(), fileName);
+                emailSenderService.sendEmailWithAttachment(user.getEmail(), rte.getValue(), subject.getValue(), fileName);
             }
 
         }

@@ -49,7 +49,7 @@ public class EmailSenderService {
             mimeMessageHelper = new MimeMessageHelper(mimeMessage, true);
             mimeMessageHelper.setFrom(SENDER);
             mimeMessageHelper.setTo(toEmail);
-            mimeMessageHelper.setText(body, true);
+            mimeMessageHelper.setText(body);
             mimeMessage.setSubject(subject);
 
 

@@ -1,5 +1,11 @@
 package org.raksti.web.views.newExam;
 
+import com.vaadin.flow.component.Key;
+import com.vaadin.flow.component.ShortcutEventListener;
+import com.vaadin.flow.component.Shortcuts;
+import com.vaadin.flow.component.UI;
+import com.vaadin.flow.data.value.ValueChangeMode;
+import org.aspectj.weaver.ast.Not;
 import org.raksti.web.data.Role;
 import org.raksti.web.data.entity.ExamData;
 import org.raksti.web.data.entity.User;
@@ -28,7 +34,7 @@ import java.util.Optional;
 @RolesAllowed({"USER", "ADMIN"})
 public class CreatedExamView extends VerticalLayout implements BeforeEnterObserver {
 
-    private TextArea textArea;
+    private final TextArea textArea;
 
 
     private final ExamService examService;
@@ -81,6 +87,34 @@ public class CreatedExamView extends VerticalLayout implements BeforeEnterObserv
             if (exam.isAllowToWrite()) dialog.open();
             else Notification.show("Pagaidām nevar iesniegt diktātu!").addThemeVariants(NotificationVariant.LUMO_PRIMARY);
         });
+
+//        UI.getCurrent().addShortcutListener(this::autoSaveContent, Key.SPACE).allowBrowserDefault();
+
+        textArea.setValueChangeTimeout(60000);
+        textArea.setValueChangeMode(ValueChangeMode.TIMEOUT);
+        textArea.addValueChangeListener(e -> {
+           autoSaveContent();
+        });
+
+    }
+
+
+
+    private void autoSaveContent() {
+        Optional<User> maybeUser = authenticatedUser.get();
+        Exam exam = examService.getByFinished(false);
+        if (maybeUser.isPresent()) {
+            User user = maybeUser.get();
+            ExamData examData = examDataService.get(user.getEmail(), exam.getId());
+            if (examData == null) {
+                examDataService.save(user.getEmail(), textArea.getValue(), exam.getId());
+                Notification.show("Triggered new");
+            } else {
+               examData.setTextData(textArea.getValue());
+               examDataService.save(examData);
+               Notification.show("Triggered");
+            }
+        }
     }
 
     private void saveContent() {
@@ -88,7 +122,10 @@ public class CreatedExamView extends VerticalLayout implements BeforeEnterObserv
         Exam exam = examService.getByFinished(false);
         if (maybeUser.isPresent()) {
             User user = maybeUser.get();
-            examDataService.save(user.getEmail(), textArea.getValue(), exam.getId(), true);
+            ExamData examData = examDataService.get(user.getEmail(), exam.getId());
+            examData.setFinished(true);
+            examData.setTextData(textArea.getValue());
+            examDataService.save(examData);
         }
     }
 

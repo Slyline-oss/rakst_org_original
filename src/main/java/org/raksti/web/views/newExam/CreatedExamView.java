@@ -21,6 +21,8 @@ import com.vaadin.flow.router.BeforeEnterEvent;
 import com.vaadin.flow.router.BeforeEnterObserver;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.annotation.security.RolesAllowed;
 import java.util.Optional;
@@ -30,17 +32,21 @@ import java.util.Optional;
 @RolesAllowed({"USER", "ADMIN"})
 public class CreatedExamView extends VerticalLayout implements BeforeEnterObserver {
 
+    private final static Logger logger = LoggerFactory.getLogger(CreatedExamView.class);
+
     private final TextArea textArea;
 
 
     private final ExamService examService;
     private final ExamDataService examDataService;
     private final AuthenticatedUser authenticatedUser;
+    private final ResultSaver resultSaver;
 
-    public CreatedExamView(ExamService examService, ExamDataService examDataService, AuthenticatedUser authenticatedUser) {
+    public CreatedExamView(ExamService examService, ExamDataService examDataService, AuthenticatedUser authenticatedUser, ResultSaver resultSaver) {
         this.examService = examService;
         this.examDataService = examDataService;
         this.authenticatedUser = authenticatedUser;
+        this.resultSaver = resultSaver;
         textArea = new TextArea();
 
         textArea.setWidthFull();
@@ -137,7 +143,10 @@ public class CreatedExamView extends VerticalLayout implements BeforeEnterObserv
             examData.setFinished(true);
             examData.setTextData(textArea.getValue());
             examDataService.save(examData);
-        }
+            logger.info("Results saved in DB");
+            resultSaver.saveResultIntoFile(user.getEmail(),textArea.getValue());
+        } else logger.warn("Error saving results in DB");
+
     }
 
     @Override

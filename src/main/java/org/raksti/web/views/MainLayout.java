@@ -8,6 +8,7 @@ import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.contextmenu.ContextMenu;
 import com.vaadin.flow.component.dependency.NpmPackage;
 import com.vaadin.flow.component.html.*;
+import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.router.PageTitle;
@@ -17,6 +18,8 @@ import org.raksti.web.data.entity.User;
 import org.raksti.web.security.AuthenticatedUser;
 import org.raksti.web.views.about.AboutView;
 import org.raksti.web.views.allExams.CreatedExams;
+import org.raksti.web.views.buj.CreateFAQView;
+import org.raksti.web.views.buj.FAQView;
 import org.raksti.web.views.createUser.CreateUser;
 import org.raksti.web.views.edit.EditView;
 import org.raksti.web.views.examResults.ExamResultsView;
@@ -29,6 +32,7 @@ import org.raksti.web.views.profile.ProfileView;
 import org.raksti.web.views.sendEmailsPage.EmailSenderView;
 import org.raksti.web.views.userExamHistory.UserExamHistoryView;
 
+import javax.swing.*;
 import java.util.Optional;
 
 /**
@@ -136,9 +140,11 @@ public class MainLayout extends AppLayout {
 
     private MenuItemInfo[] createMenuItems() {
         return new MenuItemInfo[]{ //
-                new MenuItemInfo("Profils", "la la-globe", ProfileView.class), //
+                new MenuItemInfo("Profils", "la la-globe", ProfileView.class),
 
-                new MenuItemInfo("Sākumlapa", "la la-file", AboutView.class), //
+                new MenuItemInfo("Sākumlapa", "la la-file", AboutView.class),
+
+                new MenuItemInfo("BUJ", "la la-weixin", FAQView.class),
 
                 new MenuItemInfo("Lietotāju saraksts", "la la-columns", ListofparticipantsView.class),
 
@@ -157,11 +163,14 @@ public class MainLayout extends AppLayout {
                 new MenuItemInfo("Izveidotie diktāti", "la la-file-text", CreatedExams.class),
 
                 new MenuItemInfo("Sūtīt vēstules", "la la-file", EmailSenderView.class),
+
                 new MenuItemInfo("Participants", "la la-file-text", OfflineLocationParticipantsView.class),
-                new MenuItemInfo("Offline Locations", "la la-file-text", OfflineLocationView.class)
+
+                new MenuItemInfo("Offline Locations", "la la-file-text", OfflineLocationView.class),
+
+                new MenuItemInfo("BUJ rediģēt", "la la-edit", CreateFAQView.class),
 
                 //
-
         };
     }
 

@@ -8,7 +8,6 @@ import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.contextmenu.ContextMenu;
 import com.vaadin.flow.component.dependency.NpmPackage;
 import com.vaadin.flow.component.html.*;
-import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.router.PageTitle;
@@ -17,6 +16,7 @@ import com.vaadin.flow.server.auth.AccessAnnotationChecker;
 import org.raksti.web.data.entity.User;
 import org.raksti.web.security.AuthenticatedUser;
 import org.raksti.web.views.about.AboutView;
+import org.raksti.web.views.about.CreateAboutView;
 import org.raksti.web.views.allExams.CreatedExams;
 import org.raksti.web.views.buj.CreateFAQView;
 import org.raksti.web.views.buj.FAQView;
@@ -172,6 +172,8 @@ public class MainLayout extends AppLayout {
                 new MenuItemInfo("Offline Locations", "la la-file-text", OfflineLocationView.class),
 
                 new MenuItemInfo("BUJ rediģēt", "la la-edit", CreateFAQView.class),
+
+                new MenuItemInfo("Sākumlapa rediģēt", "la la-edit", CreateAboutView.class),
 
                 //
         };

@@ -2,6 +2,7 @@ package org.raksti.web.views.about;
 
 import com.vaadin.flow.component.html.*;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
+import com.vaadin.flow.server.VaadinService;
 import org.raksti.web.data.Role;
 import org.raksti.web.data.entity.About;
 import org.raksti.web.data.entity.ExamData;
@@ -18,9 +19,11 @@ import com.vaadin.flow.server.auth.AnonymousAllowed;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.servlet.http.Cookie;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
-
+import java.util.stream.StreamSupport;
 
 
 @PageTitle("Sākumlapa")
@@ -30,8 +33,6 @@ import java.util.Optional;
 public class AboutView extends VerticalLayout implements BeforeEnterObserver {
 
     private final static Logger logger = LoggerFactory.getLogger(AboutView.class);
-
-
 
 
     private final ExamService examService;
@@ -57,7 +58,7 @@ public class AboutView extends VerticalLayout implements BeforeEnterObserver {
         if (aboutList.size() > 0) {
             about = aboutList.get(0);
         }
-        
+
         HorizontalLayout hl = new HorizontalLayout();
         hl.setJustifyContentMode(JustifyContentMode.AROUND);
         hl.setSpacing(true);
@@ -100,9 +101,9 @@ public class AboutView extends VerticalLayout implements BeforeEnterObserver {
     }
 
 
-
     @Override
     public void beforeEnter(BeforeEnterEvent beforeEnterEvent) {
+        dealWithCookie();
         Exam exam = examService.getByFinished(false);
         if (exam != null && !exam.isFinished() && exam.isAllowToShow()) {
             Optional<User> maybeUser = authenticatedUser.get();
@@ -113,6 +114,23 @@ public class AboutView extends VerticalLayout implements BeforeEnterObserver {
                     beforeEnterEvent.forwardTo("exam-current");
                 }
             }
+        }
+    }
+
+    private static void dealWithCookie() {
+        try {
+            Cookie[] cookies = VaadinService.getCurrentRequest().getCookies();
+            if (cookies != null && cookies.length > 0) {
+                boolean cookiePresent = Arrays.asList(cookies).stream().filter(cookie -> "raksti.org".equals(cookie.getName())).count() > 0;
+                if (!cookiePresent) {
+                    Cookie rakstiOrgCookie = new Cookie("raksti.org", "ir");
+                    rakstiOrgCookie.setMaxAge(60 * 24 * 365); //1 Year in minutes
+                    rakstiOrgCookie.setPath(VaadinService.getCurrentRequest().getContextPath());
+                    VaadinService.getCurrentResponse().addCookie(rakstiOrgCookie);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 }

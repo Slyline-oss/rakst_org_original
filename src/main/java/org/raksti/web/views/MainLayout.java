@@ -21,6 +21,7 @@ import org.raksti.web.views.allExams.CreatedExams;
 import org.raksti.web.views.buj.CreateFAQView;
 import org.raksti.web.views.buj.FAQView;
 import org.raksti.web.views.createUser.CreateUser;
+import org.raksti.web.views.donation.DonationView;
 import org.raksti.web.views.edit.EditView;
 import org.raksti.web.views.examResults.ExamResultsView;
 import org.raksti.web.views.listofparticipants.ListofparticipantsView;
@@ -145,6 +146,8 @@ public class MainLayout extends AppLayout {
                 new MenuItemInfo("Sākumlapa", "la la-file", AboutView.class),
 
                 new MenuItemInfo("BUJ", "la la-weixin", FAQView.class),
+
+                new MenuItemInfo("Atbalsts un saziņa", "la la-group", DonationView.class),
 
                 new MenuItemInfo("Lietotāju saraksts", "la la-columns", ListofparticipantsView.class),
 

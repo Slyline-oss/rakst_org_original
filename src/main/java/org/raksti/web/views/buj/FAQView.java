@@ -1,6 +1,7 @@
 package org.raksti.web.views.buj;
 
 import com.vaadin.flow.component.html.Div;
+import com.vaadin.flow.component.html.Image;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.PageTitle;
@@ -33,10 +34,19 @@ public class FAQView extends VerticalLayout {
 
     private void landing() {
         //Div wrapper
+        Div wrapper = new Div();
+        wrapper.addClassNames("faq-wrapper");
+        //Image div
+        Div image = new Div();
+        image.addClassNames("image");
+        //Image
+        Image img = new Image("images/img.png", "main img");
+        img.addClassNames("image-img");
+        image.add(img);
+        //Horizontal layout
         HorizontalLayout hl = new HorizontalLayout();
         hl.addClassNames("faq-entries");
         hl.setJustifyContentMode(JustifyContentMode.BETWEEN);
-        hl.setFlexGrow(2);
         hl.setSpacing(true);
 
         for (FAQ value : faqList) {
@@ -48,9 +58,14 @@ public class FAQView extends VerticalLayout {
             answer.setText(value.getAnswer());
             logger.info("Content added " + value.getQuestion());
 
-            hl.add(new Div(question, answer));
+            wrapper.add(assignClass(new Div(question, answer)));
         }
-
+        hl.add(wrapper, image);
         add(hl);
+    }
+
+    private Div assignClass(Div div) {
+        div.addClassNames("faq-item");
+        return div;
     }
 }

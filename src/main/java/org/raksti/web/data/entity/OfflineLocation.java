@@ -2,9 +2,7 @@ package org.raksti.web.data.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import javax.persistence.Entity;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -17,7 +15,7 @@ public class OfflineLocation extends AbstractEntity{
     private Integer slotsTotal;
     private Integer slotsTaken = 0;
     @JsonIgnore
-    @OneToMany(mappedBy = "offlineLocation")
+    @OneToMany(mappedBy = "offlineLocation", fetch = FetchType.LAZY)
     private Set<User> participants = new HashSet<>();
     public OfflineLocation(String country, String city, String address, Integer slotsTotal) {
         this.country = country;

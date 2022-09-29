@@ -1,6 +1,7 @@
 @import url('./main-layout.css');
 @import url('./views/listofparticipants-view.css');
 @import url('./views/faq-view.css');
+@import url('./views/donation-view.css');
 @import url('line-awesome/dist/line-awesome/css/line-awesome.min.css');    html {
       --lumo-shade-5pct: rgba(33, 33, 33, 0.05);
       --lumo-shade-10pct: rgba(33, 33, 33, 0.1);

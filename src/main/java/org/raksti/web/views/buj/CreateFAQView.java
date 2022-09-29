@@ -54,6 +54,7 @@ public class CreateFAQView extends VerticalLayout {
         //text area with answer
         answer.setLabel("Atbilde uz jautājumu");
         answer.setWidth("400px");
+        answer.setClearButtonVisible(true);
         //text field with title of question
         question.setClearButtonVisible(true);
         question.setPlaceholder("Jautājums");
@@ -79,7 +80,7 @@ public class CreateFAQView extends VerticalLayout {
             faqService.deleteItems(list);
             loadQuestions();
             grid.setItems(questionList);
-            Notification.show("Jautājums dzēsts!");
+            Notification.show("Jautājums dzēsts!").addThemeVariants(NotificationVariant.LUMO_SUCCESS);
         } else Notification.show("Izvēlēties, ko dzēst").addThemeVariants(NotificationVariant.LUMO_CONTRAST);
     }
 
@@ -91,7 +92,7 @@ public class CreateFAQView extends VerticalLayout {
                 answer.setValue(faq.getAnswer());
             }
         }
-        if (value.isEmpty()) {
+        if (value == null) {
             question.setValue("");
             answer.setValue("");
         }

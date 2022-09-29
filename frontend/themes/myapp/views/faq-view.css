@@ -1,0 +1,29 @@
+body {
+    color: #35294c;
+}
+
+.faq-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+.faq-item {
+    width: 300px;
+}
+
+.faq-entry-question {
+    font-family: Raksti-Verb,Arial,monospace;
+    font-weight: 600;
+    line-height: 1.3em;
+}
+
+.faq-entry-answer {
+    font-family: Raksti-FreightTextPro,Times,monospace;
+    line-height: 1.3em;
+    font-weight: 400;
+}
+
+.image-img {
+    width: 810px;
+}

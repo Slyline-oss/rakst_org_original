@@ -1,6 +1,12 @@
 package org.raksti.web.views.about;
 
+import com.vaadin.flow.component.Text;
+import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.html.*;
+import com.vaadin.flow.component.icon.Icon;
+import com.vaadin.flow.component.notification.Notification;
+import com.vaadin.flow.component.notification.NotificationVariant;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.server.VaadinService;
 import org.raksti.web.data.Role;
@@ -23,7 +29,7 @@ import javax.servlet.http.Cookie;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.StreamSupport;
+
 
 
 @PageTitle("Sākumlapa")
@@ -123,14 +129,44 @@ public class AboutView extends VerticalLayout implements BeforeEnterObserver {
             if (cookies != null && cookies.length > 0) {
                 boolean cookiePresent = Arrays.asList(cookies).stream().filter(cookie -> "raksti.org".equals(cookie.getName())).count() > 0;
                 if (!cookiePresent) {
-                    Cookie rakstiOrgCookie = new Cookie("raksti.org", "ir");
-                    rakstiOrgCookie.setMaxAge(60 * 24 * 365); //1 Year in minutes
-                    rakstiOrgCookie.setPath(VaadinService.getCurrentRequest().getContextPath());
-                    VaadinService.getCurrentResponse().addCookie(rakstiOrgCookie);
+                    createNotification();
                 }
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    private static void createNotification() {
+        Notification notification = new Notification();
+        notification.addThemeVariants(NotificationVariant.LUMO_CONTRAST);
+        notification.setPosition(Notification.Position.BOTTOM_STRETCH);
+
+        Div statusText = new Div(new Text("This website is using cookies"));
+
+        Button retryButton = new Button("Accept");
+        retryButton.addThemeVariants(ButtonVariant.LUMO_TERTIARY_INLINE);
+        retryButton.getElement().getStyle().set("margin-left",
+                "var(--lumo-space-xl)");
+        retryButton.addClickListener(event -> {
+            Cookie rakstiOrgCookie = new Cookie("raksti.org", "ir");
+            rakstiOrgCookie.setMaxAge(60 * 24 * 365); //1 Year in minutes
+            rakstiOrgCookie.setPath(VaadinService.getCurrentRequest().getContextPath());
+            VaadinService.getCurrentResponse().addCookie(rakstiOrgCookie);
+        });
+
+        Button closeButton = new Button(new Icon("lumo", "cross"));
+        closeButton.addThemeVariants(ButtonVariant.LUMO_TERTIARY_INLINE);
+        closeButton.getElement().setAttribute("aria-label", "Close");
+        closeButton.addClickListener(event -> {
+            notification.close();
+        });
+
+        HorizontalLayout layout = new HorizontalLayout(statusText, retryButton,
+                closeButton);
+        layout.setAlignItems(Alignment.CENTER);
+
+        notification.add(layout);
+        notification.open();
     }
 }

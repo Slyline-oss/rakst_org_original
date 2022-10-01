@@ -47,7 +47,7 @@ public class EditView extends VerticalLayout {
         createAboutFrontend();
         createNotificationFrontend();
 
-        add(submitButton,aboutTextArea, historySelector, profileImportantMessageArea, sendButton);
+        add(profileImportantMessageArea, sendButton);
 
         submitButton.addClickListener(e -> changeParagraph());
         sendButton.addClickListener(e -> changeNotification());

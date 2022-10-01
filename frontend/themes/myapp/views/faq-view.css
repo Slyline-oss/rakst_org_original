@@ -10,6 +10,7 @@ body {
 
 .faq-item {
     width: 300px;
+    padding-top: 20px;
 }
 
 .faq-entry-question {

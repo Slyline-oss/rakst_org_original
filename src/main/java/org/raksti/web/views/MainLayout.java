@@ -31,6 +31,7 @@ import org.raksti.web.views.offlineLocation.OfflineLocationView;
 import org.raksti.web.views.participateInExam.ParticipateInExamView;
 import org.raksti.web.views.profile.ProfileView;
 import org.raksti.web.views.sendEmailsPage.EmailSenderView;
+import org.raksti.web.views.sponsors.CreateSponsorView;
 import org.raksti.web.views.userExamHistory.UserExamHistoryView;
 
 import javax.swing.*;
@@ -174,6 +175,8 @@ public class MainLayout extends AppLayout {
                 new MenuItemInfo("BUJ rediģēt", "la la-edit", CreateFAQView.class),
 
                 new MenuItemInfo("Sākumlapa rediģēt", "la la-edit", CreateAboutView.class),
+
+                new MenuItemInfo("Par iniciatīvu rediģēt", "la la-edit", CreateSponsorView.class)
 
                 //
         };

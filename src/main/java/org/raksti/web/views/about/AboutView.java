@@ -55,6 +55,7 @@ public class AboutView extends VerticalLayout implements BeforeEnterObserver {
         addClassNames("about-view");
 
         landing();
+        dealWithCookie();
     }
 
 
@@ -109,7 +110,6 @@ public class AboutView extends VerticalLayout implements BeforeEnterObserver {
 
     @Override
     public void beforeEnter(BeforeEnterEvent beforeEnterEvent) {
-        dealWithCookie();
         Exam exam = examService.getByFinished(false);
         if (exam != null && !exam.isFinished() && exam.isAllowToShow()) {
             Optional<User> maybeUser = authenticatedUser.get();
@@ -153,6 +153,7 @@ public class AboutView extends VerticalLayout implements BeforeEnterObserver {
             rakstiOrgCookie.setMaxAge(60 * 24 * 365); //1 Year in minutes
             rakstiOrgCookie.setPath(VaadinService.getCurrentRequest().getContextPath());
             VaadinService.getCurrentResponse().addCookie(rakstiOrgCookie);
+            notification.close();
         });
 
         Button closeButton = new Button(new Icon("lumo", "cross"));

@@ -80,8 +80,8 @@ public class CreateFAQView extends VerticalLayout {
             faqService.deleteItems(list);
             loadQuestions();
             grid.setItems(questionList);
-            Notification.show("Jautājums dzēsts!").addThemeVariants(NotificationVariant.LUMO_SUCCESS);
-        } else Notification.show("Izvēlēties, ko dzēst").addThemeVariants(NotificationVariant.LUMO_CONTRAST);
+            Notification.show("Jautājums dzēsts!", 5000, Notification.Position.TOP_START).addThemeVariants(NotificationVariant.LUMO_SUCCESS);
+        } else Notification.show("Izvēlēties, ko dzēst", 5000, Notification.Position.TOP_START).addThemeVariants(NotificationVariant.LUMO_CONTRAST);
     }
 
     //sets answer and question data of chosen value in fields
@@ -101,10 +101,10 @@ public class CreateFAQView extends VerticalLayout {
     //validate fields
     private boolean validate() {
         if (question.getValue().isEmpty() || answer.getValue().isEmpty()) {
-            Notification.show("Aizpildiet lūdzu visus laukus!").addThemeVariants(NotificationVariant.LUMO_ERROR);
+            Notification.show("Aizpildiet lūdzu visus laukus!", 5000, Notification.Position.TOP_START).addThemeVariants(NotificationVariant.LUMO_ERROR);
             return false;
         } else if (faqService.getByQuestion(question.getValue()) != null) {
-            Notification.show("Tāds jautājums jau pastāv").addThemeVariants(NotificationVariant.LUMO_ERROR);
+            Notification.show("Tāds jautājums jau pastāv", 5000, Notification.Position.TOP_START).addThemeVariants(NotificationVariant.LUMO_ERROR);
             return false;
         }
         return true;
@@ -116,7 +116,7 @@ public class CreateFAQView extends VerticalLayout {
             faqService.save(new FAQ(question.getValue(), answer.getValue()));
             loadQuestions();
             grid.setItems(questionList);
-            Notification.show("Jautājums izveidots!").addThemeVariants(NotificationVariant.LUMO_SUCCESS);
+            Notification.show("Jautājums izveidots!", 5000, Notification.Position.TOP_START).addThemeVariants(NotificationVariant.LUMO_SUCCESS);
         }
     }
 

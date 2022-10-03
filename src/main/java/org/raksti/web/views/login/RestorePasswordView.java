@@ -1,5 +1,7 @@
 package org.raksti.web.views.login;
 
+import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
+import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import org.raksti.web.data.entity.User;
 import org.raksti.web.security.UserDetailsServiceImpl;
 import org.raksti.web.views.registration.EmailAndPasswordValidation;
@@ -15,7 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 @PageTitle("Reset Password")
 @Route("reset-password/:token/")
 @AnonymousAllowed
-public class RestorePasswordView extends FormLayout implements BeforeEnterObserver {
+public class RestorePasswordView extends VerticalLayout implements BeforeEnterObserver {
 
     private Button submit;
     private PasswordField password;
@@ -41,28 +43,38 @@ public class RestorePasswordView extends FormLayout implements BeforeEnterObserv
         password.setLabel("Parole");
         confirmPassword.setLabel("Apstiprināt paroli");
 
-        setMaxWidth("500px");
-        setResponsiveSteps(
-                new ResponsiveStep("0", 1, ResponsiveStep.LabelsPosition.TOP),
-                new ResponsiveStep("490px", 2, ResponsiveStep.LabelsPosition.TOP)
-        );
-        add(password, confirmPassword, submit);
-        setColspan(submit,2);
+        setJustifyContentMode(JustifyContentMode.CENTER);
+        setAlignItems(Alignment.CENTER);
+        setHeight("100%");
+
+        HorizontalLayout hl = new HorizontalLayout();
+        hl.setJustifyContentMode(JustifyContentMode.BETWEEN);
+        hl.setMaxWidth("500px");
+        hl.add(password, confirmPassword, submit);
+        hl.setSpacing(true);
+        hl.getStyle().set("flex-wrap", "wrap");
+
+        add(hl);
 
         submit.addClickListener(e -> setNewPassword());
     }
 
     private void setNewPassword() {
         if (!password.getValue().equals(confirmPassword.getValue())) {
-            Notification.show("Paroles nesakrīt!").addThemeVariants(NotificationVariant.LUMO_ERROR);
+            Notification.show("Paroles nesakrīt!", 5000, Notification.Position.TOP_START).addThemeVariants(NotificationVariant.LUMO_ERROR);
         } else if (!emailAndPasswordValidation.validatePassword(password.getValue())) {
             Notification.show("Parolei jābūt vismāz 8 simbolu garai, iekļaujot lielus, mazus burtus un vienu speciālu" +
-                    "simbolu (#, $, %, ..)");
+                    "simbolu (#, $, %, ..)", 5000, Notification.Position.TOP_START);
         } else {
             User user = userDetailsService.getByResetPasswordToken(token);
             userDetailsService.updateResetPasswordToken("",user.getEmail());
             userDetailsService.updatePassword(user.getEmail(),password.getValue());
-            Notification.show("Parole veiksmīgi izmainīta").addThemeVariants(NotificationVariant.LUMO_SUCCESS);
+            Notification not = new Notification();
+            not.setPosition(Notification.Position.TOP_START);
+            not.addThemeVariants(NotificationVariant.LUMO_SUCCESS);
+            not.setText("Parole veiksmīgi nomainīta");
+            not.setDuration(5000);
+            not.open();
             getUI().ifPresent(ui -> ui.navigate("about"));
         }
     }

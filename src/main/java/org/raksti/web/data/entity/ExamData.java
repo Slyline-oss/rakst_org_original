@@ -5,6 +5,7 @@ import javax.persistence.*;
 @Table(name = "exam_data")
 @Entity
 public class ExamData {
+
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(nullable = false)
@@ -16,6 +17,7 @@ public class ExamData {
     private String result;
     private Long examId;
     private boolean finished;
+
 
     public ExamData(String email, String textData, Long examId) {
         this.email = email;

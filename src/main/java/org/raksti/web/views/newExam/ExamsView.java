@@ -77,7 +77,7 @@ public class ExamsView extends VerticalLayout {
             if (validateFields()) {
                 dialog.open();
             } else {
-                Notification.show("Lūdzu, aizpildiet visus laukus!");
+                showNotification("Lūdzu, aizpildiet visus laukus!");
             }
         });
 

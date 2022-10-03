@@ -35,22 +35,23 @@ public class ForgotPasswordController {
         String emailText = email.getValue();
         String subject = "Raksti.org - paroles atjaunošana";
         String link = UUID.randomUUID().toString();
-        String content = "<p>Hello,</p>"
-                + "<p>You have requested to reset your password.</p>"
-                + "<p>Click the link below to change your password:</p>"
-                + "<p><a href=\"" +"http://localhost:8080/reset-password/" + link + "\">Change my password</a></p>"
-                + "<br>"
-                + "Ignore this email if you do remember your password, "
-                + "or you have not made the request.";
+        String content = "Klikšķiniet uz saites, lai mainītu paroli. " +
+                "Ignorējiet šo e-pastu, ja atceraties savu paroli, vai arī neesat veikuši šo pieprasījumu. " +
+                "http://localhost:8080/reset-password/" + link;
         if (!emailAndPasswordValidation.validateEmail(emailText)) {
-            Notification.show("Nepareizi ievadīts e-pasts!");
+            Notification.show("Nepareizi ievadīts e-pasts!").setPosition(Notification.Position.TOP_START);
         } else {
             User user = userRepository.findByEmail(emailText);
             user.setResetPasswordToken(link);
             userRepository.save(user);
             emailSenderService.sendEmail(emailText, content,
                     subject);
-            Notification.show("Vēstule nosūtīta uz e-pastu!").addThemeVariants(NotificationVariant.LUMO_SUCCESS);
+            Notification notification = new Notification();
+            notification.setText("Vēstule nosūtīta uz e-pastu!");
+            notification.addThemeVariants(NotificationVariant.LUMO_SUCCESS);
+            notification.setDuration(5000);
+            notification.setPosition(Notification.Position.TOP_START);
+            notification.open();
         }
     }
 }

@@ -20,14 +20,14 @@ import org.raksti.web.data.entity.OfflineLocation;
 public class OfflineLocationForm extends FormLayout {
     private OfflineLocation offlineLocation;
 
-    TextField countryField = new TextField("Country");
-    TextField cityField = new TextField("City");
-    TextField addressField = new TextField("Address");
-    IntegerField totalSlots = new IntegerField("Total Slots");
+    TextField countryField = new TextField("Valsts");
+    TextField cityField = new TextField("Pilsēta");
+    TextField addressField = new TextField("Adrese");
+    IntegerField totalSlots = new IntegerField("Kopējais vietu skaits");
     Binder<OfflineLocation> binder = new BeanValidationBinder<>(OfflineLocation.class);
 
-    Button save = new Button("Save");
-    Button close = new Button("Cancel");
+    Button save = new Button("Saglabāt");
+    Button close = new Button("Atcelt");
 
     public OfflineLocationForm() {
         binder.bind(countryField, OfflineLocation::getCountry, OfflineLocation::setCountry);
@@ -64,9 +64,9 @@ public class OfflineLocationForm extends FormLayout {
 
     private void validateAndSave() {
         if (countryField.isEmpty() || cityField.isEmpty() || addressField.isEmpty() || totalSlots.isEmpty()) {
-            showNotification("All fields must be filled in!", NotificationVariant.LUMO_ERROR);
+            showNotification("Jāaizpilda visi lauki!", NotificationVariant.LUMO_ERROR);
         } else if (totalSlots.getValue() < offlineLocation.getSlotsTaken()) {
-            showNotification("The number of available slots cannot be less than the number of slots already taken! Slots already taken: " + offlineLocation.getSlotsTaken(), NotificationVariant.LUMO_ERROR);
+            showNotification("Pieejamo vietu skaits nevar būt mazāks par jau aizņemto vietu skaitu! Jau aizņemtas vietas: " + offlineLocation.getSlotsTaken(), NotificationVariant.LUMO_ERROR);
         } else {
             try {
                 binder.writeBean(offlineLocation);
@@ -83,6 +83,7 @@ public class OfflineLocationForm extends FormLayout {
 
     private void showNotification(String message, NotificationVariant notificationVariant) {
         Notification notification = Notification.show(message);
+        notification.setPosition(Notification.Position.TOP_START);
         notification.addThemeVariants(notificationVariant);
     }
 

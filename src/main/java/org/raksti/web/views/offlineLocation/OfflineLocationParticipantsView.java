@@ -15,7 +15,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@PageTitle("Offline Exams Participants")
+@PageTitle("Klātienes diktāta dalībnieki")
 @Route(value = "list-of-offline-participants", layout = MainLayout.class)
 @RolesAllowed("ADMIN")
 public class OfflineLocationParticipantsView extends VerticalLayout {
@@ -37,9 +37,9 @@ public class OfflineLocationParticipantsView extends VerticalLayout {
         Grid<Map<String, String>> grid = new Grid<>();
         grid.setItems(participants);
 
-        grid.addColumn(map -> map.get("city")).setHeader("city");
-        grid.addColumn(map -> map.get("address")).setHeader("address");
-        grid.addColumn(map -> map.get("participant")).setHeader("participant");
+        grid.addColumn(map -> map.get("city")).setHeader("Pilsēta");
+        grid.addColumn(map -> map.get("address")).setHeader("Adrese");
+        grid.addColumn(map -> map.get("participant")).setHeader("Dalībnieks");
         grid.getColumns().forEach(gridColumn -> gridColumn.setAutoWidth(true));
 
         add(grid);

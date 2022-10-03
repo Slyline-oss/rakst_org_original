@@ -17,6 +17,7 @@ import com.vaadin.flow.component.textfield.PasswordField;
 import com.vaadin.flow.component.textfield.TextField;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.Locale;
 import java.util.UUID;
 
 public class RegistrationForm extends FormLayout {
@@ -57,10 +58,10 @@ public class RegistrationForm extends FormLayout {
         lastName = new TextField("Uzvārds");
         email = new EmailField("E-pasts");
 
-        allowMarketing = new Checkbox("Allow Marketing Emails?");
+        allowMarketing = new Checkbox("Piekrītu jaunumu saņemšanai");
         allowMarketing.getStyle().set("margin-top", "10px");
 
-        anonymous = new Checkbox("Reģistrēties anonimi?");
+        anonymous = new Checkbox("Reģistrēties anonīmi");
         anonymous.getStyle().set("margin-top", "10px");
 
         password = new PasswordField("Parole");
@@ -117,25 +118,25 @@ public class RegistrationForm extends FormLayout {
     public void register(String firstName, String lastName, String email, String password1, String password2) {
         User user = userRepository.findByEmail(email);
         if (firstName.trim().isEmpty() || lastName.trim().isEmpty() || email.trim().isEmpty())  {
-            Notification.show("Aizpildiet visus laukus!").addThemeVariants(NotificationVariant.LUMO_ERROR);
+            Notification.show("Aizpildiet visus laukus!", 5000, Notification.Position.TOP_START).addThemeVariants(NotificationVariant.LUMO_ERROR);
         } else if(password1.isEmpty()) {
-            Notification.show("Parole ir tukša").addThemeVariants(NotificationVariant.LUMO_ERROR);
+            Notification.show("Parole ir tukša", 5000, Notification.Position.TOP_START).addThemeVariants(NotificationVariant.LUMO_ERROR);
         } else if (!password1.equals(password2)) {
-            Notification.show("Paroles nesakrīt!").addThemeVariants(NotificationVariant.LUMO_ERROR);
+            Notification.show("Paroles nesakrīt!", 5000, Notification.Position.TOP_START).addThemeVariants(NotificationVariant.LUMO_ERROR);
         } else if(user != null) {
-            Notification.show("Tāds lietotājs jau pastāv").addThemeVariants(NotificationVariant.LUMO_ERROR);
+            Notification.show("Tāds lietotājs jau pastāv", 5000, Notification.Position.TOP_START).addThemeVariants(NotificationVariant.LUMO_ERROR);
         } else if(!emailAndPasswordValidation.validateEmail(email)) {
-            Notification.show("Ievadiet pareizo e-pastu");
+            Notification.show("Ievadiet pareizo e-pastu", 5000, Notification.Position.TOP_START);
         } else if(!emailAndPasswordValidation.validatePassword(password1)) {
             Notification.show("Parolei jābūt vismāz 8 simbolu garai, iekļaujot lielus, mazus burtus un vienu speciālu" +
-                    "simbolu (#, $, %, ..)");
+                    "simbolu (#, $, %, ..)", 5000, Notification.Position.TOP_START);
         } else {
             String token = UUID.randomUUID().toString();
             userDetailsService.register(firstName, lastName, email, password1, token);
-            Notification notification = new Notification("Reģistrācija izdevās! Lūdzu, apstipriniet e-pastu! Jums ir sūtīta vēstule uz noradīto e-pastu");
+            Notification notification = new Notification("Reģistrācija izdevās! Lūdzu, apstipriniet e-pastu! Jums ir nosūtīta vēstule uz noradīto e-pastu");
             sendEmail(token, email);
             notification.addThemeVariants(NotificationVariant.LUMO_SUCCESS);
-            notification.setDuration(10000);
+            notification.setDuration(15000);
             notification.setPosition(Notification.Position.TOP_STRETCH);
             notification.open();
             getUI().ifPresent(ui -> ui.navigate("about"));
@@ -152,21 +153,21 @@ public class RegistrationForm extends FormLayout {
     public void register(String email, String password1, String password2) {
         User user = userRepository.findByEmail(email);
         if (user != null) {
-            Notification.show("Tāds lietotājs jau pastāv").addThemeVariants(NotificationVariant.LUMO_ERROR);
+            Notification.show("Tāds lietotājs jau pastāv", 5000, Notification.Position.TOP_START).addThemeVariants(NotificationVariant.LUMO_ERROR);
         } else if(email.trim().isEmpty()) {
-            Notification.show("Aizpildiet visus laukus").addThemeVariants(NotificationVariant.LUMO_ERROR);
+            Notification.show("Aizpildiet visus laukus", 5000, Notification.Position.TOP_START).addThemeVariants(NotificationVariant.LUMO_ERROR);
         } else if(password1.isEmpty()) {
-            Notification.show("Parole ir tukša").addThemeVariants(NotificationVariant.LUMO_ERROR);
+            Notification.show("Parole ir tukša", 5000, Notification.Position.TOP_START).addThemeVariants(NotificationVariant.LUMO_ERROR);
         } else if (!password1.equals(password2)) {
-            Notification.show("Paroles nesakrīt!").addThemeVariants(NotificationVariant.LUMO_ERROR);
+            Notification.show("Paroles nesakrīt!", 5000, Notification.Position.TOP_START).addThemeVariants(NotificationVariant.LUMO_ERROR);
         } else if(!emailAndPasswordValidation.validateEmail(email)) {
-            Notification.show("Ievadiet pareizo e-pastu");
+            Notification.show("Ievadiet pareizo e-pastu", 5000, Notification.Position.TOP_START);
         } else if(!emailAndPasswordValidation.validatePassword(password1)) {
             Notification.show("Parolei jābūt vismāz 8 simbolu garai, iekļaujot lielus, mazus burtus un vienu speciālu" +
-                    "simbolu (#, $, %, ..)");
+                    "simbolu (#, $, %, ..)", 5000, Notification.Position.TOP_START);
         } else {
             String token = UUID.randomUUID().toString();
-            userDetailsService.register(email, password1, token);
+            userDetailsService.register(email.toLowerCase(Locale.ROOT), password1, token);
             Notification notification = new Notification("Reģistrācija izdevās! Lūdzu, apstipriniet e-pastu, lai pieslēgtos profilā! Jums ir sūtīta vēstule uz noradīto e-pastu");
             sendEmail(token, email);
             notification.addThemeVariants(NotificationVariant.LUMO_SUCCESS);

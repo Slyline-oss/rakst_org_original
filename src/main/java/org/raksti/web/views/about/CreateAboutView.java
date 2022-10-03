@@ -60,6 +60,6 @@ public class CreateAboutView extends VerticalLayout {
         aboutService.deleteAll();
         aboutService.saveAbout(new About(title.getValue(), textArea.getValue()));
         loadContent();
-        Notification.show("Saglabāts").addThemeVariants(NotificationVariant.LUMO_SUCCESS);
+        Notification.show("Saglabāts", 5000, Notification.Position.TOP_START);
     }
 }

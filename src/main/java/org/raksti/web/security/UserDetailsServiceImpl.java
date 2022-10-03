@@ -6,6 +6,7 @@ import org.raksti.web.data.service.UserRepository;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Locale;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -33,7 +34,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        User user = userRepository.findByEmail(email);
+        User user = userRepository.findByEmail(email.toLowerCase(Locale.ROOT));
         if (user == null) {
             throw new UsernameNotFoundException("No user present with email: " + email);
         } else {
@@ -70,7 +71,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     }
 
     public void registerAdmin(String email, String password) {
-        userRepository.save(new User("","","",  passwordEncoder.encode(password), email, Set.of(Role.ADMIN, Role.USER)));
+        userRepository.save(new User("","","",  passwordEncoder.encode(password), email, Set.of(Role.ADMIN)));
     }
 
     public User findUserByEmail(String email) {

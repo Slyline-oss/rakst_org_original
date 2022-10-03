@@ -1,5 +1,6 @@
 package org.raksti.web.views.createUser;
 
+import com.vaadin.flow.component.notification.NotificationVariant;
 import org.raksti.web.emailSender.EmailSenderService;
 import org.raksti.web.security.UserDetailsServiceImpl;
 import org.raksti.web.views.registration.EmailAndPasswordValidation;
@@ -8,6 +9,7 @@ import com.vaadin.flow.component.textfield.EmailField;
 import org.springframework.stereotype.Controller;
 
 import java.time.LocalDate;
+import java.util.Locale;
 import java.util.UUID;
 
 @Controller
@@ -37,7 +39,8 @@ public class CreateUserController {
             Notification.show("Tāds lietotājs jau pastāv!");
         } else {
             emailSenderService.sendEmail(emailText, content, subject);
-            userService.registerAdmin(emailText, password);
+            userService.registerAdmin(emailText.toLowerCase(Locale.ROOT), password);
+            Notification.show("Admins izveidots", 5000, Notification.Position.TOP_START).addThemeVariants(NotificationVariant.LUMO_SUCCESS);
         }
     }
 
@@ -56,7 +59,8 @@ public class CreateUserController {
             Notification.show("Tāds lietotājs jau pastāv!");
         } else {
             emailSenderService.sendEmail(emailText, content, subject);
-            userService.register(emailText, firstName, lastName, password, birthday, telNumber, language, country, city, age, education, gender);
+            userService.register(emailText.toLowerCase(Locale.ROOT), firstName, lastName, password, birthday, telNumber, language, country, city, age, education, gender);
+            Notification.show("Lietotājs izveidots", 5000, Notification.Position.TOP_START).addThemeVariants(NotificationVariant.LUMO_SUCCESS);
         }
     }
 }

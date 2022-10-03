@@ -11,6 +11,7 @@ import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
+import org.raksti.web.views.newExam.Exam;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.annotation.security.RolesAllowed;
@@ -34,8 +35,8 @@ public class UserExamHistoryView extends VerticalLayout {
         this.authenticatedUser = authenticatedUser;
 
         //configure grid
-        grid.addColumn(ExamData::getId).setAutoWidth(true).setHeader("Eksāmena nosaukums");
-        grid.addColumn(ExamData::getResult).setAutoWidth(true).setHeader("Resultāts").setSortable(true);
+        grid.addColumn(ExamData::getExamId).setAutoWidth(true).setHeader("Eksāmena nosaukums");
+        grid.addColumn(ExamData::getResult).setAutoWidth(true).setHeader("Rezultāts").setSortable(true);
 
         List<ExamData> exams = examDataService.get(getEmail());
         grid.setItems(exams);

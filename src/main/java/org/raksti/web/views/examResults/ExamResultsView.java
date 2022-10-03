@@ -45,9 +45,9 @@ public class ExamResultsView extends VerticalLayout {
         HeaderRow headerRow = grid.appendHeaderRow();
 
         headerRow.getCell(namingColumn).setComponent(
-                createFilterHeader("Exam name", examDataFilter::setNaming));
+                createFilterHeader("Diktāta nosaukums", examDataFilter::setNaming));
         headerRow.getCell(emailColumn).setComponent(
-                createFilterHeader("Email", examDataFilter::setEmail));
+                createFilterHeader("E-pasts", examDataFilter::setEmail));
 
         add(grid);
 

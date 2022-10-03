@@ -1,0 +1,19 @@
+@media screen and (max-width: 1200px) {
+
+    .exam-wrapper {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        width: 100%;
+        align-items: center;
+    }
+
+    .exam-textArea {
+        width: 100%;
+    }
+
+    .exam-video {
+        width: 100%;
+    }
+
+}

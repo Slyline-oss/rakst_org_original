@@ -1,5 +1,7 @@
 package org.raksti.web.views.sendEmailsPage;
 
+import com.vaadin.flow.component.notification.Notification;
+import com.vaadin.flow.component.notification.NotificationVariant;
 import com.vaadin.flow.component.textfield.TextArea;
 import  org.raksti.web.data.entity.User;
 import org.raksti.web.data.service.UserRepository;
@@ -21,7 +23,7 @@ import com.vaadin.flow.router.Route;
 import javax.annotation.security.RolesAllowed;
 import java.util.List;
 
-@PageTitle("Send Emails Page")
+@PageTitle("Sūtīt vēstules")
 @Route(value = "email-sender", layout = MainLayout.class)
 @RolesAllowed("ADMIN")
 public class EmailSenderView extends VerticalLayout {
@@ -31,7 +33,7 @@ public class EmailSenderView extends VerticalLayout {
     private final EmailAndPasswordValidation emailAndPasswordValidation;
 
     private final TextArea rte = new TextArea();
-    private final Button send = new Button("Sūtīt e-mailu");
+    private final Button send = new Button("Sūtīt e-pastu");
     private final TextField subject = new TextField("Virsraksts");
     private final MultiFileMemoryBuffer mfmb = new MultiFileMemoryBuffer();
     private final Upload upload = new Upload(mfmb);
@@ -81,6 +83,7 @@ public class EmailSenderView extends VerticalLayout {
             boolean checkEmail = emailAndPasswordValidation.validateEmail(user.getEmail());
             if (checkEmail) {
                 emailSenderService.sendEmailWithAttachment(user.getEmail(), rte.getValue(), subject.getValue(), fileName);
+                Notification.show("Vēstule nosūtīta", 5000, Notification.Position.TOP_START).addThemeVariants(NotificationVariant.LUMO_SUCCESS);
             }
 
         }

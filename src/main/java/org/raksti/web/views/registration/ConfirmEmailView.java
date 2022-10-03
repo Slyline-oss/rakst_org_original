@@ -34,7 +34,7 @@ public class ConfirmEmailView extends VerticalLayout implements BeforeEnterObser
             System.out.println("User found");
             user.setConfirmed(true);
             userDetailsService.updateUser(user);
-            Notification.show("E-pasts apstiprināts", 70000, Notification.Position.TOP_STRETCH).addThemeVariants(NotificationVariant.LUMO_SUCCESS);
+            Notification.show("E-pasts apstiprināts", 7000, Notification.Position.TOP_STRETCH).addThemeVariants(NotificationVariant.LUMO_SUCCESS);
             beforeEnterEvent.forwardTo("about");
         } else {
             beforeEnterEvent.forwardTo("about");

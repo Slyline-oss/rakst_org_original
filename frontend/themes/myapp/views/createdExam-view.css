@@ -1,0 +1,24 @@
+.exam-wrapper {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    flex-wrap: wrap;
+}
+
+.exam-textArea {
+    width: 48%;
+}
+
+.exam-video {
+    width: 48%;
+    padding-top: 30px;
+}
+
+.exam-video iframe {
+    width: 100%;
+    height: 420px;
+}
+
+.exam-textArea-element {
+    height: 440px;
+}

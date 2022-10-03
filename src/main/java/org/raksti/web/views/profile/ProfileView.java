@@ -1,6 +1,7 @@
 package org.raksti.web.views.profile;
 
 import com.vaadin.flow.component.html.*;
+import org.raksti.web.countriesAndLanguages.CountriesAndLanguages;
 import org.raksti.web.data.entity.OfflineLocation;
 import org.raksti.web.data.entity.User;
 import org.raksti.web.data.service.OfflineLocationService;
@@ -44,14 +45,14 @@ public class ProfileView extends VerticalLayout {
     private final TextField surname = new TextField("Jūsu uzvārds:");;
     private final DatePicker birthDate = new DatePicker();;
     private final Locale LATVIAN_LOCALE = new Locale("lv", "LV");
-    private final TextField telNumber = new TextField("Jūsu telefona numurs:");
+    private final TextField telNumber = new TextField("Telefona numurs:");
     private final TextField age = new TextField("Jūsu vecums:");
-    private final TextField city = new TextField("Jūsu pilsēta:");
+    private final TextField city = new TextField("Pilsēta:");
     private final Select<String> gender = new Select<>();
     private final Select<String> country = new Select<>();
     private final Select<String> education = new Select<>();
     private final Select<String> language = new Select<>();
-    private final Checkbox anonymous = new Checkbox("Anonims");
+    private final Checkbox anonymous = new Checkbox("Anonīms");
     private com.vaadin.flow.component.dialog.Dialog confirmationDialog = new Dialog();;
 
     private final UserDetailsServiceImpl userDetailsService;
@@ -60,12 +61,14 @@ public class ProfileView extends VerticalLayout {
     private User user;
     @Autowired
     private PasswordEncoder passwordEncoder;
+    private final CountriesAndLanguages countriesAndLanguages;
 
-    public ProfileView(AuthenticatedUser authenticatedUser, UserDetailsServiceImpl userDetailsService, EmailAndPasswordValidation emailAndPasswordValidation, ProfileViewService profileViewService, OfflineLocationService offlineLocationService) {
+    public ProfileView(AuthenticatedUser authenticatedUser, UserDetailsServiceImpl userDetailsService, EmailAndPasswordValidation emailAndPasswordValidation, ProfileViewService profileViewService, OfflineLocationService offlineLocationService, CountriesAndLanguages countriesAndLanguages) {
         this.authenticatedUser = authenticatedUser;
         this.userDetailsService = userDetailsService;
         this.emailAndPasswordValidation = emailAndPasswordValidation;
         this.offlineLocationService = offlineLocationService;
+        this.countriesAndLanguages = countriesAndLanguages;
 
 
         DatePicker.DatePickerI18n latvianI18n = new DatePicker.DatePickerI18n();
@@ -77,7 +80,7 @@ public class ProfileView extends VerticalLayout {
         latvianI18n.setWeek("Nedēļa");
         latvianI18n.setToday("Šodien");
 
-        language.setLabel("Jūsu dzimtā valoda");
+        language.setLabel("Dzimtā valoda");
         language.setPlaceholder("Valoda");
 
         telNumber.setPlaceholder("Telefona numurs");
@@ -87,13 +90,13 @@ public class ProfileView extends VerticalLayout {
         surname.setPlaceholder("Uzvārds");
 
         birthDate.setPlaceholder("DD.MM.YY");
-        birthDate.setLabel("Dzimšanās diena");
+        birthDate.setLabel("Dzimšanas diena");
         birthDate.setI18n(latvianI18n);
 
 
         //Important notification
         Div notification = new Div();
-        notification.add(new H5("Svarīgie ziņojumi:"));
+        notification.add(new H5("Svarīgi ziņojumi:"));
         Text notificationText = new Text(profileViewService.getText());
         notification.add(notificationText);
 
@@ -104,14 +107,17 @@ public class ProfileView extends VerticalLayout {
         Button submitBut = new Button();
         submitBut.setText("Apstiprināt");
         submitBut.addClickListener(e -> confirmationDialog.open());
+        submitBut.setWidth("250px");
+        submitBut.getStyle().set("left", "30px");
+        submitBut.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
 
         HorizontalLayout layout = new HorizontalLayout();
         VerticalLayout firstLayout = new VerticalLayout();
         VerticalLayout secondLayout = new VerticalLayout();
         VerticalLayout thirdLayout = new VerticalLayout();
         VerticalLayout fourthLayout = new VerticalLayout();
-        firstLayout.add(name, birthDate, submitBut);
-        secondLayout.add(surname, telNumber, language, country);
+        firstLayout.add(name, birthDate, country);
+        secondLayout.add(surname, telNumber, language);
         thirdLayout.add(age, city, gender, education);
         fourthLayout.add(notification);
         layout.add(firstLayout, secondLayout, thirdLayout, fourthLayout);
@@ -125,6 +131,7 @@ public class ProfileView extends VerticalLayout {
         cancelButton.addThemeVariants(ButtonVariant.LUMO_ERROR);
         confirmationDialog.getFooter().add(cancelButton, saveButton);
 
+        anonymous.getStyle().set("left", "30px");
         anonymous.addValueChangeListener(e -> {
            if (anonymous.getValue()) {
                name.setEnabled(false);
@@ -138,35 +145,35 @@ public class ProfileView extends VerticalLayout {
         });
 
 
-        password.setLabel("Jūsu tekoša parole: ");
+        password.setLabel("Jūsu esošā parole:");
         password.setClearButtonVisible(true);
 
 
-        newPassword.setLabel("Jauna parole: ");
+        newPassword.setLabel("Jaunā parole:");
         newPassword.setClearButtonVisible(true);
         newPassword.setPattern("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#&()–[{}]:;',?/*~$^+=<>]).{8,20}$");
         newPassword.setHelperText("Parolei jābūt vismāz 8 simbolu garai, iekļaujot lielus, mazus burtus un vienu speciālu\" +\n" +
                 "\"simbolu (#, $, %, ..)");
 
-        Button btnPassword = new Button("Change");
-        btnPassword.addThemeVariants(ButtonVariant.LUMO_TERTIARY_INLINE);
+        Button btnPassword = new Button("Mainīt");
+        btnPassword.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
 
         btnPassword.addClickListener(buttonClickEvent -> changePassword(password.getValue(), newPassword.getValue()));
 
         if (user.getOfflineLocation() != null) {
             VerticalLayout participationNotificationLayout = new VerticalLayout();
             participationNotificationLayout.getElement().getStyle().set("background", "lavenderblush");
-            Label participationNotificationHeader = new Label("You are registered to participate in the event at the following location:");
-            Label participationNotificationFooter = new Label("You can cancel you participation, and free up your slot at this location for someone else by clicking the button below.");
+            Label participationNotificationHeader = new Label("Jūs esat reģistrēts klātienes diktātam šajā norises vietā:");
+            Label participationNotificationFooter = new Label("Spiežot uz pogas zemāk, Jūs varat atsaukt savu dalību un atbrīvot vietu citiem klātienes diktāta dalībniekiem.");
 
             UnorderedList locationInfo = new UnorderedList();
             locationInfo.getElement().getStyle().set("list-style", "none");
-            ListItem offlineLocationCountry = new ListItem ("Country: " + user.getOfflineLocation().getCountry());
-            ListItem offlineLocationCity = new ListItem ("City: " + user.getOfflineLocation().getCity());
-            ListItem offlineLocationAddress = new ListItem ("Address: " + user.getOfflineLocation().getAddress());
+            ListItem offlineLocationCountry = new ListItem ("Valsts: " + user.getOfflineLocation().getCountry());
+            ListItem offlineLocationCity = new ListItem ("Pilsēta: " + user.getOfflineLocation().getCity());
+            ListItem offlineLocationAddress = new ListItem ("Adrese: " + user.getOfflineLocation().getAddress());
             locationInfo.add(offlineLocationCountry, offlineLocationCity, offlineLocationAddress);
 
-            Button retractParticipation = new Button("Retract Participation");
+            Button retractParticipation = new Button("Atsaukt dalību");
             retractParticipation.addClickListener(buttonClickEvent -> {
                 OfflineLocation offlineLocation = user.getOfflineLocation();
                 offlineLocation.setSlotsTaken(offlineLocation.getSlotsTaken()-1);
@@ -180,12 +187,13 @@ public class ProfileView extends VerticalLayout {
         }
         add(new H5("Jūsu dati:"));
         add(layout);
+        add(submitBut);
         add(anonymous);
-        add(new H5("Pamainīt paroli"));
+        add(new H5("Mainīt paroli"));
         add(password);
         add(newPassword);
         add(btnPassword);
-        setSizeFull();
+        setWidth("100%");
         setJustifyContentMode(JustifyContentMode.START);
         //getStyle().set("text-align", "center");
 
@@ -216,19 +224,19 @@ public class ProfileView extends VerticalLayout {
 
 
     private void makeFields() {
-        country.setLabel("Jūsu dzimtā valsts");
+        country.setLabel("Valsts");
         country.setPlaceholder("Valsts");
-        country.setItems("Latvija", "Lietuva", "Igaunija", "Ukraina", "Vācija", "Polija", "Lielbritānija", "Citā valsts");
+        country.setItems(countriesAndLanguages.returnCountries());
 
         city.setPlaceholder("Pilsēta");
 
-        gender.setLabel("Jūsu dzimums");
+        gender.setLabel("Dzimums");
         gender.setPlaceholder("Dzimums");
-        gender.setItems("Vīriešu", "Sieviešu", "Cits");
+        gender.setItems("Sieviete", "Vīrietis", "Cits");
 
-        education.setLabel("Jūsu izglītība");
+        education.setLabel("Izglītība");
         education.setPlaceholder("Izglītība");
-        education.setItems("Pamatizglītība", "Vidējā izglītība", "Bakalaurs", "Maģistrs", "Doktors");
+        education.setItems("Pamatizglītība", "Vidējā izglītība", "Bakalaura grāds", "Maģistra grāds", "Doktora grāds");
     }
 
 
@@ -241,7 +249,7 @@ public class ProfileView extends VerticalLayout {
             birthDate.setLocale(LATVIAN_LOCALE);
             birthDate.setValue(user.getBirthday());
             telNumber.setValue(user.getTelNumber() == null ? "" : user.getTelNumber());
-            language.setItems("Latviešu", "Krievu", "Vācu", "Angļu", "Citā svešvaloda");
+            language.setItems(countriesAndLanguages.returnLanguages());
             language.setValue(user.getLanguage());
             age.setValue(user.getAge() == null ? "" : user.getAge());
             country.setValue(user.getCountry());
@@ -275,7 +283,7 @@ public class ProfileView extends VerticalLayout {
             newUser.setEducation(education.getValue());
             userDetailsService.updateUser(newUser);
             confirmationDialog.close();
-            Notification.show("Jūsu dati veiksmīgi saglabāti!").addThemeVariants(NotificationVariant.LUMO_SUCCESS);
+            Notification.show("Jūsu dati veiksmīgi saglabāti!", 5000, Notification.Position.TOP_START).addThemeVariants(NotificationVariant.LUMO_SUCCESS);
         }
     }
 
@@ -285,23 +293,23 @@ public class ProfileView extends VerticalLayout {
         || birthDate.getValue() == null || telNumber.getValue() == "" || age.getValue() == ""
         || country.getValue() == null || city.getValue() == "" || gender.getValue() == null ||
         education.getValue() == null) {
-            Notification.show("Lūdzu papildiniet informāciju profilā!").addThemeVariants(NotificationVariant.LUMO_CONTRAST);
+            Notification.show("Lūdzu papildiniet informāciju profilā!", 5000, Notification.Position.TOP_START).addThemeVariants(NotificationVariant.LUMO_CONTRAST);
         }
     }
 
     private void changePassword(String password, String newPassword) {
         if (newPassword.trim().isEmpty() || password.trim().isEmpty()) {
-            Notification.show("Aizpildiet visus laukus!").addThemeVariants(NotificationVariant.LUMO_ERROR);
+            Notification.show("Aizpildiet visus laukus!", 5000, Notification.Position.TOP_START).addThemeVariants(NotificationVariant.LUMO_ERROR);
         } else if(!passwordEncoder.matches(password, user.getHashedPassword())) {
-            Notification.show("Tiek ievadīta nepareiza tekoša parole").addThemeVariants(NotificationVariant.LUMO_ERROR);
+            Notification.show("Tiek ievadīta nepareiza tekoša parole", 5000, Notification.Position.TOP_START).addThemeVariants(NotificationVariant.LUMO_ERROR);
         } else if(!emailAndPasswordValidation.validatePassword(newPassword)) {
             Notification.show("Parolei jābūt vismāz 8 simbolu garai, iekļaujot lielus, mazus burtus un vienu speciālu" +
-                    "simbolu (#, $, %, ..)");
+                    "simbolu (#, $, %, ..)", 5000, Notification.Position.TOP_START);
         } else {
             userDetailsService.updatePassword(user.getEmail(), newPassword);
             Notification notification = Notification.show("Parole veiksmīgi pamainīta!");
             notification.addThemeVariants(NotificationVariant.LUMO_SUCCESS);
-            notification.setPosition(Notification.Position.BOTTOM_END);
+            notification.setPosition(Notification.Position.TOP_START);
         }
 
     }

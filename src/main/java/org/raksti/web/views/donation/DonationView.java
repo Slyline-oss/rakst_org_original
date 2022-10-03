@@ -51,11 +51,10 @@ public class DonationView extends VerticalLayout {
         Paragraph mobilly = new Paragraph();
         Anchor mobillySrc = new Anchor("https://mobilly.lv/ziedojumi/#/katalogs/7/9/1265");
         mobillySrc.setTarget("blank");
-        Image mobillyImage = new Image("images/mobily.png", "mobilly payment");
-        mobillySrc.add(mobillyImage);
         Image mobillyQr = new Image("images/mobily_qr.png", "mobilly qr");
+        mobillySrc.add(mobillyQr);
         mobillyQr.addClassNames("mobilly-qr");
-        mobilly.add(mobillySrc, new HtmlComponent("br"), mobillyQr);
+        mobilly.add(mobillySrc, new HtmlComponent("br"));
         //Paragraph adress
         Div adress = new Div();
         adress.add(new Paragraph("Nodibinājums „Pasaules valoda”"), new Paragraph("Vienotais reģistrācijas numurs: 40008282238"),
@@ -88,7 +87,7 @@ public class DonationView extends VerticalLayout {
 
         contactsForm.add(name, surname, email, info, send);
 
-        wrapper.add(contactsDescription, contactsForm);
+        wrapper.add(contactsDescription);
         add(wrapper);
     }
 

@@ -1,5 +1,7 @@
 package org.raksti.web.views.edit;
 
+import com.vaadin.flow.component.notification.Notification;
+import com.vaadin.flow.component.notification.NotificationVariant;
 import org.raksti.web.data.entity.Text;
 import org.raksti.web.data.service.TextRepository;
 import org.raksti.web.views.MainLayout;
@@ -18,7 +20,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 
-@PageTitle("Rediģēt sākumlapu")
+@PageTitle("Sūtīt svarīgu ziņojumu")
 @Route(value = "edit", layout = MainLayout.class)
 @RolesAllowed("ADMIN")
 public class EditView extends VerticalLayout {
@@ -59,6 +61,7 @@ public class EditView extends VerticalLayout {
 
     private void changeNotification() {
         profileViewService.setText(profileImportantMessageArea.getValue());
+        Notification.show("Saglabāts", 5000, Notification.Position.TOP_START).addThemeVariants(NotificationVariant.LUMO_SUCCESS);
     }
 
     private void createAboutFrontend() {

@@ -142,9 +142,10 @@ public class AboutView extends VerticalLayout implements BeforeEnterObserver {
         notification.addThemeVariants(NotificationVariant.LUMO_CONTRAST);
         notification.setPosition(Notification.Position.BOTTOM_STRETCH);
 
-        Div statusText = new Div(new Text("This website is using cookies"));
+        Div statusText = new Div(new Text("Mūsu tīmekļa vietne ievieto sīkdatnes pārlūkprogrammā, ja pārlūkprogrammas iestatījumos šī funkcija ir aktivizēta. " +
+                "Mēs izmantojam sīkdatnes, lai nodrošinātu šīs tīmekļa vietnes funkcionalitāti."));
 
-        Button retryButton = new Button("Accept");
+        Button retryButton = new Button("Apstiprināt");
         retryButton.addThemeVariants(ButtonVariant.LUMO_TERTIARY_INLINE);
         retryButton.getElement().getStyle().set("margin-left",
                 "var(--lumo-space-xl)");

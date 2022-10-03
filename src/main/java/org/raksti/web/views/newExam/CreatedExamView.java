@@ -1,6 +1,7 @@
 package org.raksti.web.views.newExam;
 
 
+import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.data.value.ValueChangeMode;
 import org.raksti.web.data.Role;
 import org.raksti.web.data.entity.ExamData;
@@ -21,6 +22,7 @@ import com.vaadin.flow.router.BeforeEnterEvent;
 import com.vaadin.flow.router.BeforeEnterObserver;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
+import org.raksti.web.views.MainLayout;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -28,7 +30,7 @@ import javax.annotation.security.RolesAllowed;
 import java.util.Optional;
 
 @PageTitle("Exam")
-@Route("exam-current")
+@Route(value = "exam-current", layout = MainLayout.class)
 @RolesAllowed({"USER", "ADMIN"})
 public class CreatedExamView extends VerticalLayout implements BeforeEnterObserver {
 
@@ -49,8 +51,19 @@ public class CreatedExamView extends VerticalLayout implements BeforeEnterObserv
         this.resultSaver = resultSaver;
         textArea = new TextArea();
 
+        Div wrapper = new Div();
+        wrapper.addClassNames("exam-wrapper");
+
+        Div text = new Div();
+        text.addClassNames("exam-textArea");
+
+        Div frame = new Div();
+        frame.addClassNames("exam-video");
+
         textArea.setWidthFull();
         textArea.setLabel("Rakstiet šeit diktātu");
+        text.add(textArea);
+        textArea.addClassNames("exam-textArea-element");
 
         restoreContent();
 
@@ -80,16 +93,17 @@ public class CreatedExamView extends VerticalLayout implements BeforeEnterObserv
 
         IFrame iFrame = new IFrame();
         iFrame.setSrc(link);
-        iFrame.setWidth("50%");
-        iFrame.setHeight("500px");
+        frame.add(iFrame);
 
-        add(title, iFrame, textArea, submitBut);
+        wrapper.add(frame, text);
+
+        add(title, wrapper, submitBut);
 
         setHorizontalComponentAlignment(Alignment.CENTER);
 
         submitBut.addClickListener(e -> {
-            if (exam.isAllowToWrite()) dialog.open();
-            else Notification.show("Pagaidām nevar iesniegt diktātu!").addThemeVariants(NotificationVariant.LUMO_PRIMARY);
+            if (checkIfAvailableToFinish()) dialog.open();
+            else Notification.show("Pagaidām nevar iesniegt diktātu!", 7000, Notification.Position.TOP_START).addThemeVariants(NotificationVariant.LUMO_PRIMARY);
         });
 
 
@@ -100,6 +114,11 @@ public class CreatedExamView extends VerticalLayout implements BeforeEnterObserv
            autoSaveContent();
         });
 
+    }
+
+    private boolean checkIfAvailableToFinish() {
+        Exam exam = examService.getByFinished(false);
+        return exam.isAllowToWrite();
     }
 
 
@@ -125,11 +144,9 @@ public class CreatedExamView extends VerticalLayout implements BeforeEnterObserv
             ExamData examData = examDataService.get(user.getEmail(), exam.getId());
             if (examData == null) {
                 examDataService.save(user.getEmail(), textArea.getValue(), exam.getId());
-                Notification.show("Triggered new");
             } else {
                examData.setTextData(textArea.getValue());
                examDataService.save(examData);
-               Notification.show("Triggered");
             }
         }
     }

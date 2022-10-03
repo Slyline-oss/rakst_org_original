@@ -1,5 +1,6 @@
 package org.raksti.web.views.createUser;
 
+import org.raksti.web.countriesAndLanguages.CountriesAndLanguages;
 import org.raksti.web.views.MainLayout;
 import com.vaadin.flow.component.Text;
 import com.vaadin.flow.component.button.Button;
@@ -32,16 +33,18 @@ public class CreateUser extends VerticalLayout {
     private final Locale LATVIAN_LOCALE = new Locale("lv", "LV");
     private final TextField telNumber = new TextField("Telefona numurs:");;
     private final Select<String> language = new Select<>();
-    private final TextField age = new TextField("Jūsu vecums:");
-    private final TextField city = new TextField("Jūsu pilsēta:");
+    private final TextField age = new TextField("Vecums:");
+    private final TextField city = new TextField("Pilsēta:");
     private final Select<String> gender = new Select<>();
     private final Select<String> country = new Select<>();
     private final Select<String> education = new Select<>();
 
     private final CreateUserController createUserController;
+    private final CountriesAndLanguages countriesAndLanguages;
 
-    public CreateUser(CreateUserController createUserController) {
+    public CreateUser(CreateUserController createUserController, CountriesAndLanguages countriesAndLanguages) {
         this.createUserController = createUserController;
+        this.countriesAndLanguages = countriesAndLanguages;
         Text adminText = new Text("Izveidot jaunu adminu");
         Text userText = new Text("Izveidot jaunu lietotāju");
         adminEmail = new EmailField();
@@ -56,9 +59,13 @@ public class CreateUser extends VerticalLayout {
         add(adminText, adminEmail, createAdminButton, userText);
         createUserRegistration();
         add(createUserButton);
-        createAdminButton.addClickListener(e -> createUserController.sendEmailAdmin(adminEmail));
-        createUserButton.addClickListener(e -> createUserController.sendEmailUser(userEmail, name.getValue(), surname.getValue(), birthDate.getValue(), telNumber.getValue(), language.getValue(),
-        country.getValue(), city.getValue(), age.getValue(), education.getValue(), gender.getValue()));
+        createAdminButton.addClickListener(e -> {
+            createUserController.sendEmailAdmin(adminEmail);
+        });
+        createUserButton.addClickListener(e -> {
+            createUserController.sendEmailUser(userEmail, name.getValue(), surname.getValue(), birthDate.getValue(), telNumber.getValue(), language.getValue(),
+                    country.getValue(), city.getValue(), age.getValue(), education.getValue(), gender.getValue());
+        });
     }
 
     public void createUserRegistration() {
@@ -84,23 +91,23 @@ public class CreateUser extends VerticalLayout {
         surname.setPlaceholder("Uzvārds");
 
         birthDate.setPlaceholder("DD.MM.YY");
-        birthDate.setLabel("Dzimšanās diena");
+        birthDate.setLabel("Dzimšanas diena");
         birthDate.setI18n(latvianI18n);
         birthDate.setLocale(LATVIAN_LOCALE);
 
-        language.setItems("Latviešu", "Krievu", "Vācu", "Angļu", "Citā svešvaloda");
+        language.setItems(countriesAndLanguages.returnLanguages());
 
-        country.setLabel("Jūsu dzimtā valsts");
+        country.setLabel("Dzimtā valsts");
         country.setPlaceholder("Valsts");
-        country.setItems("Latvija", "Lietuva", "Igaunija", "Ukraina", "Vācija", "Polija", "Lielbritānija", "Citā valsts");
+        country.setItems(countriesAndLanguages.returnCountries());
 
         city.setPlaceholder("Pilsēta");
 
         gender.setLabel("Jūsu dzimums");
         gender.setPlaceholder("Dzimums");
-        gender.setItems("Vīriešu", "Sieviešu", "Cits");
+        gender.setItems("Vīrietis", "Sieviete", "Cits");
 
-        education.setLabel("Jūsu izglītība");
+        education.setLabel("Izglītība");
         education.setPlaceholder("Izglītība");
         education.setItems("Pamatizglītība", "Vidējā izglītība", "Bakalaurs", "Maģistrs", "Doktors");
 

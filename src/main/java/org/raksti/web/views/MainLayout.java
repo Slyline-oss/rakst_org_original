@@ -152,7 +152,7 @@ public class MainLayout extends AppLayout {
 
                 new MenuItemInfo("Lietotāju saraksts", "la la-columns", ListofparticipantsView.class),
 
-                new MenuItemInfo("Rediģēt sākumlapu", "la la-edit", EditView.class),
+                new MenuItemInfo("Sūtīt svarīgu ziņojumu", "la la-edit", EditView.class),
 
                 new MenuItemInfo("Izveidot jaunu adminu/lietotāju", "la la-pencil", CreateUser.class),
 
@@ -168,9 +168,9 @@ public class MainLayout extends AppLayout {
 
                 new MenuItemInfo("Sūtīt vēstules", "la la-file", EmailSenderView.class),
 
-                new MenuItemInfo("Participants", "la la-file-text", OfflineLocationParticipantsView.class),
+                new MenuItemInfo("Klātienes diktāta dalībnieki", "la la-file-text", OfflineLocationParticipantsView.class),
 
-                new MenuItemInfo("Offline Locations", "la la-file-text", OfflineLocationView.class),
+                new MenuItemInfo("Klātienes diktāta norises vietas", "la la-file-text", OfflineLocationView.class),
 
                 new MenuItemInfo("BUJ rediģēt", "la la-edit", CreateFAQView.class),
 

@@ -24,7 +24,7 @@ import org.slf4j.LoggerFactory;
 import javax.annotation.security.RolesAllowed;
 import java.util.UUID;
 
-@PageTitle("Offline Locations")
+@PageTitle("Klātienes diktāta norises vietas")
 @Route(value = "offline-locations", layout = MainLayout.class)
 @RolesAllowed({"USER", "ADMIN"})
 public class OfflineLocationView extends VerticalLayout {
@@ -50,7 +50,7 @@ public class OfflineLocationView extends VerticalLayout {
         offlineLocationDialog.add(offlineLocationForm);
         configureForm();
 
-        Button addOfflineLocationButton = new Button("Add Location", e -> addNewLocation());
+        Button addOfflineLocationButton = new Button("Pievienot norises vietu", e -> addNewLocation());
 
         getData();
         add(offlineLocationDialog);
@@ -62,25 +62,25 @@ public class OfflineLocationView extends VerticalLayout {
 
     private void getData() {
         offlineExamGrid.removeAllColumns();
-        offlineExamGrid.addColumn(OfflineLocation::getCountry).setHeader("Country").setSortable(true);
-        offlineExamGrid.addColumn(OfflineLocation::getCity).setHeader("City").setSortable(true);
-        offlineExamGrid.addColumn(OfflineLocation::getAddress).setHeader("Address").setSortable(true);
-        offlineExamGrid.addColumn(OfflineLocation::getSlotsTotal).setHeader("Slots Total").setSortable(true);
-        offlineExamGrid.addColumn(offlineLocation -> offlineLocation.getSlotsTotal() - offlineLocation.getSlotsTaken()).setHeader("Slots Remaining").setSortable(true);
+        offlineExamGrid.addColumn(OfflineLocation::getCountry).setHeader("Valsts").setSortable(true);
+        offlineExamGrid.addColumn(OfflineLocation::getCity).setHeader("Pilsēta").setSortable(true);
+        offlineExamGrid.addColumn(OfflineLocation::getAddress).setHeader("Adrese").setSortable(true);
+        offlineExamGrid.addColumn(OfflineLocation::getSlotsTotal).setHeader("Kopējais vietu skaits").setSortable(true);
+        offlineExamGrid.addColumn(offlineLocation -> offlineLocation.getSlotsTotal() - offlineLocation.getSlotsTaken()).setHeader("Brīvo vietu skaits").setSortable(true);
         offlineExamGrid.addComponentColumn(offlineLocation -> {
-            Button participate = new Button("participate");
+            Button participate = new Button("Pieteikties");
             participate.addClickListener(buttonClickEvent -> participate(offlineLocation.getId()));
             return participate;
         });
 
         if (authenticatedUser.get().get().getRoles().contains(Role.ADMIN)) {
             offlineExamGrid.addComponentColumn(offlineLocation -> {
-                Button editButton = new Button("edit");
+                Button editButton = new Button("Rediģēt");
                 editButton.addClickListener(buttonClickEvent -> editOfflineLocation(offlineLocation));
-                Button deleteButton = new Button("delete");
+                Button deleteButton = new Button("Dzēst");
                 deleteButton.addClickListener(buttonClickEvent -> deleteOfflineLocation(offlineLocation));
                 return new HorizontalLayout(editButton, deleteButton);
-            }).setHeader("Admin Actions");
+            }).setHeader("Admina funkcijas");
         }
 
         offlineExamGrid.getColumns().forEach(offlineLocationColumn -> offlineLocationColumn.setAutoWidth(true));
@@ -103,24 +103,24 @@ public class OfflineLocationView extends VerticalLayout {
 
     private void deleteOfflineLocation(OfflineLocation offlineLocation) {
         confirmationDialog.removeAll();
-        Button confirm = new Button("Yes");
+        Button confirm = new Button("Jā");
         confirm.getElement().getStyle().set("margin-left", "auto");
         confirm.addClickListener(buttonClickEvent -> {
             if (offlineLocation.getSlotsTaken() > 0) {
-                showNotification("Cannot delete location with active participants!", NotificationVariant.LUMO_ERROR);
+                showNotification("Nevar dzēst norises vietu, kur jau ir dalībnieki", NotificationVariant.LUMO_ERROR);
             } else {
                 offlineLocationService.delete(offlineLocation);
                 confirmationDialog.close();
                 updateList();
             }
         });
-        Button decline = new Button("No");
+        Button decline = new Button("Nē");
         decline.getElement().getStyle().set("margin-right", "auto");
         decline.addClickListener(buttonClickEvent -> {
             offlineLocationDialog.close();
             confirmationDialog.close();
         });
-        confirmationDialog.add(new Paragraph("Are you sure you want fo delete this location?"), new HorizontalLayout(confirm, decline));
+        confirmationDialog.add(new Paragraph("Dzēst norises vietu?"), new HorizontalLayout(confirm, decline));
         confirmationDialog.open();
     }
 
@@ -150,12 +150,11 @@ public class OfflineLocationView extends VerticalLayout {
         if (validateParticipationConditions(offlineLocation)) {
             user.setOfflineLocation(offlineLocation);
             userRepository.save(user);
-            emailSenderService.sendEmail(user.getEmail(), getParticipationNotificationEmailBody(offlineLocation), "offline participation notification");
+            emailSenderService.sendEmail(user.getEmail(), getParticipationNotificationEmailBody(offlineLocation), "Paziņojums par klātienes diktātu");
 
             offlineLocation.setSlotsTaken(offlineLocation.getSlotsTaken()+1);
             offlineLocation.getParticipants().add(user);
             offlineLocationService.save(offlineLocation);
-            showNotification("upd, slots taken: " + offlineLocation.getSlotsTaken());
         }
         updateList();
     }
@@ -164,28 +163,30 @@ public class OfflineLocationView extends VerticalLayout {
         String country = offlineLocation.getCountry();
         String city = offlineLocation.getCity();
         String address = offlineLocation.getAddress();
-        return "Some message about participation here :)\n" +
-                "Country: " + country + "\n" +
-                "City: " + city + "\n" +
-                "Address: " + address;
+        return "Paziņojums par klātienes diktātu\n" +
+                "Valsts: " + country + "\n" +
+                "Pilsēta: " + city + "\n" +
+                "Adrese: " + address;
     }
 
     private void showNotification(String message) {
         Notification notification = Notification.show(message);
+        notification.setPosition(Notification.Position.TOP_START);
     }
 
     private void showNotification(String message, NotificationVariant notificationVariant) {
         Notification notification = Notification.show(message);
         notification.addThemeVariants(notificationVariant);
+        notification.setPosition(Notification.Position.TOP_START);
     }
 
     private boolean validateParticipationConditions(OfflineLocation offlineLocation) {
         if (offlineLocation.getSlotsTaken() >= offlineLocation.getSlotsTotal()) {
-            showNotification("out of slots");
+            showNotification("Nav vietu");
             return false;
         }
         if (user.getOfflineLocation() != null) {
-            showNotification("Already participating in another location!");
+            showNotification("Jau piedalīties citā vietā!");
             return false;
         }
         return true;

@@ -75,17 +75,17 @@ public class ListofparticipantsView extends Div implements BeforeEnterObserver {
         add(splitLayout);
 
         // Configure Grid
-        grid.addColumn("Vārds").setAutoWidth(true);
-        grid.addColumn("Uzvārds").setAutoWidth(true);
-        grid.addColumn("E-pasts").setAutoWidth(true);
-        grid.addColumn("Telefona numurs").setAutoWidth(true);
-        grid.addColumn("Dzimšanas diena").setAutoWidth(true);
-        grid.addColumn("Dzimtā valoda").setAutoWidth(true);
-        grid.addColumn("Valsts").setAutoWidth(true);
-        grid.addColumn("Pilsēta").setAutoWidth(true);
-        grid.addColumn("Vēcums").setAutoWidth(true);
-        grid.addColumn("Izglitība").setAutoWidth(true);
-        grid.addColumn("Dzimums").setAutoWidth(true);
+        grid.addColumn("firstName").setAutoWidth(true).setHeader("Vārds");
+        grid.addColumn("lastName").setAutoWidth(true).setHeader("Uzvārds");
+        grid.addColumn("email").setAutoWidth(true).setHeader("E-pasts");
+        grid.addColumn("telNumber").setAutoWidth(true).setHeader("Telefona numurs");
+        grid.addColumn("birthday").setAutoWidth(true).setHeader("Dzimšanas diena");
+        grid.addColumn("language").setAutoWidth(true).setHeader("Dzimtā valoda");
+        grid.addColumn("country").setAutoWidth(true).setHeader("Valsts");
+        grid.addColumn("city").setAutoWidth(true).setHeader("Pilsēta");
+        grid.addColumn("age").setAutoWidth(true).setHeader("Vēcums");
+        grid.addColumn("education").setAutoWidth(true).setHeader("Izglitība");
+        grid.addColumn("gender").setAutoWidth(true).setHeader("Dzimums");
 
 
         grid.setItems(query -> userService.list(

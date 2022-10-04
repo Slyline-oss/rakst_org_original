@@ -150,7 +150,7 @@ public class OfflineLocationView extends VerticalLayout {
         if (validateParticipationConditions(offlineLocation)) {
             user.setOfflineLocation(offlineLocation);
             userRepository.save(user);
-            emailSenderService.sendEmail(user.getEmail(), getParticipationNotificationEmailBody(offlineLocation), "Paziņojums par klātienes diktātu");
+            emailSenderService.sendEmail(user.getEmail(), getParticipationNotificationEmailBody(offlineLocation), "Aicinām piedalīties VIII pasaules diktātā latviešu valodā!");
 
             offlineLocation.setSlotsTaken(offlineLocation.getSlotsTaken()+1);
             offlineLocation.getParticipants().add(user);
@@ -163,9 +163,12 @@ public class OfflineLocationView extends VerticalLayout {
         String country = offlineLocation.getCountry();
         String city = offlineLocation.getCity();
         String address = offlineLocation.getAddress();
-        return "Paziņojums par klātienes diktātu\n" +
-                "Valsts: " + country + "\n" +
-                "Pilsēta: " + city + "\n" +
+        return "Sveicināti!\n" +
+                "Paldies, Jūsu pieteikums ir saņemts!\n" +
+                "Gaidīsim Jūs 2022. gada 15. oktobrī plkst. 12.20 izvēlētajā rakstīšanas vietā!\n" +
+                "Vārds: " + user.getFirstName() + "\n" +
+                "Uzvārds: " + user.getLastName() + "\n" +
+                "Vieta: " + city + "\n" +
                 "Adrese: " + address;
     }
 

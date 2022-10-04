@@ -3,12 +3,15 @@ package org.raksti.web.views.sponsors;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.html.Image;
+import com.vaadin.flow.component.notification.Notification;
+import com.vaadin.flow.component.notification.NotificationVariant;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.select.Select;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.component.upload.SucceededEvent;
 import com.vaadin.flow.component.upload.Upload;
 import com.vaadin.flow.component.upload.receivers.MemoryBuffer;
+import com.vaadin.flow.component.upload.receivers.MultiFileMemoryBuffer;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.server.StreamResource;
@@ -26,6 +29,7 @@ import java.awt.image.DataBufferByte;
 import java.awt.image.WritableRaster;
 import java.io.*;
 import java.util.List;
+import java.util.Set;
 
 @PageTitle("Par inciatīvu - rediģēt")
 @Route(value = "create-sponsors", layout = MainLayout.class)
@@ -36,7 +40,7 @@ public class CreateSponsorView extends VerticalLayout {
 
     private final TextField link = new TextField("Saite uz sponsoru");
     private final TextField name = new TextField("Nosaukums");
-    private final MemoryBuffer mb = new MemoryBuffer();
+    private final MultiFileMemoryBuffer mb = new MultiFileMemoryBuffer();
     private final Upload singleFileUpload = new Upload(mb);
     private final Select<String> type = new Select<>();
     private final Button saveButt = new Button("Pievienot");
@@ -51,7 +55,6 @@ public class CreateSponsorView extends VerticalLayout {
         this.sponsorService = sponsorService;
         loadSponsors();
         landing();
-        showImage();
     }
 
     private void landing() {
@@ -62,12 +65,17 @@ public class CreateSponsorView extends VerticalLayout {
         //Upload system
         singleFileUpload.setMaxFiles(1);
         singleFileUpload.setWidth("400px");
-        singleFileUpload.addSucceededListener(e -> {
+        singleFileUpload.setAcceptedFileTypes("image/jpeg","image/jpg", "image/png", "image/gif", "image/svg");
+        singleFileUpload.addSucceededListener(event -> {
+            String attachmentName = event.getFileName();
             try {
-                logger.info(e.getFileName());
-                handleImage(e);
-            } catch (IOException ex) {
-                ex.printStackTrace();
+                // The image can be jpg png or gif, but we store it always as png file in this example
+                BufferedImage inputImage = ImageIO.read(mb.getInputStream(attachmentName));
+                ByteArrayOutputStream pngContent = new ByteArrayOutputStream();
+                ImageIO.write(inputImage, "png", pngContent);
+                this.data = pngContent.toByteArray();
+            } catch (IOException e) {
+                e.printStackTrace();
             }
         });
         //sponsor type
@@ -95,6 +103,13 @@ public class CreateSponsorView extends VerticalLayout {
     }
 
     private void deleteItems() {
+        Set<Sponsor> deleteList = grid.getSelectedItems();
+        if (deleteList.size() > 0) {
+            sponsorService.deleteEntities(deleteList);
+            loadSponsors();
+            grid.setItems(sponsorList);
+            Notification.show("Sponsors dzēsts!", 5000, Notification.Position.TOP_START).addThemeVariants(NotificationVariant.LUMO_SUCCESS);
+        } else Notification.show("Izvēlēties, ko dzēst", 5000, Notification.Position.TOP_START).addThemeVariants(NotificationVariant.LUMO_CONTRAST);
     }
 
     private void loadSponsors() {
@@ -102,27 +117,17 @@ public class CreateSponsorView extends VerticalLayout {
     }
 
     private boolean validate() {
-        return this.data != null && !link.getValue().isEmpty() && !name.getValue().isEmpty();
+        return !link.getValue().isEmpty() && !name.getValue().isEmpty() && !type.getValue().isEmpty();
     }
 
     private void saveContent() {
         if (validate()) {
-            sponsorService.save(new Sponsor(link.getValue(), data, name.getValue()));
+            sponsorService.save(new Sponsor(link.getValue(), data, name.getValue(), type.getValue()));
             loadSponsors();
             grid.setItems(sponsorList);
             this.data = null;
             singleFileUpload.clearFileList();
         }
-    }
-
-    private void handleImage(SucceededEvent event) throws IOException {
-        InputStream inputStream = mb.getInputStream();
-        this.data = inputStream.readAllBytes();
-        inputStream.close();
-    }
-
-    private void showImage() throws IOException {
-
     }
 
 

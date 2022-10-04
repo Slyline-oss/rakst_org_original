@@ -1,7 +1,9 @@
 package org.raksti.web.views.newExam;
 
 
+import com.vaadin.flow.component.Text;
 import com.vaadin.flow.component.html.Div;
+import com.vaadin.flow.component.html.Paragraph;
 import com.vaadin.flow.data.value.ValueChangeMode;
 import org.raksti.web.data.Role;
 import org.raksti.web.data.entity.ExamData;
@@ -51,6 +53,8 @@ public class CreatedExamView extends VerticalLayout implements BeforeEnterObserv
         this.resultSaver = resultSaver;
         textArea = new TextArea();
 
+        addClassNames("created-exam-view");
+
         Div wrapper = new Div();
         wrapper.addClassNames("exam-wrapper");
 
@@ -61,7 +65,7 @@ public class CreatedExamView extends VerticalLayout implements BeforeEnterObserv
         frame.addClassNames("exam-video");
 
         textArea.setWidthFull();
-        textArea.setLabel("Rakstiet šeit diktātu");
+        textArea.setLabel("Teksta ievades lauks");
         text.add(textArea);
         textArea.addClassNames("exam-textArea-element");
 
@@ -73,6 +77,8 @@ public class CreatedExamView extends VerticalLayout implements BeforeEnterObserv
         H1 title = new H1(naming);
 
         Button submitBut = new Button("Iesniegt");
+        submitBut.addClassNames("created-exam-view-butt");
+        text.add(submitBut, new Paragraph("Diktātu būs iespējams iesniegt norises nobeigumā (pēc 12:50)"));
 
         Dialog dialog = new Dialog();
         dialog.setHeaderTitle("Iesniegt diktātu?");
@@ -97,7 +103,7 @@ public class CreatedExamView extends VerticalLayout implements BeforeEnterObserv
 
         wrapper.add(frame, text);
 
-        add(title, wrapper, submitBut);
+        add(title, wrapper);
 
         setHorizontalComponentAlignment(Alignment.CENTER);
 

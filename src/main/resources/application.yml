@@ -9,10 +9,6 @@ server:
   port: 8080
 
 spring:
-  social:
-    facebook:
-      appId: 386571800254339
-      appSecret: e3757043012f50c32297a2ab59b4871c
   mail:
     host: smtp.gmail.com
     port: 587
@@ -34,23 +30,11 @@ spring:
     username: postgres
   security:
     oauth2:
-      client:
-        registration:
-          facebook:
-            clientId: 386571800254339
-            clientSecret: e3757043012f50c32297a2ab59b4871c
-            accessTokenUri: https://graph.facebook.com/oauth/access_token
-            userAuthorizationUri: https://www.facebook.com/dialog/oauth
-            tokenName: oauth_token
-            authenticationScheme: query
-            clientAuthenticationScheme: form
-            resource:
-              userInfoUri: https://graph.facebook.com/me
     user:
       password: admin
   jpa:
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: update
     properties:
       hibernate:
         enable_lazy_load_no_trans: true

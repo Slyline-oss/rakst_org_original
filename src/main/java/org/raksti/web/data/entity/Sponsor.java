@@ -12,6 +12,7 @@ public class Sponsor {
     private Long id;
     private String link;
     @Lob
+    @Basic(fetch = FetchType.LAZY)
     private byte[] image;
     private String type;
     private String name;
@@ -20,10 +21,11 @@ public class Sponsor {
 
     }
 
-    public Sponsor(String link, byte[] image, String name) {
+    public Sponsor(String link, byte[] image, String name, String type) {
         this.link = link;
         this.image = image;
         this.name = name;
+        this.type = type;
     }
 
     public Long getId() {

@@ -1,11 +1,22 @@
 package org.raksti.web.views.sponsors;
 
+import com.vaadin.flow.component.html.Anchor;
 import com.vaadin.flow.component.html.Div;
+import com.vaadin.flow.component.html.H1;
+import com.vaadin.flow.component.html.Image;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
+import com.vaadin.flow.server.StreamResource;
 import com.vaadin.flow.server.auth.AnonymousAllowed;
+import org.apache.coyote.http11.AbstractHttp11Protocol;
+import org.raksti.web.data.entity.Sponsor;
+import org.raksti.web.data.service.SponsorService;
 import org.raksti.web.views.MainLayout;
+
+import java.io.ByteArrayInputStream;
+import java.util.List;
+
 
 
 @PageTitle("Par inciatīvu")
@@ -13,11 +24,25 @@ import org.raksti.web.views.MainLayout;
 @AnonymousAllowed
 public class SponsorView extends VerticalLayout {
 
-    public SponsorView() {
+    private final List<Sponsor> sponsorList;
 
+    public SponsorView(SponsorService sponsorService) {
+        sponsorList = sponsorService.getAllEntities();
+        addClassNames("sponosrs-view");
+        landing();
     }
 
     public void landing() {
+
+        //Div Titles
+        Div titles = new Div();
+        titles.addClassNames("logo-titles");
+
+        H1 sponsorTitle = new H1("Atbalstītāji");
+        H1 placesTitle = new H1("Norises vietas");
+
+        titles.add(sponsorTitle, placesTitle);
+
         //Div wrapper
         Div wrapper = new Div();
         wrapper.addClassNames("logo-wrapper");
@@ -33,6 +58,25 @@ public class SponsorView extends VerticalLayout {
         //Div places
         Div places = new Div();
         places.addClassNames("places");
+
+        //add sponsors and places
+        for (Sponsor sponsor: sponsorList) {
+            Anchor link = new Anchor(sponsor.getLink());
+            link.setTarget("blank");
+            StreamResource sr = new StreamResource("logo", () -> {
+                return new ByteArrayInputStream(sponsor.getImage());
+            });
+            sr.setContentType("image/png");
+            Image image = new Image(sr, sponsor.getName());
+            image.addClassNames("sponsors-image");
+            link.add(image);
+            if (sponsor.getType().equals("Atbalstītājs")) {
+                sponsors.add(new Div(link));
+            } else {
+                places.add(new Div(link));
+            }
+        }
+
 
         //Div about exam
         Div aboutExam = new Div();
@@ -59,7 +103,8 @@ public class SponsorView extends VerticalLayout {
                 "Katru gadu diktāts tiek translēts ne tikvien tīmekļvietnē „raksti.org” un sabiedrisko mediju portālā „LSM.lv”, bet arī Latvijas Radio 1 un Latvijas Televīzijā.");
 
         wrapper2.add(aboutExam, principles);
-
+        wrapper.add(sponsors, places);
+        add(titles, wrapper, wrapper2);
     }
 
 

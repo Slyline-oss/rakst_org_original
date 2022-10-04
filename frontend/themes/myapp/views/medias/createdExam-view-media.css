@@ -1,3 +1,13 @@
+.created-exam-view-butt {
+    font-size: 20px;
+    width: 100%;
+}
+
+.created-exam-view {
+  font-family: var(--lumo-font-family);;
+}
+
+
 @media screen and (max-width: 1200px) {
 
     .exam-wrapper {

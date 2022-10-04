@@ -236,7 +236,7 @@ public class ProfileView extends VerticalLayout {
 
         education.setLabel("Izglītība");
         education.setPlaceholder("Izglītība");
-        education.setItems("Pamatizglītība", "Vidējā izglītība", "Bakalaura grāds", "Maģistra grāds", "Doktora grāds");
+        education.setItems("Pamatizglītība", "Vidējā izglītība", "Vidējā profesionālā izglītība", "Bakalaura grāds", "Maģistra grāds", "Doktora grāds");
     }
 
 

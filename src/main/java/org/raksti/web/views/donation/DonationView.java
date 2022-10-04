@@ -12,7 +12,12 @@ import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.server.auth.AnonymousAllowed;
+import org.raksti.web.data.entity.About;
+import org.raksti.web.data.entity.DonateText;
+import org.raksti.web.data.service.DonateService;
 import org.raksti.web.views.MainLayout;
+
+import java.util.List;
 
 
 @PageTitle("Atbalsts un saziņa")
@@ -26,11 +31,19 @@ public class DonationView extends VerticalLayout {
     private final TextArea info = new TextArea("Ziņa");
     private final Button send = new Button("Sūtīt");
 
-    public DonationView() {
+    private final DonateService donateService;
+
+    public DonationView(DonateService donateService) {
+        this.donateService = donateService;
         landing();
     }
 
     private void landing() {
+        List<DonateText> donateTextList = donateService.getAll();
+        DonateText donateText = null;
+        if (donateTextList.size() > 0) {
+            donateText = donateTextList.get(0);
+        }
         // br html component
         HtmlComponent br = new HtmlComponent("br");
         //Content wrapper
@@ -43,6 +56,11 @@ public class DonationView extends VerticalLayout {
         Div contactsForm = new Div();
         contactsForm.addClassNames("contacts-form");
 
+        //Div info about donation
+        Div info = new Div();
+        info.addClassNames("contacts-info");
+        info.setText(donateText != null ? donateText.getText() : "");
+
         //Content for contacts description
         Paragraph one = new Paragraph();
         one.setText("Latviešu valodas cienītāji! Lai Pasaules diktāts latviešu valodā notiktu arī šoruden, lūdzam sniegt finansiālu atbalstu, " +
@@ -51,10 +69,14 @@ public class DonationView extends VerticalLayout {
         Paragraph mobilly = new Paragraph();
         Anchor mobillySrc = new Anchor("https://mobilly.lv/ziedojumi/#/katalogs/7/9/1265");
         mobillySrc.setTarget("blank");
+        Image paypalImg = new Image("images/paypal.png", "paypal");
+        Anchor paypalSrc = new Anchor("https://www.paypal.com/donate/?hosted_button_id=DULQA7Q2H6DNE");
+        paypalSrc.setTarget("blank");
+        paypalSrc.add(paypalImg);
         Image mobillyQr = new Image("images/mobily_qr.png", "mobilly qr");
         mobillySrc.add(mobillyQr);
         mobillyQr.addClassNames("mobilly-qr");
-        mobilly.add(mobillySrc, new HtmlComponent("br"));
+        mobilly.add(paypalSrc, new HtmlComponent("br"), mobillySrc, new HtmlComponent("br"));
         //Paragraph adress
         Div adress = new Div();
         adress.add(new Paragraph("Nodibinājums „Pasaules valoda”"), new Paragraph("Vienotais reģistrācijas numurs: 40008282238"),
@@ -77,15 +99,14 @@ public class DonationView extends VerticalLayout {
         Div policy = new Div();
         policy.setText("Šajā tīmekļvietnē esošo informāciju drīkst un ir vēlams pārpublicēt citos resursos.");
 
-        contactsDescription.add(one, mobilly, adress, infoContacts, facebook, lastVideo, policy);
+        contactsDescription.add(info, one, mobilly, adress, infoContacts, facebook, lastVideo, policy);
 
         //Contact form
         name.setMinWidth("400px");
         surname.setMinWidth("400px");
         email.setMinWidth("400px");
-        info.setMinWidth("400px");
 
-        contactsForm.add(name, surname, email, info, send);
+        contactsForm.add(name, surname, email, send);
 
         wrapper.add(contactsDescription);
         add(wrapper);

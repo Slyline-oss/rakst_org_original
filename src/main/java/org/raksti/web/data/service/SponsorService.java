@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Service
 public class SponsorService {
@@ -29,5 +30,9 @@ public class SponsorService {
 
     public void deleteEntity(Sponsor sponsor) {
         sponsorRepository.delete(sponsor);
+    }
+
+    public void deleteEntities(Set<Sponsor> sponsors) {
+        sponsorRepository.deleteAll(sponsors);
     }
 }

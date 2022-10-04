@@ -21,6 +21,7 @@ import org.raksti.web.views.allExams.CreatedExams;
 import org.raksti.web.views.buj.CreateFAQView;
 import org.raksti.web.views.buj.FAQView;
 import org.raksti.web.views.createUser.CreateUser;
+import org.raksti.web.views.donation.CreateDonationView;
 import org.raksti.web.views.donation.DonationView;
 import org.raksti.web.views.edit.EditView;
 import org.raksti.web.views.examResults.ExamResultsView;
@@ -32,6 +33,7 @@ import org.raksti.web.views.participateInExam.ParticipateInExamView;
 import org.raksti.web.views.profile.ProfileView;
 import org.raksti.web.views.sendEmailsPage.EmailSenderView;
 import org.raksti.web.views.sponsors.CreateSponsorView;
+import org.raksti.web.views.sponsors.SponsorView;
 import org.raksti.web.views.userExamHistory.UserExamHistoryView;
 
 import javax.swing.*;
@@ -150,6 +152,8 @@ public class MainLayout extends AppLayout {
 
                 new MenuItemInfo("Atbalsts un saziņa", "la la-group", DonationView.class),
 
+                new MenuItemInfo("Par inciatīvu", "la la-bell", SponsorView.class),
+
                 new MenuItemInfo("Lietotāju saraksts", "la la-columns", ListofparticipantsView.class),
 
                 new MenuItemInfo("Sūtīt svarīgu ziņojumu", "la la-edit", EditView.class),
@@ -176,7 +180,9 @@ public class MainLayout extends AppLayout {
 
                 new MenuItemInfo("Sākumlapa rediģēt", "la la-edit", CreateAboutView.class),
 
-                new MenuItemInfo("Par iniciatīvu rediģēt", "la la-edit", CreateSponsorView.class)
+                new MenuItemInfo("Par iniciatīvu rediģēt", "la la-edit", CreateSponsorView.class),
+
+                new MenuItemInfo("Atbalsts un saziņa rediģēt", "la la-edit", CreateDonationView.class)
 
                 //
         };

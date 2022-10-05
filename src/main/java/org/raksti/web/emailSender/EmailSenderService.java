@@ -18,7 +18,7 @@ public class EmailSenderService {
 
 
     private final JavaMailSender mailSender;
-    private final String SENDER = "torino1337@gmail.com";
+    private final String SENDER = "no-reply@raksti.org";
 
     @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
     public EmailSenderService(JavaMailSender mailSender) {

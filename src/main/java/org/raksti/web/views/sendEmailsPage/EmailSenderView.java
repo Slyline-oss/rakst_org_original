@@ -3,6 +3,7 @@ package org.raksti.web.views.sendEmailsPage;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.notification.NotificationVariant;
 import com.vaadin.flow.component.textfield.TextArea;
+import com.vaadin.flow.component.upload.receivers.FileData;
 import  org.raksti.web.data.entity.User;
 import org.raksti.web.data.service.UserRepository;
 import  org.raksti.web.emailSender.EmailSenderService;
@@ -12,7 +13,6 @@ import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
-import com.vaadin.flow.component.richtexteditor.RichTextEditor;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.component.upload.Upload;
 import com.vaadin.flow.component.upload.UploadI18N;
@@ -51,7 +51,9 @@ public class EmailSenderView extends VerticalLayout {
         makeLayout();
         listOfUsers = userRepository.findAll();
 
-        upload.addSucceededListener(e -> fileName = e.getFileName());
+        upload.addSucceededListener(e -> {
+
+        });
         send.addClickListener(e -> {
            if (fileName != null) {
                sendEmail();
@@ -69,7 +71,8 @@ public class EmailSenderView extends VerticalLayout {
         subject.setClearButtonVisible(true);
         subject.isRequired();
 
-        rte.setMaxHeight("500px");
+        rte.setMinWidth("400px");
+        rte.setMinHeight("300px");
 
         send.setIcon(new Icon(VaadinIcon.CHECK_CIRCLE));
 

@@ -145,7 +145,7 @@ public class RegistrationForm extends FormLayout {
 
     private void sendEmail(String token, String email) {
         String subject = "Raksti.org - e-pasta apstiprināšana";
-        String content = "Sveiki! Apsveicām ar reģistrāciju! Klikšķiniet uz saiti " + "http://localhost:8080/confirm-email/" +
+        String content = "Sveiki! Apsveicām ar reģistrāciju! Klikšķiniet uz saiti " + "https://raksti.org/confirm-email/" +
                 token + " un apstipriniet savu e-pastu!";
         emailSenderService.sendEmail(email, content, subject);
     }

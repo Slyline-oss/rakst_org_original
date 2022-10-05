@@ -1,4 +1,5 @@
 @import url('./main-layout.css');
+@import url('./views/about-view.css');
 @import url('./views/listofparticipants-view.css');
 @import url('./views/faq-view.css');
 @import url('./views/donation-view.css');
@@ -30,5 +31,8 @@
       --lumo-success-color: hsl(159, 76%, 57%);
       --lumo-success-contrast-color: hsl(159, 29%, 10%);
       --lumo-success-text-color: hsl(159, 61%, 40%);
+
+      font-family: Magneto;
+      font-weight: 400;
 
     }

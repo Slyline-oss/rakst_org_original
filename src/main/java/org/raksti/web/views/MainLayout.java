@@ -2,15 +2,14 @@ package org.raksti.web.views;
 
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.applayout.AppLayout;
-import com.vaadin.flow.component.applayout.DrawerToggle;
 import com.vaadin.flow.component.avatar.Avatar;
-import com.vaadin.flow.component.button.ButtonVariant;
+import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.contextmenu.ContextMenu;
+import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.dependency.NpmPackage;
 import com.vaadin.flow.component.html.*;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
-import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.RouterLink;
 import com.vaadin.flow.server.auth.AccessAnnotationChecker;
 import org.raksti.web.data.entity.User;
@@ -36,14 +35,9 @@ import org.raksti.web.views.sponsors.CreateSponsorView;
 import org.raksti.web.views.sponsors.SponsorView;
 import org.raksti.web.views.userExamHistory.UserExamHistoryView;
 
-import javax.swing.*;
 import java.util.Optional;
 
-/**
- * The main view is a top-level placeholder for other views.
- */
 public class MainLayout extends AppLayout {
-
     /**
      * A simple navigation item component, based on ListItem element.
      */
@@ -54,15 +48,16 @@ public class MainLayout extends AppLayout {
         public MenuItemInfo(String menuTitle, String iconClass, Class<? extends Component> view) {
             this.view = view;
             RouterLink link = new RouterLink();
-            link.addClassNames("menu-item-link");
+            // Use Lumo classnames for various styling
+            link.addClassNames("flex", "gap-xs", "h-m", "items-center", "px-s", "text-body");
             link.setRoute(view);
 
             Span text = new Span(menuTitle);
-            text.addClassNames("menu-item-text");
+            // Use Lumo classnames for various styling
+            text.addClassNames("font-medium", "text-m", "whitespace-nowrap");
 
             link.add(new LineAwesomeIcon(iconClass), text);
             add(link);
-
         }
 
         public Class<?> getView() {
@@ -76,7 +71,8 @@ public class MainLayout extends AppLayout {
         @NpmPackage(value = "line-awesome", version = "1.3.0")
         public static class LineAwesomeIcon extends Span {
             public LineAwesomeIcon(String lineawesomeClassnames) {
-                addClassNames("menu-item-icon");
+                // Use Lumo classnames for suitable font styling
+                addClassNames("text-l", "text-secondary");
                 if (!lineawesomeClassnames.isEmpty()) {
                     addClassNames(lineawesomeClassnames);
                 }
@@ -84,54 +80,69 @@ public class MainLayout extends AppLayout {
         }
 
     }
-
-    private H1 viewTitle;
-
-    private AuthenticatedUser authenticatedUser;
     private AccessAnnotationChecker accessChecker;
+    private AuthenticatedUser authenticatedUser;
 
-    public MainLayout(AuthenticatedUser authenticatedUser, AccessAnnotationChecker accessChecker) {
-        this.authenticatedUser = authenticatedUser;
+    public MainLayout(AuthenticatedUser user, AccessAnnotationChecker accessChecker){
         this.accessChecker = accessChecker;
+        this.authenticatedUser = user;
+        addToNavbar(createHeaderContent());
 
-        setPrimarySection(Section.DRAWER);
-        addToNavbar(true, createHeaderContent());
-        addToDrawer(createDrawerContent());
     }
 
     private Component createHeaderContent() {
-        DrawerToggle toggle = new DrawerToggle();
-        toggle.addClassNames("view-toggle");
-        toggle.addThemeVariants(ButtonVariant.LUMO_CONTRAST);
-        toggle.getElement().setAttribute("aria-label", "Menu toggle");
+        Header header = new Header();
+        header.addClassNames("box-border", "flex", "flex-col", "w-full");
 
-        viewTitle = new H1();
-        viewTitle.addClassNames("view-title");
+        HorizontalLayout hl = new HorizontalLayout();
+        hl.setJustifyContentMode(FlexComponent.JustifyContentMode.END);
+        hl.getStyle().set("padding-right", "10px");
+        hl.getStyle().set("width", "20%");
+        hl.getStyle().set("flex-wrap", "wrap");
+        hl.setAlignItems(FlexComponent.Alignment.CENTER);
 
-        Header header = new Header(toggle, viewTitle);
-        header.addClassNames("view-header");
-        return header;
-    }
+        Optional<User> maybeUser = authenticatedUser.get();
+        if (!maybeUser.isPresent()) {
+            Button reg = new Button("Reģistrēties");
+            Button log = new Button("Pieslēgties");
+            reg.addClickListener(e -> getUI().ifPresent(ui -> ui.navigate("registration")));
+            log.addClickListener(e -> getUI().ifPresent(ui -> ui.navigate("login")));
+            hl.add(reg, log);
+        } else {
+            User user = maybeUser.get();
 
-    private Component createDrawerContent() {
-        H2 appName = new H2("Raksti");
-        appName.addClassNames("app-name");
+            Avatar avatar = new Avatar(user.getFirstName() + " " + user.getLastName(), user.getProfilePictureUrl());
+            avatar.addClassNames("me-xs");
+            avatar.setColorIndex(2);
 
-        com.vaadin.flow.component.html.Section section = new com.vaadin.flow.component.html.Section(appName,
-                createNavigation(), createFooter());
-        section.addClassNames("drawer-section");
-        return section;
-    }
+            Button logout = new Button("Iziet");
+            logout.addClickListener(e -> authenticatedUser.logout());
 
-    private Nav createNavigation() {
+            Span name = new Span(user.getFirstName() + " " + user.getLastName());
+            name.addClassNames("font-medium", "text-s", "text-secondary");
+
+            hl.add(avatar, name, logout);
+        }
+
+        Div layout = new Div();
+        layout.addClassNames("flex", "items-center", "px-l");
+        Image image = new Image("images/logo.png", "logo");
+        image.setWidth("80px");
+        Anchor link = new Anchor("/");
+        link.add(image);
+
+        layout.add(link);
+
         Nav nav = new Nav();
-        nav.addClassNames("menu-item-container");
-        nav.getElement().setAttribute("aria-labelledby", "views");
+        nav.addClassNames("flex", "overflow-auto", "px-m", "py-xs");
 
         // Wrap the links in a list; improves accessibility
-        UnorderedList list = new UnorderedList();
-        list.addClassNames("navigation-list");
-        nav.add(list);
+        HorizontalLayout list = new HorizontalLayout();
+        list.addClassNames("flex", "gap-s", "list-none", "m-0", "p-0");
+        list.getStyle().set("width", "80%");
+        list.getStyle().set("flex-wrap", "wrap");
+        list.getStyle().set("align-items", "center");
+        nav.add(layout, list, hl);
 
         for (MenuItemInfo menuItem : createMenuItems()) {
             if (accessChecker.hasAccess(menuItem.getView())) {
@@ -139,14 +150,15 @@ public class MainLayout extends AppLayout {
             }
 
         }
-        return nav;
+
+        header.add(nav);
+        return header;
     }
+
 
     private MenuItemInfo[] createMenuItems() {
         return new MenuItemInfo[]{ //
                 new MenuItemInfo("Profils", "la la-globe", ProfileView.class),
-
-                new MenuItemInfo("Sākumlapa", "la la-file", AboutView.class),
 
                 new MenuItemInfo("BUJ", "la la-weixin", FAQView.class),
 
@@ -188,45 +200,15 @@ public class MainLayout extends AppLayout {
         };
     }
 
-    private HorizontalLayout createFooter() {
-        HorizontalLayout layout = new HorizontalLayout();
-        layout.setJustifyContentMode(FlexComponent.JustifyContentMode.CENTER);
-        layout.addClassNames("footer");
-        Optional<User> maybeUser = authenticatedUser.get();
-        if (maybeUser.isPresent()) {
-            User user = maybeUser.get();
 
-            Avatar avatar = new Avatar(user.getFirstName() + " " + user.getLastName(), user.getProfilePictureUrl());
-            avatar.addClassNames("me-xs");
-            avatar.setColorIndex(2);
-
-            ContextMenu userMenu = new ContextMenu(avatar);
-            userMenu.setOpenOnClick(true);
-            userMenu.addItem("Iziet", e -> {
-                authenticatedUser.logout();
-            });
-
-            Span name = new Span(user.getFirstName() + " " + user.getLastName());
-            name.addClassNames("font-medium", "text-s", "text-secondary");
-
-            layout.add(avatar, name);
-        } else {
-            Anchor loginLink = new Anchor("login", "Pieslēgties");
-            Anchor regLink = new Anchor("registration", "Reģistrēties");
-            layout.add(loginLink, regLink);
-        }
-
-        return layout;
-    }
-
-    @Override
-    protected void afterNavigation() {
-        super.afterNavigation();
-        viewTitle.setText(getCurrentPageTitle());
-    }
-
-    private String getCurrentPageTitle() {
-        PageTitle title = getContent().getClass().getAnnotation(PageTitle.class);
-        return title == null ? "" : title.value();
-    }
+//    @Override
+//    protected void afterNavigation() {
+//        super.afterNavigation();
+//        viewTitle.setText(getCurrentPageTitle());
+//    }
+//
+//    private String getCurrentPageTitle() {
+//        PageTitle title = getContent().getClass().getAnnotation(PageTitle.class);
+//        return title == null ? "" : title.value();
+//    }
 }

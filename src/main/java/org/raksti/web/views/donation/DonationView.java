@@ -21,7 +21,7 @@ import java.util.List;
 
 
 @PageTitle("Atbalsts un saziņa")
-@Route(value = "donates", layout = MainLayout.class)
+@Route(value = "atbalsts", layout = MainLayout.class)
 @AnonymousAllowed
 public class DonationView extends VerticalLayout {
 

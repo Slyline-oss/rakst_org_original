@@ -1,0 +1,10 @@
+@media screen and (max-width: 1400px) {
+
+    .about-view-content {
+        flex-direction: column;
+    }
+
+    .about-view-content aside {
+        align-self: center;
+    }
+}

@@ -67,6 +67,7 @@ public class AboutView extends VerticalLayout implements BeforeEnterObserver {
         }
 
         HorizontalLayout hl = new HorizontalLayout();
+        hl.addClassNames("about-view-content");
         hl.setJustifyContentMode(JustifyContentMode.AROUND);
         hl.setSpacing(true);
         hl.setPadding(true);
@@ -78,6 +79,7 @@ public class AboutView extends VerticalLayout implements BeforeEnterObserver {
         content.getStyle().set("flex-direction", "column");
         content.getStyle().set("justify-content", "flex-start");
         content.getStyle().set("color", "#35294c");
+        content.getStyle().set("width", "50%");
 
         //H1 and paragraph that contains div "text-content"
         H1 title = new H1(about != null ? about.getTitle() : "");
@@ -86,20 +88,29 @@ public class AboutView extends VerticalLayout implements BeforeEnterObserver {
 
         //Div "text-content" that contains h1 and paragraph
         Div textContent = new Div();
+
         textContent.addClassNames("text-content");
         textContent.add(title, text);
         content.add(textContent);
 
-        //Div with image
-        Div image = new Div();
-        image.addClassNames("image");
 
+
+        //Div with image
+//        Div image = new Div();
+//        image.addClassNames("image");
+
+        Aside aside = new Aside();
+        aside.getStyle().set("width", "50%");
+        aside.getStyle().set("align-self", "center");
         //Image
         Image img = new Image("images/img.png", "main img");
-        image.add(img);
-        img.getStyle().set("width", "810px");
+        aside.add(img);
+        img.getStyle().set("width", "100%");
+        img.getStyle().set("margin", "auto");
+        img.getStyle().set("max-width", "100%");
+        img.getStyle().set("max-height", "100%");
 
-        hl.add(content, image);
+        hl.add(content, aside);
 
         hl.setHeightFull();
 

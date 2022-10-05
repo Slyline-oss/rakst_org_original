@@ -37,7 +37,7 @@ public class ForgotPasswordController {
         String link = UUID.randomUUID().toString();
         String content = "Klikšķiniet uz saites, lai mainītu paroli. " +
                 "Ignorējiet šo e-pastu, ja atceraties savu paroli, vai arī neesat veikuši šo pieprasījumu. " +
-                "http://localhost:8080/reset-password/" + link;
+                "https://raksti.org/reset-password/" + link;
         if (!emailAndPasswordValidation.validateEmail(emailText)) {
             Notification.show("Nepareizi ievadīts e-pasts!").setPosition(Notification.Position.TOP_START);
         } else {

@@ -13,7 +13,7 @@ spring:
     host: vh3.makonix.com
     port: 587
     username: no-reply@raksti.org
-    password: b4J7CtZzne3L3uNS
+    password: gXiucM12yVVH
     properties:
       mail:
         smtp:

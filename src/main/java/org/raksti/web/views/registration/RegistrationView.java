@@ -7,10 +7,11 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.server.auth.AnonymousAllowed;
+import org.raksti.web.views.MainLayout;
 import org.springframework.beans.factory.annotation.Autowired;
 
 @PageTitle("Registration")
-@Route(value = "registration")
+@Route(value = "registration", layout = MainLayout.class)
 @AnonymousAllowed
 public class RegistrationView extends VerticalLayout {
 

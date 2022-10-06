@@ -24,7 +24,7 @@ import org.slf4j.LoggerFactory;
 import javax.annotation.security.RolesAllowed;
 import java.util.UUID;
 
-@PageTitle("Klātienes diktāta norises vietas")
+@PageTitle("Pieteikties rakstīšanai klātienē")
 @Route(value = "offline-locations", layout = MainLayout.class)
 @RolesAllowed({"USER", "ADMIN"})
 public class OfflineLocationView extends VerticalLayout {

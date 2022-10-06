@@ -7,9 +7,11 @@ import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.contextmenu.ContextMenu;
 import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.dependency.NpmPackage;
+import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.html.*;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
+import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.RouterLink;
 import com.vaadin.flow.server.auth.AccessAnnotationChecker;
 import org.raksti.web.data.entity.User;
@@ -24,12 +26,15 @@ import org.raksti.web.views.donation.CreateDonationView;
 import org.raksti.web.views.donation.DonationView;
 import org.raksti.web.views.edit.EditView;
 import org.raksti.web.views.examResults.ExamResultsView;
+import org.raksti.web.views.instruction.InstructionView;
 import org.raksti.web.views.listofparticipants.ListofparticipantsView;
 import org.raksti.web.views.newExam.ExamsView;
 import org.raksti.web.views.offlineLocation.OfflineLocationParticipantsView;
 import org.raksti.web.views.offlineLocation.OfflineLocationView;
 import org.raksti.web.views.participateInExam.ParticipateInExamView;
 import org.raksti.web.views.profile.ProfileView;
+import org.raksti.web.views.registration.RegistrationForm;
+import org.raksti.web.views.registration.RegistrationView;
 import org.raksti.web.views.sendEmailsPage.EmailSenderView;
 import org.raksti.web.views.sponsors.CreateSponsorView;
 import org.raksti.web.views.sponsors.SponsorView;
@@ -50,6 +55,7 @@ public class MainLayout extends AppLayout {
             RouterLink link = new RouterLink();
             // Use Lumo classnames for various styling
             link.addClassNames("flex", "gap-xs", "h-m", "items-center", "px-s", "text-body");
+
             link.setRoute(view);
 
             Span text = new Span(menuTitle);
@@ -59,6 +65,8 @@ public class MainLayout extends AppLayout {
             link.add(new LineAwesomeIcon(iconClass), text);
             add(link);
         }
+
+
 
         public Class<?> getView() {
             return view;
@@ -147,9 +155,51 @@ public class MainLayout extends AppLayout {
         for (MenuItemInfo menuItem : createMenuItems()) {
             if (accessChecker.hasAccess(menuItem.getView())) {
                 list.add(menuItem);
+
             }
 
         }
+
+
+        if (maybeUser.isPresent()) {
+            MenuItemInfo offline = new MenuItemInfo("Pieteikties rakstīšanai klātienē", "la la-file-text", OfflineLocationView.class);
+            list.add(offline);
+        } else {
+            MenuItemInfo offline = new MenuItemInfo("Pieteikties rakstīšanai klātienē", "la la-file-text", AboutView.class);
+            offline.addClickListener(e -> {
+                Dialog dialog = new Dialog();
+                dialog.setCloseOnOutsideClick(true);
+                dialog.setHeaderTitle("Piesakieties vai reģistrējieties");
+
+                VerticalLayout dialogLayout = new VerticalLayout();
+                dialogLayout.setAlignItems(FlexComponent.Alignment.CENTER);
+
+                Button log = new Button("Pieslēgties");
+                log.getStyle().set("width", "300px");
+                Button reg = new Button("Reģistrēties");
+                reg.getStyle().set("width", "300px");
+
+                log.addClickListener(event -> {
+                    getUI().ifPresent(ui -> ui.navigate("login"));
+                    dialog.close();
+                });
+                reg.addClickListener(event -> {
+                    getUI().ifPresent(ui -> ui.navigate("registration"));
+                    dialog.close();
+                });
+
+                dialogLayout.add(log, reg);
+
+                dialog.add(dialogLayout);
+
+                dialog.open();
+            });
+
+            list.add(offline);
+        }
+
+
+
 
         header.add(nav);
         return header;
@@ -166,15 +216,17 @@ public class MainLayout extends AppLayout {
 
                 new MenuItemInfo("Par inciatīvu", "la la-bell", SponsorView.class),
 
+                new MenuItemInfo("Instrukcija", "", InstructionView.class),
+
                 new MenuItemInfo("Lietotāju saraksts", "la la-columns", ListofparticipantsView.class),
+
+                new MenuItemInfo("Piedalīties diktātā tiešsaistē", "la la-edit", ParticipateInExamView.class),
 
                 new MenuItemInfo("Sūtīt svarīgu ziņojumu", "la la-edit", EditView.class),
 
                 new MenuItemInfo("Izveidot jaunu adminu/lietotāju", "la la-pencil", CreateUser.class),
 
                 new MenuItemInfo("Diktāts", "la la-file-text-o", ExamsView.class),
-
-                new MenuItemInfo("Piedalīties diktātā tiešsaistē", "la la-edit", ParticipateInExamView.class),
 
                 new MenuItemInfo("Manu diktātu vēsture", "la la-eye", UserExamHistoryView.class),
 
@@ -185,8 +237,6 @@ public class MainLayout extends AppLayout {
                 new MenuItemInfo("Sūtīt vēstules", "la la-file", EmailSenderView.class),
 
                 new MenuItemInfo("Klātienes diktāta dalībnieki", "la la-file-text", OfflineLocationParticipantsView.class),
-
-                new MenuItemInfo("Klātienes diktāta norises vietas", "la la-file-text", OfflineLocationView.class),
 
                 new MenuItemInfo("BUJ rediģēt", "la la-edit", CreateFAQView.class),
 

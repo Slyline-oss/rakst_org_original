@@ -1,9 +1,10 @@
 package org.raksti.web.views.login;
 
+import com.vaadin.flow.component.ComponentEventListener;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
-import com.vaadin.flow.component.confirmdialog.ConfirmDialog;
 import com.vaadin.flow.component.dialog.Dialog;
+import com.vaadin.flow.component.login.AbstractLogin;
 import com.vaadin.flow.component.login.LoginI18n;
 import com.vaadin.flow.component.login.LoginOverlay;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
@@ -11,6 +12,7 @@ import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.textfield.EmailField;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
+import org.raksti.web.security.UserDetailsServiceImpl;
 
 @PageTitle("Login")
 @Route(value = "login")
@@ -23,10 +25,13 @@ public class LoginView extends LoginOverlay {
 
         setAction("login");
         LoginI18n i18n = LoginI18n.createDefault();
+
         LoginI18n.Form form = i18n.getForm();
+
         i18n.setHeader(new LoginI18n.Header());
         i18n.getHeader().setTitle("Raksti");
         i18n.getHeader().setDescription("Ievadiet savu e-pastu un paroli");
+
         setForgotPasswordButtonVisible(true);
         form.setForgotPassword("Aizmirsi paroli?");
         form.setPassword("Parole");
@@ -37,15 +42,16 @@ public class LoginView extends LoginOverlay {
         addForgotPasswordListener(e -> forgotPasswordPopUp());
 
         i18n.setForm(form);
-
-        LoginI18n.ErrorMessage i18nErrorMessage = i18n.getErrorMessage();
         setOpened(true);
+        LoginI18n.ErrorMessage i18nErrorMessage = i18n.getErrorMessage();
         i18n.setAdditionalInformation("");
         i18n.setErrorMessage(i18nErrorMessage);
-
         setI18n(i18n);
 
+
     }
+
+
 
     private void forgotPasswordPopUp() {
         Dialog dialog = new Dialog();

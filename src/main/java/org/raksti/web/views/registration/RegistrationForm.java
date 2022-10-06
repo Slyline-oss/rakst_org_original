@@ -168,10 +168,10 @@ public class RegistrationForm extends FormLayout {
         } else {
             String token = UUID.randomUUID().toString();
             userDetailsService.register(email.toLowerCase(Locale.ROOT), password1, token);
-            Notification notification = new Notification("Reģistrācija izdevās! Lūdzu, apstipriniet e-pastu, lai pieslēgtos profilā! Jums ir nosūtīta vēstule uz noradīto e-pastu");
+            Notification notification = new Notification("Pēc reģistrēšanās uz Jūsu e-pastu tiks nosūtīts apstiprinājuma e-pasts. Ja to nesaņemat dažu minūšu laikā, pārbaudiet, vai e-pasts nav iekritis surogātpasta (spam) mapē. Neskaidrību gadījumā sazināties ar raksti@raksti.org");
             sendEmail(token, email);
             notification.addThemeVariants(NotificationVariant.LUMO_SUCCESS);
-            notification.setDuration(10000);
+            notification.setDuration(30000);
             notification.setPosition(Notification.Position.TOP_STRETCH);
             notification.open();
             getUI().ifPresent(ui -> ui.navigate("about"));

@@ -20,6 +20,7 @@ public class InstructionView extends VerticalLayout {
     }
 
     private void landing() {
+        getStyle().set("padding-top", "30px");
 
         HorizontalLayout hl = new HorizontalLayout();
         hl.setJustifyContentMode(JustifyContentMode.AROUND);

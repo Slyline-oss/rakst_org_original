@@ -35,6 +35,7 @@ public class DonationView extends VerticalLayout {
 
     public DonationView(DonateService donateService) {
         this.donateService = donateService;
+        getStyle().set("padding-top", "30px");
         landing();
     }
 

@@ -58,6 +58,7 @@ public class CreateSponsorView extends VerticalLayout {
     }
 
     private void landing() {
+        getStyle().set("padding-top", "30px");
         //link with src on sponsor
         link.setClearButtonVisible(true);
         link.setMinWidth("400px");

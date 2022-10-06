@@ -28,6 +28,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.annotation.security.RolesAllowed;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
@@ -43,7 +45,7 @@ public class ProfileView extends VerticalLayout {
     private final AuthenticatedUser authenticatedUser;
     private final TextField name = new TextField("Jūsu vārds:");
     private final TextField surname = new TextField("Jūsu uzvārds:");;
-    private final DatePicker birthDate = new DatePicker();;
+    private final DatePicker birthDate = new DatePicker();
     private final Locale LATVIAN_LOCALE = new Locale("lv", "LV");
     private final TextField telNumber = new TextField("Telefona numurs:");
     private final TextField age = new TextField("Jūsu vecums:");
@@ -70,6 +72,9 @@ public class ProfileView extends VerticalLayout {
         this.offlineLocationService = offlineLocationService;
         this.countriesAndLanguages = countriesAndLanguages;
 
+        getStyle().set("padding-top", "30px");
+
+        LocalDate now = LocalDate.now(ZoneId.systemDefault());
 
         DatePicker.DatePickerI18n latvianI18n = new DatePicker.DatePickerI18n();
         latvianI18n.setMonthNames(List.of("Janvāris", "Februāris", "Marts", "Aprīlis", "Maijs",
@@ -91,6 +96,7 @@ public class ProfileView extends VerticalLayout {
 
         birthDate.setPlaceholder("DD.MM.YY");
         birthDate.setLabel("Dzimšanas diena");
+        birthDate.setMax(now);
         birthDate.setI18n(latvianI18n);
 
 
@@ -283,7 +289,7 @@ public class ProfileView extends VerticalLayout {
             newUser.setEducation(education.getValue());
             userDetailsService.updateUser(newUser);
             confirmationDialog.close();
-            Notification.show("Jūsu dati veiksmīgi saglabāti!", 5000, Notification.Position.TOP_START).addThemeVariants(NotificationVariant.LUMO_SUCCESS);
+            Notification.show("Jūsu dati tika veiksmīgi saglabāti!", 5000, Notification.Position.TOP_START).addThemeVariants(NotificationVariant.LUMO_SUCCESS);
         }
     }
 

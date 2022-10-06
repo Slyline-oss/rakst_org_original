@@ -1,5 +1,6 @@
 package org.raksti.web.views.buj;
 
+import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.Image;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
@@ -28,11 +29,13 @@ public class FAQView extends VerticalLayout {
     public FAQView(FAQService faqService) {
         faqList = faqService.getAllFAQ();
         addClassNames("faq-view");
+        getStyle().set("padding-top", "30px");
         landing();
     }
 
 
     private void landing() {
+
         //Div wrapper
         Div wrapper = new Div();
         wrapper.addClassNames("faq-wrapper");

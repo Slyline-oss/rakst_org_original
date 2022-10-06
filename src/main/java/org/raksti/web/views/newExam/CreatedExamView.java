@@ -52,6 +52,7 @@ public class CreatedExamView extends VerticalLayout implements BeforeEnterObserv
         this.authenticatedUser = authenticatedUser;
         this.resultSaver = resultSaver;
         textArea = new TextArea();
+        getStyle().set("padding-top", "30px");
 
         addClassNames("created-exam-view");
 

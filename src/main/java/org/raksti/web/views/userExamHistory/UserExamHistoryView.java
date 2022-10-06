@@ -33,7 +33,7 @@ public class UserExamHistoryView extends VerticalLayout {
     public UserExamHistoryView(ExamDataService examDataService, AuthenticatedUser authenticatedUser) {
         this.examDataService = examDataService;
         this.authenticatedUser = authenticatedUser;
-
+        getStyle().set("padding-top", "30px");
         //configure grid
         grid.addColumn(ExamData::getExamId).setAutoWidth(true).setHeader("Eksāmena nosaukums");
         grid.addColumn(ExamData::getResult).setAutoWidth(true).setHeader("Rezultāts").setSortable(true);

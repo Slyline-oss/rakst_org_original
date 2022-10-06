@@ -1,6 +1,7 @@
 .logo-wrapper {
     display: flex;
     justify-content: space-between;
+    width: 100%;
 }
 
 .text-wrapper {
@@ -65,4 +66,8 @@
     display: flex;
     justify-content: space-around;
     width: 100%;
+}
+
+@media screen and (max-width: 1200px) {
+
 }

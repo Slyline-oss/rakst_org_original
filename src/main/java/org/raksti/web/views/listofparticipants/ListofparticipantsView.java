@@ -65,6 +65,7 @@ public class ListofparticipantsView extends Div implements BeforeEnterObserver {
     public ListofparticipantsView(UserService userService) {
         this.userService = userService;
         addClassNames("listofparticipants-view");
+        getStyle().set("padding-top", "30px");
 
         // Create UI
         SplitLayout splitLayout = new SplitLayout();

@@ -47,6 +47,7 @@ public class EditView extends VerticalLayout {
 
 
         createAboutFrontend();
+        getStyle().set("padding-top", "30px");
         createNotificationFrontend();
 
         add(profileImportantMessageArea, sendButton);

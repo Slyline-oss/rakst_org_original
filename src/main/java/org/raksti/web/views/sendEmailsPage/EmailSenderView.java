@@ -63,6 +63,7 @@ public class EmailSenderView extends VerticalLayout {
     }
 
     private void makeLayout() {
+        getStyle().set("padding-top", "30px");
         UploadI18N latvianUploadi18n = new UploadI18N();
         upload.setI18n(latvianUploadi18n);
 

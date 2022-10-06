@@ -45,6 +45,7 @@ public class ExamsView extends VerticalLayout {
 
         iconStatus();
         fillFields();
+        getStyle().set("padding-top", "30px");
 
         //confirmation dialog
         Dialog dialog = new Dialog();

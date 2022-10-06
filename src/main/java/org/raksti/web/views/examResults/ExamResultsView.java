@@ -33,6 +33,7 @@ public class ExamResultsView extends VerticalLayout {
     @Autowired
     public ExamResultsView(ExamDataService examDataService) {
         this.examDataService = examDataService;
+        getStyle().set("padding-top", "30px");
 
         Grid.Column<ExamData> emailColumn = grid.addColumn(ExamData::getEmail).setAutoWidth(true).setSortable(true);
         Grid.Column<ExamData> namingColumn = grid.addColumn(ExamData::getExamId).setAutoWidth(true).setSortable(true);
@@ -42,6 +43,7 @@ public class ExamResultsView extends VerticalLayout {
         ExamDataFilter examDataFilter = new ExamDataFilter(dataView);
 
         grid.getHeaderRows().clear();
+        grid.setHeight("800px");
         HeaderRow headerRow = grid.appendHeaderRow();
 
         headerRow.getCell(namingColumn).setComponent(

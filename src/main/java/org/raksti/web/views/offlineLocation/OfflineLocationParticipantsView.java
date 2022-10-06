@@ -21,6 +21,7 @@ import java.util.Map;
 public class OfflineLocationParticipantsView extends VerticalLayout {
 
     public OfflineLocationParticipantsView(OfflineLocationService offlineLocationService) {
+        getStyle().set("padding-top", "30px");
 
         List<Map<String, String>> participants = new ArrayList<>();
         Map<String, String> item;

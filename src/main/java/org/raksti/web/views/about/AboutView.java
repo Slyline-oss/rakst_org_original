@@ -53,7 +53,7 @@ public class AboutView extends VerticalLayout implements BeforeEnterObserver {
         this.aboutService = aboutService;
 
         addClassNames("about-view");
-
+        getStyle().set("padding-top", "30px");
         landing();
         dealWithCookie();
     }

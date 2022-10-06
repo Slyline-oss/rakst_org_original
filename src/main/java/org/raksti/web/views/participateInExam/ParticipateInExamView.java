@@ -22,6 +22,7 @@ public class ParticipateInExamView extends VerticalLayout {
 
     public ParticipateInExamView(ExamService examService) {
         this.examService = examService;
+        getStyle().set("padding-top", "30px");
 
         H3 title = new H3("Diktāta pieejamība: ");
         Button goToExam = new Button("Sākt diktātu");

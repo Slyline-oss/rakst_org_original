@@ -33,7 +33,7 @@ public class SponsorView extends VerticalLayout {
     }
 
     public void landing() {
-
+        getStyle().set("padding-top", "30px");
         //Div Titles
         Div titles = new Div();
         titles.addClassNames("logo-titles");

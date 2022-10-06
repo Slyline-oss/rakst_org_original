@@ -214,7 +214,7 @@ public class MainLayout extends AppLayout {
 
                 new MenuItemInfo("Atbalsts un saziņa", "la la-group", DonationView.class),
 
-                new MenuItemInfo("Par inciatīvu", "la la-bell", SponsorView.class),
+                new MenuItemInfo("Par iniciatīvu", "la la-bell", SponsorView.class),
 
                 new MenuItemInfo("Instrukcija", "", InstructionView.class),
 

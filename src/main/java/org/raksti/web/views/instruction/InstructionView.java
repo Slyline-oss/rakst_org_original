@@ -43,9 +43,9 @@ public class InstructionView extends VerticalLayout {
         img.getStyle().set("width", "810px");
 
         //style content
-        content.setText("Esiet sveicināti VIII pasaules diktātā latviešu valodā! Teksta „Krāsaina saule virs pelēkiem jumtiem”nautors ir latviešu rakstnieks un žurnālists Osvalds Zebris. Diktāts norisināsies 15. oktobrī, plkst. 12.15 (pēc Latvijas laika). Lai rakstītu diktātu tiešsaistē, ir nepieciešama iepriekšēja reģistrācija. Piedaloties diktātā, Jūs piekrītat savu personas datu apstrādei, kas nekur netiks publicēti, taču ir nepieciešami saziņai un statistikai.\n" +
+        content.setText("Esiet sveicināti VIII pasaules diktātā latviešu valodā! Teksta „Krāsaina saule virs pelēkiem jumtiem” autors ir latviešu rakstnieks un žurnālists Osvalds Zebris. Diktāts norisināsies 15. oktobrī, plkst. 12.20 (pēc Latvijas laika). Lai rakstītu diktātu tiešsaistē, ir nepieciešama iepriekšēja reģistrācija. Piedaloties diktātā, Jūs piekrītat savu personas datu apstrādei, kas nekur netiks publicēti, taču ir nepieciešami saziņai un statistikai.\n" +
                 "\n" +
-                "Ekrāna kreisajā pusē Jūs redzēsiet un dzirdēsiet diktoru– režisoru un aktieri Gerdu Lapošku. Ekrāna labajā pusē būs teksta ievades lauks. Kad pabeigsiet rakstīt diktātu, būs jānospiež poga „Nosūtīt”, lai diktāts nonāktu pie mums labošanai. Nedēļu pēc diktāta norises anketā norādītajā e-pastā Jūs saņemsiet saiti, lai apskatītu izlaboto darbu savā profilā, kā arī virtuālu apliecinājumu par piedalīšanos.\n" +
+                "Ekrāna kreisajā pusē Jūs redzēsiet un dzirdēsiet diktoru – režisoru un aktieri Gerdu Lapošku. Ekrāna labajā pusē būs teksta ievades lauks. Kad pabeigsiet rakstīt diktātu, būs jānospiež poga „Nosūtīt”, lai diktāts nonāktu pie mums labošanai. Nedēļu pēc diktāta norises anketā norādītajā e-pastā Jūs saņemsiet saiti, lai apskatītu izlaboto darbu savā profilā, kā arī virtuālu apliecinājumu par piedalīšanos.\n" +
                 "\n" +
                 "Lai redzētu video datorā, vēlams atjaunināt pārlūkprogrammas versiju. Interneta lejupielādes ātrumam jābūt vismaz 2 Mbps. Lūdzam pārliecināties, ka Jums ir pieejamas diakritiskās zīmes (garumzīmes un mīkstinājuma zīmes). Diktāti bez diakritiskajām zīmēm, kā arī tikai daļēji uzrakstīti diktāti pārbaudei pieņemti netiks.\n" +
                 "\n" +

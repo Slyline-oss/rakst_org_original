@@ -2,6 +2,7 @@ package org.raksti.web.views.instruction;
 
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.Image;
+import com.vaadin.flow.component.html.Paragraph;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.PageTitle;
@@ -54,8 +55,10 @@ public class InstructionView extends VerticalLayout {
                 "Jums būs 3 minūtes laika, lai nosūtītu diktātu pārbaudei.\n" +
                 "\n" +
                 "Veiksmi vēlot,\n" +
-                "\n" +
-                "Toms Sadovskis un Olga Sukonnikova no raksti.org.");
+                "\n");
+
+        Paragraph p = new Paragraph("Toms Sadovskis un Olga Sukonnikova no raksti.org.");
+        content.add(p);
 
         hl.add(content, image);
         add(hl);

@@ -69,6 +69,8 @@ public class User extends AbstractEntity {
         this.confirmed = true;
     }
 
+
+
     //Registration anonymous
     public User(String email, String hashedPassword, String emailConfirmationToken) {
         this.email = email;

@@ -87,7 +87,11 @@ public class CreatedExamView extends VerticalLayout implements BeforeEnterObserv
         saveButton.addClickListener(e -> {
             saveContent();
             dialog.close();
-            getUI().ifPresent(ui -> ui.navigate("about"));
+            if (checkProfileFilled()) {
+                getUI().ifPresent(ui -> ui.navigate("profile"));
+            } else {
+                getUI().ifPresent(ui -> ui.navigate("about"));
+            }
             Notification notification = new Notification("Paldies par dalību latviešu diktātā!");
             notification.setPosition(Notification.Position.TOP_CENTER);
             notification.addThemeVariants(NotificationVariant.LUMO_SUCCESS);
@@ -121,6 +125,17 @@ public class CreatedExamView extends VerticalLayout implements BeforeEnterObserv
            autoSaveContent();
         });
 
+    }
+
+    private boolean checkProfileFilled() {
+        Optional<User> maybeUser = authenticatedUser.get();
+        if (maybeUser.isPresent()) {
+            User user = maybeUser.get();
+            return user.getAge() == null || user.getCity() == null ||
+                    user.getTelNumber() == null || user.getBirthday() == null ||
+                    user.getEducation() == null || user.getCountry() == null;
+        }
+        return false;
     }
 
     private boolean checkIfAvailableToFinish() {

@@ -35,7 +35,7 @@ import java.util.Locale;
 import java.util.Optional;
 
 @PageTitle("Profils")
-@Route(value = "profile/:samplePersonID?/:action?(edit)", layout = MainLayout.class)
+@Route(value = "profile", layout = MainLayout.class)
 @RolesAllowed({"USER", "ADMIN"})
 public class ProfileView extends VerticalLayout {
 

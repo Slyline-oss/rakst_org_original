@@ -53,6 +53,10 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     }
 
+    public void saveUser(User user) {
+        userRepository.save(user);
+    }
+
     public void register(String firstName, String lastName, String email, String password1, String emailConfirmationToken) {
         userRepository.save(new User(firstName, firstName, lastName, passwordEncoder.encode(password1), email, Set.of(Role.USER), emailConfirmationToken));
     }

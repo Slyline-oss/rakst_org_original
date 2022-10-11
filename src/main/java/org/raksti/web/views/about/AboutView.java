@@ -129,10 +129,27 @@ public class AboutView extends VerticalLayout implements BeforeEnterObserver {
                 ExamData examData = examDataService.get(user.getEmail(), exam.getId());
                 if (examData == null && user.getRoles().contains(Enum.valueOf(Role.class, "USER"))) {
                     beforeEnterEvent.forwardTo("exam-current");
+                    return;
                 }
             }
         }
+
+        Optional<User> maybeUser = authenticatedUser.get();
+        if (maybeUser.isPresent()) {
+            User user = maybeUser.get();
+            if (checkProfileFilled(user)) {
+                beforeEnterEvent.forwardTo("profile");
+                logger.info("worked");
+            }
+        }
     }
+
+    private boolean checkProfileFilled(User user) {
+        return user.getAge() == null || user.getCity() == null ||
+                user.getTelNumber() == null || user.getBirthday() == null ||
+                user.getEducation() == null || user.getCountry() == null;
+    }
+
 
     private static void dealWithCookie() {
         try {

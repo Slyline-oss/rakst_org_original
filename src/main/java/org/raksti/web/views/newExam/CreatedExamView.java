@@ -105,6 +105,7 @@ public class CreatedExamView extends VerticalLayout implements BeforeEnterObserv
         IFrame iFrame = new IFrame();
         iFrame.setSrc(link);
         frame.add(iFrame);
+        iFrame.setAllow("autoplay;picture-in-picture;xr-spatial-tracking;encrypted-media");
 
         wrapper.add(frame, text);
 

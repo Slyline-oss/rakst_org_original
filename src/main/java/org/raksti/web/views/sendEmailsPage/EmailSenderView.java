@@ -21,7 +21,10 @@ import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 
 import javax.annotation.security.RolesAllowed;
+import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 @PageTitle("Sūtīt vēstules")
 @Route(value = "email-sender", layout = MainLayout.class)
@@ -38,7 +41,7 @@ public class EmailSenderView extends VerticalLayout {
     private final MultiFileMemoryBuffer mfmb = new MultiFileMemoryBuffer();
     private final Upload upload = new Upload(mfmb);
     private String fileName = "";
-    private List<User> listOfUsers;
+    private List<String> emails = new ArrayList<>();
 
 
     public EmailSenderView(EmailSenderService emailSenderService, UserRepository userRepository, EmailAndPasswordValidation emailAndPasswordValidation) {
@@ -49,10 +52,10 @@ public class EmailSenderView extends VerticalLayout {
 
 
         makeLayout();
-        listOfUsers = userRepository.findAll();
 
+        upload.setAcceptedFileTypes(".csv");
         upload.addSucceededListener(e -> {
-
+            displayList(mfmb.getInputStream(e.getFileName()));
         });
         send.addClickListener(e -> {
            if (fileName != null) {
@@ -60,6 +63,13 @@ public class EmailSenderView extends VerticalLayout {
            }
         });
 
+    }
+
+    private void displayList(InputStream inputStream) {
+        Scanner sc = new Scanner(inputStream);
+        while (sc.hasNext()) {
+            emails.add(sc.next());
+        }
     }
 
     private void makeLayout() {
@@ -82,14 +92,8 @@ public class EmailSenderView extends VerticalLayout {
     }
 
     private void sendEmail() {
-        for (int i = 0; i < listOfUsers.size(); i++) {
-            User user = listOfUsers.get(i);
-            boolean checkEmail = emailAndPasswordValidation.validateEmail(user.getEmail());
-            if (checkEmail) {
-                emailSenderService.sendEmailWithAttachment(user.getEmail(), rte.getValue(), subject.getValue(), fileName);
-                Notification.show("Vēstule nosūtīta", 5000, Notification.Position.TOP_START).addThemeVariants(NotificationVariant.LUMO_SUCCESS);
-            }
-
+        for(String email: emails) {
+            emailSenderService.sendEmail(email, rte.getValue(), subject.getValue());
         }
     }
 

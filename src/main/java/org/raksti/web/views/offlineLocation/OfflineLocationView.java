@@ -3,6 +3,7 @@ package org.raksti.web.views.offlineLocation;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.grid.Grid;
+import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.Paragraph;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.notification.NotificationVariant;
@@ -57,7 +58,10 @@ public class OfflineLocationView extends VerticalLayout {
         if (authenticatedUser.get().get().getRoles().contains(Role.ADMIN)) {
             add(addOfflineLocationButton);
         }
-        add(offlineExamGrid);
+        Div infoText = new Div();
+        infoText.setText("Klātienes reģistrācijas mājaslapā noslēgsies piektdien, 14. oktrobrī, pulksten 15.00. Tie, kuri nebūs paspējuši reģistrēties mājaslapā, to varēs izdarīt diktāta rakstīšanas vietā." +
+                " Lai gan vietu skaits ir ierobežots, vēl nav bijusi reize, kurā kāds rakstīt gribētājs būtu aizsūtīts mājās.");
+        add(offlineExamGrid, infoText);
     }
 
     private void getData() {

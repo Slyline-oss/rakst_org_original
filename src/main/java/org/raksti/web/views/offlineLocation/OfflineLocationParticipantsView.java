@@ -1,6 +1,7 @@
 package org.raksti.web.views.offlineLocation;
 
 import com.vaadin.flow.component.grid.Grid;
+import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
@@ -42,6 +43,8 @@ public class OfflineLocationParticipantsView extends VerticalLayout {
         grid.addColumn(map -> map.get("address")).setHeader("Adrese");
         grid.addColumn(map -> map.get("participant")).setHeader("Dalībnieks");
         grid.getColumns().forEach(gridColumn -> gridColumn.setAutoWidth(true));
+
+
 
         add(grid);
     }

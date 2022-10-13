@@ -163,8 +163,7 @@ public class RegistrationForm extends FormLayout {
         } else if(!emailAndPasswordValidation.validateEmail(email)) {
             Notification.show("Ievadiet pareizo e-pastu", 5000, Notification.Position.TOP_START);
         } else if(!emailAndPasswordValidation.validatePassword(password1)) {
-            Notification.show("Parolei jābūt vismāz 8 simbolu garai, iekļaujot lielus, mazus burtus un vienu speciālu" +
-                    "simbolu (#, $, %, ..)", 5000, Notification.Position.TOP_START);
+            Notification.show("Parolei jābūt vismāz 8 simbolu garai", 5000, Notification.Position.TOP_START);
         } else {
             String token = UUID.randomUUID().toString();
             userDetailsService.register(email.toLowerCase(Locale.ROOT), password1, token);

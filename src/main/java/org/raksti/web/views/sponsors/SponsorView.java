@@ -102,9 +102,12 @@ public class SponsorView extends VerticalLayout {
                 "\n" +
                 "Katru gadu diktāts tiek translēts ne tikvien tīmekļvietnē „raksti.org” un sabiedrisko mediju portālā „LSM.lv”, bet arī Latvijas Radio 1 un Latvijas Televīzijā.");
 
+        Div posti = new Div();
+        posti.getStyle().set("width", "50%");
+        posti.setText("Pasaules diktāta latviešu valodā portāls raksti.org ir tapis pateicoties mūsu lieldraugam, Somijas pastam piederošajam uzņēmumam Posti Messaging.");
         wrapper2.add(aboutExam, principles);
         wrapper.add(sponsors, places);
-        add(titles, wrapper, wrapper2);
+        add(titles, wrapper, wrapper2, posti);
     }
 
 

@@ -31,6 +31,8 @@ import org.raksti.web.views.listofparticipants.ListofparticipantsView;
 import org.raksti.web.views.newExam.ExamsView;
 import org.raksti.web.views.offlineLocation.OfflineLocationParticipantsView;
 import org.raksti.web.views.offlineLocation.OfflineLocationView;
+import org.raksti.web.views.originalText.OffOnOriginalText;
+import org.raksti.web.views.originalText.OriginalTextView;
 import org.raksti.web.views.participateInExam.ParticipateInExamView;
 import org.raksti.web.views.profile.ProfileView;
 import org.raksti.web.views.registration.RegistrationForm;
@@ -222,6 +224,8 @@ public class MainLayout extends AppLayout {
 
                 new MenuItemInfo("Piedalīties diktātā tiešsaistē", "la la-edit", ParticipateInExamView.class),
 
+                new MenuItemInfo("Oriģināls teksts", "la la-file-text", OriginalTextView.class),
+
                 new MenuItemInfo("Sūtīt svarīgu ziņojumu", "la la-edit", EditView.class),
 
                 new MenuItemInfo("Izveidot jaunu adminu/lietotāju", "la la-pencil", CreateUser.class),
@@ -244,7 +248,9 @@ public class MainLayout extends AppLayout {
 
                 new MenuItemInfo("Par iniciatīvu rediģēt", "la la-edit", CreateSponsorView.class),
 
-                new MenuItemInfo("Atbalsts un saziņa rediģēt", "la la-edit", CreateDonationView.class)
+                new MenuItemInfo("Atbalsts un saziņa rediģēt", "la la-edit", CreateDonationView.class),
+
+                new MenuItemInfo("Izslēgt/ieslēgt lapas", "la la-edit", OffOnOriginalText.class)
 
                 //
         };

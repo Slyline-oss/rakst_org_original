@@ -79,7 +79,8 @@ public class CreatedExamView extends VerticalLayout implements BeforeEnterObserv
 
         Button submitBut = new Button("Iesniegt");
         submitBut.addClassNames("created-exam-view-butt");
-        text.add(submitBut, new Paragraph("Diktātu būs iespējams iesniegt norises nobeigumā (pēc 12:50)"));
+        text.add(submitBut, new Paragraph("Diktātu būs iespējams iesniegt norises nobeigumā"),
+                new Paragraph("Sadaļa Oriģinālteksts. Diktāta oriģinālteksts un skaidrojumi būs pieejami uzreiz pēc diktāta nobeiguma."));
 
         Dialog dialog = new Dialog();
         dialog.setHeaderTitle("Iesniegt diktātu?");
@@ -162,6 +163,10 @@ public class CreatedExamView extends VerticalLayout implements BeforeEnterObserv
     private void autoSaveContent() {
         Optional<User> maybeUser = authenticatedUser.get();
         Exam exam = examService.getByFinished(false);
+        if (exam == null) {
+            getUI().ifPresent(ui -> ui.navigate("about"));
+            return;
+        }
         if (maybeUser.isPresent()) {
             User user = maybeUser.get();
             ExamData examData = examDataService.get(user.getEmail(), exam.getId());
@@ -177,6 +182,10 @@ public class CreatedExamView extends VerticalLayout implements BeforeEnterObserv
     private void saveContent() {
         Optional<User> maybeUser = authenticatedUser.get();
         Exam exam = examService.getByFinished(false);
+        if (exam == null) {
+            getUI().ifPresent(ui -> ui.navigate("about"));
+            return;
+        }
         if (maybeUser.isPresent()) {
             User user = maybeUser.get();
             ExamData examData = examDataService.get(user.getEmail(), exam.getId());

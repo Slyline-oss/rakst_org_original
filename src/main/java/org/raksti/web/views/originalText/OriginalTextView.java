@@ -20,7 +20,7 @@ import java.util.Optional;
 
 @PageTitle("Oriģināls tekst")
 @Route(value = "original-text", layout = MainLayout.class)
-@RolesAllowed("ADMIN")
+@AnonymousAllowed
 public class OriginalTextView extends VerticalLayout implements BeforeEnterObserver {
 
     private final PagesService pagesService;

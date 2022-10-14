@@ -84,7 +84,7 @@ public class OfflineLocationParticipantsView extends VerticalLayout {
             bw.close();
             return "src/main/resources/listOfparticipants/list.csv";
         } catch (IOException ignored){}
-        return "";
+        return "Mistake";
     }
 
 

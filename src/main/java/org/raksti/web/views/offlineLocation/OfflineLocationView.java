@@ -71,11 +71,11 @@ public class OfflineLocationView extends VerticalLayout {
         offlineExamGrid.addColumn(OfflineLocation::getAddress).setHeader("Adrese").setSortable(true);
         offlineExamGrid.addColumn(OfflineLocation::getSlotsTotal).setHeader("Kopējais vietu skaits").setSortable(true);
         offlineExamGrid.addColumn(offlineLocation -> offlineLocation.getSlotsTotal() - offlineLocation.getSlotsTaken()).setHeader("Brīvo vietu skaits").setSortable(true);
-        offlineExamGrid.addComponentColumn(offlineLocation -> {
-            Button participate = new Button("Pieteikties");
-            participate.addClickListener(buttonClickEvent -> participate(offlineLocation.getId()));
-            return participate;
-        });
+//        offlineExamGrid.addComponentColumn(offlineLocation -> {
+//            Button participate = new Button("Pieteikties");
+//            participate.addClickListener(buttonClickEvent -> participate(offlineLocation.getId()));
+//            return participate;
+//        });
 
         if (authenticatedUser.get().get().getRoles().contains(Role.ADMIN)) {
             offlineExamGrid.addComponentColumn(offlineLocation -> {

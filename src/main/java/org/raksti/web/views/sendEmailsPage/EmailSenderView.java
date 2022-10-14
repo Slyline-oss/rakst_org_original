@@ -93,8 +93,12 @@ public class EmailSenderView extends VerticalLayout {
 
     private void sendEmail() {
         for(String email: emails) {
-            emailSenderService.sendEmail(email, rte.getValue(), subject.getValue());
+            if (emailAndPasswordValidation.validateEmail(email)) {
+                emailSenderService.sendEmail(email, rte.getValue(), subject.getValue());
+            }
+            System.out.println(email);
         }
+        this.emails.clear();
     }
 
 

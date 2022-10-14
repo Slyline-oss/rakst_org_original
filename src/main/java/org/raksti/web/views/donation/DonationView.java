@@ -65,7 +65,7 @@ public class DonationView extends VerticalLayout {
         //Content for contacts description
         Paragraph one = new Paragraph();
         one.setText("Latviešu valodas cienītāji! Lai Pasaules diktāts latviešu valodā notiktu arī šoruden, lūdzam sniegt finansiālu atbalstu, " +
-                "jo mūsu nesavtīgā entuziasma un personīgo ieguldījumu iespējas septiņu gadu garumā ir izsmeltas:");
+                "jo mūsu nesavtīgā entuziasma un personīgo ieguldījumu iespējas astoņu gadu garumā ir izsmeltas:");
         //Paragraph for mobilly
         Paragraph mobilly = new Paragraph();
         Anchor mobillySrc = new Anchor("https://mobilly.lv/ziedojumi/#/katalogs/7/9/1265");
@@ -86,7 +86,7 @@ public class DonationView extends VerticalLayout {
 
         Div infoContacts = new Div();
         infoContacts.setText("Ja ir kādi jautājumi vai ierosinājumi – sazinieties ar mums: " +
-                "raksti@raksti.org vai +371 29441292 (Olga Sukonnikova)");
+                "raksti@raksti.org");
 
         Div facebook = new Div();
         Anchor facebookLink = new Anchor("https://www.facebook.com/diktats", "Facebook lapai!");

@@ -12,6 +12,8 @@ import org.raksti.web.data.entity.OfflineLocation;
 import org.raksti.web.data.entity.User;
 import org.raksti.web.data.service.OfflineLocationService;
 import org.raksti.web.views.MainLayout;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.annotation.security.RolesAllowed;
@@ -28,6 +30,8 @@ public class OfflineLocationParticipantsView extends VerticalLayout {
 
 
     private final Button export = new Button("Export");
+
+    private final static Logger logger = LoggerFactory.getLogger(OfflineLocationParticipantsView.class);
 
     public OfflineLocationParticipantsView(OfflineLocationService offlineLocationService) {
         getStyle().set("padding-top", "30px");
@@ -83,8 +87,9 @@ public class OfflineLocationParticipantsView extends VerticalLayout {
             bw.flush();
             bw.close();
             return "src/main/resources/listOfparticipants/list.csv";
-        } catch (IOException ignored){}
-        return "Mistake";
+        } catch (IOException ignored){
+            return "Mistake";
+        }
     }
 
 

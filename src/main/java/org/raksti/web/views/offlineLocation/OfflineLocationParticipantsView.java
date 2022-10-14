@@ -3,18 +3,15 @@ package org.raksti.web.views.offlineLocation;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.html.Anchor;
-import com.vaadin.flow.component.html.H4;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
-import com.vaadin.flow.server.StreamResource;
 import org.raksti.web.data.entity.OfflineLocation;
 import org.raksti.web.data.entity.User;
 import org.raksti.web.data.service.OfflineLocationService;
 import org.raksti.web.views.MainLayout;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.annotation.security.RolesAllowed;
 import java.io.*;
@@ -69,18 +66,21 @@ public class OfflineLocationParticipantsView extends VerticalLayout {
     {
         try
         {
-            BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream("listNew.csv"), StandardCharsets.UTF_16));
+            BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream("list.csv"), StandardCharsets.UTF_16));
             for (OfflineLocation location : offlineLocations)
             {
                 for (User user: location.getParticipants()) {
-                    StringBuffer oneLine = new StringBuffer();
-                    oneLine.append(user.getEmail());
-                    oneLine.append(",");
-                    oneLine.append(location.getAddress());
-                    oneLine.append(",");
-                    oneLine.append(location.getCity());
-                    oneLine.append(",");
-                    bw.write(oneLine.toString());
+                    String oneLine = user.getFirstName() +
+                            "," +
+                            user.getLastName() +
+                            "," +
+                            user.getEmail() +
+                            "," +
+                            location.getAddress() +
+                            "," +
+                            location.getCity() +
+                            ",";
+                    bw.write(oneLine);
                     bw.flush();
                     bw.newLine();
                 }
@@ -88,8 +88,8 @@ public class OfflineLocationParticipantsView extends VerticalLayout {
             }
             bw.close();
             return "list.csv";
-        } catch (IOException ignored){
-            logger.error(ignored.getMessage(), ignored);
+        } catch (IOException e){
+            logger.error(e.getMessage(), e);
             return "Mistake";
         }
     }

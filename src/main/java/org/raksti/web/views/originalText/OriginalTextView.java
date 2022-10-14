@@ -15,11 +15,12 @@ import org.raksti.web.data.entity.Pages;
 import org.raksti.web.data.service.PagesService;
 import org.raksti.web.views.MainLayout;
 
+import javax.annotation.security.RolesAllowed;
 import java.util.Optional;
 
 @PageTitle("Oriģināls tekst")
 @Route(value = "original-text", layout = MainLayout.class)
-@AnonymousAllowed
+@RolesAllowed("ADMIN")
 public class OriginalTextView extends VerticalLayout implements BeforeEnterObserver {
 
     private final PagesService pagesService;

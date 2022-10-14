@@ -18,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.annotation.security.RolesAllowed;
 import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -68,7 +69,7 @@ public class OfflineLocationParticipantsView extends VerticalLayout {
     {
         try
         {
-            BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream("src/main/resources/listOfparticipants/list.csv"), "UTF-8"));
+            BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream("list.csv"), StandardCharsets.UTF_8));
             for (OfflineLocation location : offlineLocations)
             {
                 for (User user: location.getParticipants()) {
@@ -84,9 +85,8 @@ public class OfflineLocationParticipantsView extends VerticalLayout {
                 }
 
             }
-            bw.flush();
             bw.close();
-            return "src/main/resources/listOfparticipants/list.csv";
+            return "list.csv";
         } catch (IOException ignored){
             return "Mistake";
         }

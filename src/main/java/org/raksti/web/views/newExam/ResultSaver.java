@@ -15,7 +15,7 @@ public class ResultSaver {
 
     public void saveResultIntoFile(String fileName, String data) {
         try {
-            File result = new File("src/main/resources/results/" + fileName + ".txt");
+            File result = new File(fileName + ".txt");
             if (result.createNewFile()) {
                 logger.info("Created file with id " + fileName);
                 FileWriter fileWriter = new FileWriter(result);

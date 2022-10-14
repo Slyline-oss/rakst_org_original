@@ -70,16 +70,20 @@ public class OfflineLocationParticipantsView extends VerticalLayout {
             for (OfflineLocation location : offlineLocations)
             {
                 for (User user: location.getParticipants()) {
-                    String oneLine = user.getFirstName() +
-                            "," +
-                            user.getLastName() +
-                            "," +
-                            user.getEmail() +
-                            "," +
-                            location.getAddress() +
-                            "," +
-                            location.getCity() +
-                            ",";
+                    String oneLine =
+                            user.getFirstName() + "," +
+                            user.getLastName() + "," +
+                            user.getEmail() + "," +
+                            user.getAge() + "," +
+                            user.getEducation() + "," +
+                            user.getCity() + "," +
+                            user.getCountry()  + "," +
+                            user.getGender() + "," +
+                            user.getTelNumber() + "," +
+                            user.getLanguage() + "," +
+                            user.getBirthday() + "," +
+                            location.getAddress() + "," +
+                            location.getCity();
                     bw.write(oneLine);
                     bw.flush();
                     bw.newLine();

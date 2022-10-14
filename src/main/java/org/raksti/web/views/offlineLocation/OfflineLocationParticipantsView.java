@@ -69,7 +69,7 @@ public class OfflineLocationParticipantsView extends VerticalLayout {
     {
         try
         {
-            BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream("list.csv"), StandardCharsets.UTF_8));
+            BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream("listNew.csv"), StandardCharsets.UTF_16));
             for (OfflineLocation location : offlineLocations)
             {
                 for (User user: location.getParticipants()) {
@@ -81,6 +81,7 @@ public class OfflineLocationParticipantsView extends VerticalLayout {
                     oneLine.append(location.getCity());
                     oneLine.append(",");
                     bw.write(oneLine.toString());
+                    bw.flush();
                     bw.newLine();
                 }
 
@@ -88,6 +89,7 @@ public class OfflineLocationParticipantsView extends VerticalLayout {
             bw.close();
             return "list.csv";
         } catch (IOException ignored){
+            logger.error(ignored.getMessage(), ignored);
             return "Mistake";
         }
     }

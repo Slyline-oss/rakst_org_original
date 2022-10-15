@@ -1,6 +1,7 @@
 package org.raksti.web.views.examResults;
 
 import com.vaadin.flow.component.html.Paragraph;
+import org.apache.commons.text.StringEscapeUtils;
 import org.raksti.web.data.entity.ExamData;
 import org.raksti.web.data.entity.OfflineLocation;
 import org.raksti.web.data.entity.User;
@@ -29,10 +30,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
+import java.util.*;
 import java.util.function.Consumer;
 
 @PageTitle("Diktātu rezultāti")
@@ -92,15 +90,33 @@ public class ExamResultsView extends VerticalLayout {
         }
     }
 
-    private static String writeToCSV(List<ExamData> examDataList) {
+    private String writeToCSV(List<ExamData> examDataList) {
         try
         {
             BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream("results.csv"), StandardCharsets.UTF_16));
             for (ExamData examData: examDataList) {
-                    String oneLine = examData.getEmail() + ", " + examData.getTextData();
+                Optional<User> maybeUser = Optional.ofNullable(userDetailsService.findUserByEmail(examData.getEmail()));
+                if (maybeUser.isPresent()) {
+                    User user = maybeUser.get();
+                    String oneLine =
+                            user.getFirstName() + "," +
+                                    user.getLastName() + "," +
+                                    user.getEmail() + "," +
+                                    user.getAge() + "," +
+                                    user.getEducation() + "," +
+                                    user.getCity() + "," +
+                                    user.getCountry()  + "," +
+                                    user.getGender() + "," +
+                                    user.getTelNumber() + "," +
+                                    user.getLanguage() + "," +
+                                    user.getBirthday() + "," +
+                                    StringEscapeUtils.escapeCsv(examData.getTextData());
+
                     bw.write(oneLine);
                     bw.flush();
                     bw.newLine();
+                }
+
             }
             bw.close();
             return "results.csv";

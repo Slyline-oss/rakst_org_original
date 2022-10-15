@@ -22,7 +22,7 @@ public class OffOnOriginalText extends VerticalLayout {
         this.pagesService = pagesService;
 
         Checkbox checkbox = new Checkbox();
-        checkbox.setLabel("Izslēgt/ieslēgt oriģināl tekstu");
+        checkbox.setLabel("Izslēgt/ieslēgt diktāta oriģināltekstu");
 
         if (pagesService.findById("original-text").isEmpty()) {
             pagesService.createOriginalText();

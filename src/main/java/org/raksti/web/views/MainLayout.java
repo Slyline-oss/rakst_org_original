@@ -224,7 +224,7 @@ public class MainLayout extends AppLayout {
 
                 new MenuItemInfo("Piedalīties diktātā tiešsaistē", "la la-edit", ParticipateInExamView.class),
 
-                new MenuItemInfo("Oriģināls teksts", "la la-file-text", OriginalTextView.class),
+                new MenuItemInfo("Diktāta oriģinālteksts", "la la-file-text", OriginalTextView.class),
 
                 new MenuItemInfo("Sūtīt svarīgu ziņojumu", "la la-edit", EditView.class),
 

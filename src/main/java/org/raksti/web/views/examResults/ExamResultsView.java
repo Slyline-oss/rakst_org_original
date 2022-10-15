@@ -2,6 +2,7 @@ package org.raksti.web.views.examResults;
 
 import com.vaadin.flow.component.html.Paragraph;
 import org.raksti.web.data.entity.ExamData;
+import org.raksti.web.data.entity.OfflineLocation;
 import org.raksti.web.data.entity.User;
 import org.raksti.web.data.service.ExamDataService;
 import org.raksti.web.security.UserDetailsServiceImpl;
@@ -17,9 +18,17 @@ import com.vaadin.flow.component.textfield.TextFieldVariant;
 import com.vaadin.flow.data.value.ValueChangeMode;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
+import org.raksti.web.views.newExam.Exam;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.annotation.security.RolesAllowed;
+import java.io.BufferedWriter;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -30,6 +39,8 @@ import java.util.function.Consumer;
 @Route(value = "exam-results", layout = MainLayout.class)
 @RolesAllowed("ADMIN")
 public class ExamResultsView extends VerticalLayout {
+
+    private static final Logger logger = LoggerFactory.getLogger(ExamResultsView.class);
 
     private Grid<ExamData> grid = new Grid<>(ExamData.class, false);
 
@@ -61,6 +72,7 @@ public class ExamResultsView extends VerticalLayout {
 
         add(grid);
         countByCountries();
+        writeToCSV(examDataService.get(true));
 
     }
 
@@ -79,6 +91,26 @@ public class ExamResultsView extends VerticalLayout {
             add(new Paragraph(key + ": " + countries.get(key)));
         }
     }
+
+    private static String writeToCSV(List<ExamData> examDataList) {
+        try
+        {
+            BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream("results.csv"), StandardCharsets.UTF_16));
+            for (ExamData examData: examDataList) {
+                    String oneLine = examData.getEmail() + ", " + examData.getTextData();
+                    bw.write(oneLine);
+                    bw.flush();
+                    bw.newLine();
+            }
+            bw.close();
+            return "results.csv";
+        } catch (IOException e){
+            logger.error(e.getMessage(), e);
+            return "Mistake";
+        }
+    }
+
+
 
     private static Component createFilterHeader(String labelText,
                                                 Consumer<String> filterChangeConsumer) {

@@ -1,7 +1,10 @@
 package org.raksti.web.views.examResults;
 
+import com.vaadin.flow.component.html.Paragraph;
 import org.raksti.web.data.entity.ExamData;
+import org.raksti.web.data.entity.User;
 import org.raksti.web.data.service.ExamDataService;
+import org.raksti.web.security.UserDetailsServiceImpl;
 import org.raksti.web.views.MainLayout;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.grid.Grid;
@@ -17,6 +20,8 @@ import com.vaadin.flow.router.Route;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.annotation.security.RolesAllowed;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.function.Consumer;
@@ -30,9 +35,12 @@ public class ExamResultsView extends VerticalLayout {
 
     private final ExamDataService examDataService;
 
+    private final UserDetailsServiceImpl userDetailsService;
+
     @Autowired
-    public ExamResultsView(ExamDataService examDataService) {
+    public ExamResultsView(ExamDataService examDataService, UserDetailsServiceImpl userDetailsService) {
         this.examDataService = examDataService;
+        this.userDetailsService = userDetailsService;
         getStyle().set("padding-top", "30px");
 
         Grid.Column<ExamData> emailColumn = grid.addColumn(ExamData::getEmail).setAutoWidth(true).setSortable(true);
@@ -52,7 +60,24 @@ public class ExamResultsView extends VerticalLayout {
                 createFilterHeader("E-pasts", examDataFilter::setEmail));
 
         add(grid);
+        countByCountries();
 
+    }
+
+    private void countByCountries() {
+        List<User> listOfUser = userDetailsService.getAllUsers();
+        HashMap<String, Integer> countries = new HashMap<>();
+
+        for (User user: listOfUser) {
+            String country = user.getCountry();
+            if (country != null) {
+                countries.merge(country, 1, Integer::sum);
+            }
+        }
+
+        for (String key: countries.keySet()) {
+            add(new Paragraph(key + ": " + countries.get(key)));
+        }
     }
 
     private static Component createFilterHeader(String labelText,

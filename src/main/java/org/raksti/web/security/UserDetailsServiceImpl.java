@@ -5,6 +5,7 @@ import org.raksti.web.data.entity.User;
 import org.raksti.web.data.service.UserRepository;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
@@ -51,6 +52,10 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         return user.getRoles().stream().map(role -> new SimpleGrantedAuthority("ROLE_" + role))
                 .collect(Collectors.toList());
 
+    }
+
+    public List<User> getAllUsers() {
+        return userRepository.findAll();
     }
 
     public void saveUser(User user) {

@@ -5,7 +5,7 @@ import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "sponsors")
-public class Sponsor {
+public class Sponsor implements Comparable<Sponsor> {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(nullable = false)
@@ -66,5 +66,11 @@ public class Sponsor {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+
+    @Override
+    public int compareTo(@NotNull Sponsor o) {
+        return this.id.compareTo(o.getId());
     }
 }

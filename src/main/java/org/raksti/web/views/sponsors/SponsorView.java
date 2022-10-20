@@ -9,12 +9,12 @@ import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.server.StreamResource;
 import com.vaadin.flow.server.auth.AnonymousAllowed;
-import org.apache.coyote.http11.AbstractHttp11Protocol;
 import org.raksti.web.data.entity.Sponsor;
 import org.raksti.web.data.service.SponsorService;
 import org.raksti.web.views.MainLayout;
 
 import java.io.ByteArrayInputStream;
+import java.util.Collections;
 import java.util.List;
 
 
@@ -28,6 +28,7 @@ public class SponsorView extends VerticalLayout {
 
     public SponsorView(SponsorService sponsorService) {
         sponsorList = sponsorService.getAllEntities();
+        Collections.sort(sponsorList);
         addClassNames("sponosrs-view");
         landing();
     }
@@ -63,9 +64,7 @@ public class SponsorView extends VerticalLayout {
         for (Sponsor sponsor: sponsorList) {
             Anchor link = new Anchor(sponsor.getLink());
             link.setTarget("blank");
-            StreamResource sr = new StreamResource("logo", () -> {
-                return new ByteArrayInputStream(sponsor.getImage());
-            });
+            StreamResource sr = new StreamResource("logo", () -> new ByteArrayInputStream(sponsor.getImage()));
             sr.setContentType("image/png");
             Image image = new Image(sr, sponsor.getName());
             image.addClassNames("sponsors-image");

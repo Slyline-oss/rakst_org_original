@@ -6,7 +6,7 @@ server:
   error:
     include-message: always
     include-binding-errors: always
-  port: 8080
+  port: 8081
 
 spring:
   mail:
@@ -34,7 +34,7 @@ spring:
       password: admin
   jpa:
     hibernate:
-      ddl-auto: none
+      ddl-auto: update
     properties:
       hibernate:
         enable_lazy_load_no_trans: true

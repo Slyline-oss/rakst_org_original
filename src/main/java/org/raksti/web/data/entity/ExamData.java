@@ -15,6 +15,7 @@ public class ExamData {
     @Column(columnDefinition = "TEXT")
     private String textData;
     private String result;
+    
     private Long examId;
     private boolean finished;
 

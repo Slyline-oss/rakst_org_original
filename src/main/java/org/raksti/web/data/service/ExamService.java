@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 
 @Service(value = "examservice")
@@ -19,6 +20,10 @@ public class ExamService {
 
     public Exam get(String naming) {
        return examRepository.findByNaming(naming);
+    }
+
+    public Optional<Exam> getById(Long id) {
+        return examRepository.findById(id);
     }
 
     public void save(String naming, String link, String embedLink, boolean finished, boolean allowToShow, boolean allowToWrite) {

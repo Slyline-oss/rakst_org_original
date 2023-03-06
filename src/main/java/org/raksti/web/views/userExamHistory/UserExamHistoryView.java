@@ -2,6 +2,8 @@ package org.raksti.web.views.userExamHistory;
 
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.html.Anchor;
+import org.raksti.web.certificateCreator.DownloadFile;
 import org.raksti.web.data.entity.ExamData;
 import org.raksti.web.data.entity.Result;
 import org.raksti.web.data.entity.User;
@@ -20,6 +22,7 @@ import org.raksti.web.views.newExam.Exam;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.annotation.security.RolesAllowed;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -37,11 +40,14 @@ public class UserExamHistoryView extends VerticalLayout {
     private final AuthenticatedUser authenticatedUser;
     private final ResultService resultService;
 
+    private final DownloadFile downloadFile;
+
     @Autowired
-    public UserExamHistoryView(ExamDataService examDataService, ExamService examService, AuthenticatedUser authenticatedUser, ResultService resultService) {
+    public UserExamHistoryView(ExamDataService examDataService, ExamService examService, AuthenticatedUser authenticatedUser, ResultService resultService, DownloadFile downloadFile) throws IOException {
         this.examService = examService;
         this.authenticatedUser = authenticatedUser;
         this.resultService = resultService;
+        this.downloadFile = downloadFile;
 
         getStyle().set("padding-top", "30px");
         //configure grid
@@ -62,7 +68,7 @@ public class UserExamHistoryView extends VerticalLayout {
         generateExamButton();
     }
 
-    private void generateExamButton() {
+    private void generateExamButton() throws IOException {
         Button showResults = new Button();
         showResults.setText("Apskatīt rezultātus");
 
@@ -70,6 +76,7 @@ public class UserExamHistoryView extends VerticalLayout {
         if (maybeUser.isPresent()) {
             User user = maybeUser.get();
             String email = user.getEmail();
+            String fullName = user.getFirstName().equalsIgnoreCase("Anonims") ? email : user.getFirstName() + " " + user.getLastName();
 
             if (resultService.findByEmail(email).isPresent()) {
                 Result result = resultService.findByEmail(email).get();
@@ -78,6 +85,11 @@ public class UserExamHistoryView extends VerticalLayout {
                 showResults.addClickListener(e -> {
                     UI.getCurrent().getPage().executeJs("window.open(\"" + url + "\", \"_self\");");
                 });
+
+                Anchor link = downloadFile.getLink(fullName, user.getId());
+                link.setText("Lejupielādēt apliecinājumu");
+                link.getElement().setAttribute("download", true);
+                add(link);
             } else {
                 showResults.setEnabled(false);
             }

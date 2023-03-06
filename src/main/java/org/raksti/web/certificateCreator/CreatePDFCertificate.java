@@ -19,7 +19,7 @@ public class CreatePDFCertificate {
 
     public File createCertificate(String fullName, UUID id) throws IOException {
         String PDF_PATH = "src/main/resources/resources/pdfCertificates/original/Diktats_apliecinajums_22_rgb.pdf";
-        PDDocument pdfFile = PDDocument.load(new File(PDF_PATH));
+        PDDocument pdfFile = PDDocument.load(new FileInputStream(PDF_PATH));
         PDPage page = pdfFile.getPage(0);
 
         PDAcroForm acroForm = new PDAcroForm(pdfFile);
@@ -36,7 +36,7 @@ public class CreatePDFCertificate {
         contentStream.endText();
 
         contentStream.close();
-        File file = new File("src/main/resources/resources/pdfCertificates/created/Diktats_apliecinajums_" + id + ".pdf");
+        File file = new File("home/ubuntu/user_certificates/Diktats_apliecinajums_" + id + ".pdf");
         pdfFile.save(file);
 
         return file;

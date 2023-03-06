@@ -16,7 +16,6 @@ public class DownloadFile {
 
     public Anchor getLink(String fullName, UUID id) throws IOException {
         File file = createPDFCertificate.createCertificate(fullName, id);
-
         StreamResource stream =  new StreamResource(file.getName(), () -> getStream(file));
 
         return new Anchor(stream, String.format("%s (%d KB)", file.getName(),

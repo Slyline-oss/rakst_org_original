@@ -3,7 +3,6 @@ package org.raksti.web.certificateCreator;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
-import org.apache.pdfbox.pdmodel.PDResources;
 import org.apache.pdfbox.pdmodel.font.*;
 import org.apache.pdfbox.pdmodel.interactive.form.PDAcroForm;
 import org.slf4j.Logger;
@@ -25,7 +24,6 @@ public class CreatePDFCertificate {
 
         PDAcroForm acroForm = new PDAcroForm(pdfFile);
         pdfFile.getDocumentCatalog().setAcroForm(acroForm);
-
 
         PDPageContentStream contentStream = new PDPageContentStream(pdfFile, page, PDPageContentStream.AppendMode.APPEND, false);
         PDFont formFont = PDType0Font.load(pdfFile, new FileInputStream("src/main/resources/resources/fonts/Effra Bold.ttf"), false);

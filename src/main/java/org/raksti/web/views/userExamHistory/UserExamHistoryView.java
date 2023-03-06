@@ -33,10 +33,6 @@ import java.util.Optional;
 @Uses(Icon.class)
 public class UserExamHistoryView extends VerticalLayout {
 
-    private Grid<Exam> grid = new Grid<>(Exam.class, false);
-
-    private final ExamService examService;
-
     private final AuthenticatedUser authenticatedUser;
     private final ResultService resultService;
 
@@ -44,13 +40,13 @@ public class UserExamHistoryView extends VerticalLayout {
 
     @Autowired
     public UserExamHistoryView(ExamDataService examDataService, ExamService examService, AuthenticatedUser authenticatedUser, ResultService resultService, DownloadFile downloadFile) throws IOException {
-        this.examService = examService;
         this.authenticatedUser = authenticatedUser;
         this.resultService = resultService;
         this.downloadFile = downloadFile;
 
         getStyle().set("padding-top", "30px");
         //configure grid
+        Grid<Exam> grid = new Grid<>(Exam.class, false);
         grid.addColumn(Exam::getNaming).setAutoWidth(true).setHeader("Eksāmena nosaukums");
 
         List<ExamData> examsData = examDataService.get(getEmail());
@@ -89,6 +85,7 @@ public class UserExamHistoryView extends VerticalLayout {
                 Anchor link = downloadFile.getLink(fullName, user.getId());
                 link.setText("Lejupielādēt apliecinājumu");
                 link.getElement().setAttribute("download", true);
+
                 add(link);
             } else {
                 showResults.setEnabled(false);

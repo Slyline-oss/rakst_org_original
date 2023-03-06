@@ -1,6 +1,7 @@
 package org.raksti.web.certificateCreator;
 
 import com.vaadin.flow.component.html.Anchor;
+import com.vaadin.flow.server.InputStreamFactory;
 import com.vaadin.flow.server.StreamResource;
 
 import java.io.*;
@@ -15,21 +16,22 @@ public class DownloadFile {
     }
 
     public Anchor getLink(String fullName, UUID id) throws IOException {
-        File file = createPDFCertificate.createCertificate(fullName, id);
-        StreamResource stream =  new StreamResource(file.getName(), () -> getStream(file));
 
-        return new Anchor(stream, String.format("%s (%d KB)", file.getName(),
-                (int) file.length() / 1024));
+
+        StreamResource stream =  new StreamResource("Diktats_apliecinajums_22_rgb.pdf", new InputStreamFactory() {
+            @Override
+            public InputStream createInputStream() {
+                ByteArrayOutputStream bos = null;
+                try {
+                    bos = createPDFCertificate.createCertificate(fullName, id);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+                return new ByteArrayInputStream(bos.toByteArray());
+            }
+        });
+
+        return new Anchor(stream, "Diktats_apliecinajums_22_rgb.pdf");
     }
 
-    private InputStream getStream(File file) {
-        FileInputStream stream = null;
-        try {
-            stream = new FileInputStream(file);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-
-        return stream;
-    }
 }

@@ -101,6 +101,7 @@ public class UserExamHistoryView extends VerticalLayout {
             User user = maybeUser.get();
             return user.getEmail();
         }
+
         return "";
     }
 

@@ -35,8 +35,6 @@ public class CreatePDFCertificate {
         contentStream.showText(fullName);
         contentStream.endText();
 
-        logger.info("Text: " + fullName +  " added to pdfFile");
-
         contentStream.close();
         File file = new File("src/main/resources/resources/pdfCertificates/created/Diktats_apliecinajums_" + id + ".pdf");
         pdfFile.save(file);

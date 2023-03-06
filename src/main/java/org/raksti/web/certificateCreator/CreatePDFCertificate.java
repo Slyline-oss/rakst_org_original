@@ -18,7 +18,7 @@ public class CreatePDFCertificate {
     Logger logger = LoggerFactory.getLogger(CreatePDFCertificate.class);
 
     public File createCertificate(String fullName, UUID id) throws IOException {
-        String PDF_PATH = "src/main/resources/resources/pdfCertificates/original/Diktats_apliecinajums_22_rgb.pdf";
+        String PDF_PATH = "home/ubuntu/certificate_original/Diktats_apliecinajums_22_rgb.pdf";
         PDDocument pdfFile = PDDocument.load(new FileInputStream(PDF_PATH));
         PDPage page = pdfFile.getPage(0);
 
@@ -26,7 +26,7 @@ public class CreatePDFCertificate {
         pdfFile.getDocumentCatalog().setAcroForm(acroForm);
 
         PDPageContentStream contentStream = new PDPageContentStream(pdfFile, page, PDPageContentStream.AppendMode.APPEND, false);
-        PDFont formFont = PDType0Font.load(pdfFile, new FileInputStream("src/main/resources/resources/fonts/Effra Bold.ttf"), false);
+        PDFont formFont = PDType0Font.load(pdfFile, new FileInputStream("home/ubuntu/Effra Bold.ttf"), false);
         float titleWidth = formFont.getStringWidth(fullName) / 1000 * 25;
 
         contentStream.beginText();

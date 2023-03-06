@@ -8,6 +8,7 @@
 *.iml
 .DS_Store
 
+package-lock.json
 # The following files are generated/updated by vaadin-maven-plugin
 node_modules/
 frontend/generated/

@@ -165,7 +165,7 @@ public class MainLayout extends AppLayout {
 
         if (maybeUser.isPresent()) {
             MenuItemInfo offline = new MenuItemInfo("Pieteikties rakstīšanai klātienē", "la la-file-text", OfflineLocationView.class);
-            list.add(offline);
+//            list.add(offline);
         } else {
             MenuItemInfo offline = new MenuItemInfo("Pieteikties rakstīšanai klātienē", "la la-file-text", AboutView.class);
             offline.addClickListener(e -> {
@@ -197,7 +197,7 @@ public class MainLayout extends AppLayout {
                 dialog.open();
             });
 
-            list.add(offline);
+//            list.add(offline);
         }
 
 
@@ -218,7 +218,7 @@ public class MainLayout extends AppLayout {
 
                 new MenuItemInfo("Par iniciatīvu", "la la-bell", SponsorView.class),
 
-                new MenuItemInfo("Instrukcija", "", InstructionView.class),
+//                new MenuItemInfo("Instrukcija", "", InstructionView.class),
 
                 new MenuItemInfo("Lietotāju saraksts", "la la-columns", ListofparticipantsView.class),
 

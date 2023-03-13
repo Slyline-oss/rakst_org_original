@@ -3,6 +3,7 @@ package org.raksti.web.views.userExamHistory;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.html.Anchor;
+import org.apache.commons.lang3.StringUtils;
 import org.raksti.web.certificateCreator.DownloadFile;
 import org.raksti.web.data.entity.ExamData;
 import org.raksti.web.data.entity.Result;
@@ -47,7 +48,7 @@ public class UserExamHistoryView extends VerticalLayout {
         getStyle().set("padding-top", "30px");
         //configure grid
         Grid<Exam> grid = new Grid<>(Exam.class, false);
-        grid.addColumn(Exam::getNaming).setAutoWidth(true).setHeader("Eksāmena nosaukums");
+        grid.addColumn(Exam::getNaming).setAutoWidth(true).setHeader("Diktāta nosaukums");
 
         List<ExamData> examsData = examDataService.get(getEmail());
         List<Exam> exams = new ArrayList<>();
@@ -72,7 +73,9 @@ public class UserExamHistoryView extends VerticalLayout {
         if (maybeUser.isPresent()) {
             User user = maybeUser.get();
             String email = user.getEmail();
-            String fullName = user.getFirstName().equalsIgnoreCase("Anonims") ? email : user.getFirstName() + " " + user.getLastName();
+            String firstName = StringUtils.capitalize(user.getFirstName());
+            String lastName = StringUtils.capitalize(user.getLastName());
+            String fullName = user.getFirstName().equalsIgnoreCase("Anonims") ? email : firstName + " " + lastName;
 
             if (resultService.findByEmail(email).isPresent()) {
                 Result result = resultService.findByEmail(email).get();

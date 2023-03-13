@@ -22,9 +22,7 @@ import com.vaadin.flow.router.Route;
 
 import javax.annotation.security.RolesAllowed;
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 @PageTitle("Sūtīt vēstules")
 @Route(value = "email-sender", layout = MainLayout.class)
@@ -41,7 +39,7 @@ public class EmailSenderView extends VerticalLayout {
     private final MultiFileMemoryBuffer mfmb = new MultiFileMemoryBuffer();
     private final Upload upload = new Upload(mfmb);
     private String fileName = "";
-    private List<String> emails = new ArrayList<>();
+    private Map<String, String> emails = new HashMap<>();
 
 
     public EmailSenderView(EmailSenderService emailSenderService, UserRepository userRepository, EmailAndPasswordValidation emailAndPasswordValidation) {
@@ -68,7 +66,10 @@ public class EmailSenderView extends VerticalLayout {
     private void displayList(InputStream inputStream) {
         Scanner sc = new Scanner(inputStream);
         while (sc.hasNext()) {
-            emails.add(sc.next());
+            String line = sc.nextLine();
+            String [] arr = line.split(",");
+            emails.put(arr[0], arr[1]);
+            System.out.println(arr[0] + "/" + arr[1]);
         }
     }
 
@@ -92,13 +93,18 @@ public class EmailSenderView extends VerticalLayout {
     }
 
     private void sendEmail() {
-        for(String email: emails) {
-            if (emailAndPasswordValidation.validateEmail(email)) {
-                emailSenderService.sendEmail(email, rte.getValue(), subject.getValue());
-            }
+        for(Map.Entry<String, String> email: emails.entrySet()) {
+            emailSenderService.sendEmail(email.getKey(), modifyText(rte.getValue(), email.getValue()), subject.getValue());
             System.out.println(email);
         }
         this.emails.clear();
+        upload.clearFileList();
+    }
+
+    private String modifyText(String text, String id) {
+        text = text.replace("[id]", id);
+
+        return text;
     }
 
 

@@ -82,15 +82,30 @@ public class AboutView extends VerticalLayout implements BeforeEnterObserver {
         content.getStyle().set("width", "50%");
 
         //H1 and paragraph that contains div "text-content"
-        H1 title = new H1(about != null ? about.getTitle() : "");
-        title.getStyle().set("font-family", "Raksti-DalaFloda,Times,monospace");
-        Paragraph text = new Paragraph(about != null ? about.getText() : "");
+//        H1 title = new H1(about != null ? about.getTitle() : "");
+//        title.getStyle().set("font-family", "Raksti-DalaFloda,Times,monospace");
+//        Paragraph text = new Paragraph(about != null ? about.getText() : "");
 
         //Div "text-content" that contains h1 and paragraph
         Div textContent = new Div();
 
         textContent.addClassNames("text-content");
-        textContent.add(title, text);
+        assert about != null;
+        String[] paragraphs = about.split();
+        boolean firstParagraph = true;
+        for (String paragraph : paragraphs) {
+            if (firstParagraph) {
+                H2 text = new H2(paragraph);
+                text.getStyle().set("font-family", "Raksti-DalaFloda,Times,monospace");
+                textContent.add(text);
+                firstParagraph = false;
+            } else {
+                Paragraph text = new Paragraph(paragraph);
+                text.getStyle().set("font-family", "Raksti-DalaFloda,Times,monospace");
+                textContent.add(text);
+            }
+        }
+
         content.add(textContent);
 
 

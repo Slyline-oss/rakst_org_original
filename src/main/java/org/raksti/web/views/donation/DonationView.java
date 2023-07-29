@@ -12,7 +12,6 @@ import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.server.auth.AnonymousAllowed;
-import org.raksti.web.data.entity.About;
 import org.raksti.web.data.entity.DonateText;
 import org.raksti.web.data.service.DonateService;
 import org.raksti.web.views.MainLayout;
@@ -71,7 +70,7 @@ public class DonationView extends VerticalLayout {
         Anchor mobillySrc = new Anchor("https://mobilly.lv/ziedojumi/#/katalogs/7/9/1265");
         mobillySrc.setTarget("blank");
         Image paypalImg = new Image("images/paypal.png", "paypal");
-        Anchor paypalSrc = new Anchor("https://www.paypal.com/donate/?hosted_button_id=DULQA7Q2H6DNE");
+        Anchor paypalSrc = new Anchor("https://www.paypal.com/donate/?hosted_button_id=2DFE7LPVGLRKU");
         paypalSrc.setTarget("blank");
         paypalSrc.add(paypalImg);
         Image mobillyQr = new Image("images/mobily_qr.png", "mobilly qr");

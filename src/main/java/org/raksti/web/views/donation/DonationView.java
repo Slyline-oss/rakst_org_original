@@ -70,7 +70,7 @@ public class DonationView extends VerticalLayout {
         Anchor mobillySrc = new Anchor("https://mobilly.lv/ziedojumi/#/katalogs/7/9/1265");
         mobillySrc.setTarget("blank");
         Image paypalImg = new Image("images/paypal.png", "paypal");
-        Anchor paypalSrc = new Anchor("https://www.paypal.com/donate/?hosted_button_id=2DFE7LPVGLRKU");
+        Anchor paypalSrc = new Anchor("https://www.paypal.com/donate/?hosted_button_id=VAV5CGZ6JDG3A");
         paypalSrc.setTarget("blank");
         paypalSrc.add(paypalImg);
         Image mobillyQr = new Image("images/mobily_qr.png", "mobilly qr");

@@ -74,6 +74,7 @@ public class DonationView extends VerticalLayout {
         paypalSrc.setTarget("blank");
         paypalSrc.add(paypalImg);
         Image mobillyQr = new Image("images/mobily_qr.png", "mobilly qr");
+        mobillyQr.setHeight("auto");
         mobillySrc.add(mobillyQr);
         mobillyQr.addClassNames("mobilly-qr");
         mobilly.add(paypalSrc, new HtmlComponent("br"), mobillySrc, new HtmlComponent("br"));

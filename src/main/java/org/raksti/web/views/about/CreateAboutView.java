@@ -2,7 +2,6 @@ package org.raksti.web.views.about;
 
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.notification.Notification;
-import com.vaadin.flow.component.notification.NotificationVariant;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextArea;
 import com.vaadin.flow.component.textfield.TextField;
@@ -14,7 +13,6 @@ import org.raksti.web.views.MainLayout;
 
 import javax.annotation.security.RolesAllowed;
 import java.util.List;
-import java.util.Optional;
 
 @PageTitle("Rediģēt Sākumlapu")
 @Route(value = "create-aboutview", layout = MainLayout.class)
@@ -48,7 +46,7 @@ public class CreateAboutView extends VerticalLayout {
 
     private void loadContent() {
         List<About> aboutList = aboutService.getAll();
-        if (aboutList.size() > 0) {
+        if (!aboutList.isEmpty()) {
             About about = aboutList.get(0);
             title.setValue(about.getTitle());
             textArea.setValue(about.getText());

@@ -1,6 +1,5 @@
 package org.raksti.web.views.buj;
 
-import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.Image;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
@@ -13,7 +12,6 @@ import org.raksti.web.data.service.FAQService;
 import org.raksti.web.views.MainLayout;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 
 import java.util.List;
 

@@ -6,7 +6,6 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextArea;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
-import org.raksti.web.data.entity.About;
 import org.raksti.web.data.entity.DonateText;
 import org.raksti.web.data.service.DonateService;
 import org.raksti.web.views.MainLayout;
@@ -42,7 +41,7 @@ public class CreateDonationView extends VerticalLayout {
 
     private void loadContent() {
         List<DonateText> donateTextList = donateService.getAll();
-        if (donateTextList.size() > 0) {
+        if (!donateTextList.isEmpty()) {
             DonateText donate = donateTextList.get(0);
             textArea.setValue(donate.getText());
         }

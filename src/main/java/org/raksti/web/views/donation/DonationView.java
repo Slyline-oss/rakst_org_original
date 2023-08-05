@@ -41,7 +41,7 @@ public class DonationView extends VerticalLayout {
     private void landing() {
         List<DonateText> donateTextList = donateService.getAll();
         DonateText donateText = null;
-        if (donateTextList.size() > 0) {
+        if (!donateTextList.isEmpty()) {
             donateText = donateTextList.get(0);
         }
         // br html component

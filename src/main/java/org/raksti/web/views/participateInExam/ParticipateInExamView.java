@@ -1,15 +1,13 @@
 package org.raksti.web.views.participateInExam;
 
-import org.raksti.web.data.service.ExamDataService;
-import org.raksti.web.data.service.ExamService;
-import org.raksti.web.security.AuthenticatedUser;
-import org.raksti.web.views.MainLayout;
-import org.raksti.web.views.newExam.Exam;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.html.H3;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
+import org.raksti.web.data.service.ExamService;
+import org.raksti.web.views.MainLayout;
+import org.raksti.web.views.newExam.Exam;
 
 import javax.annotation.security.RolesAllowed;
 

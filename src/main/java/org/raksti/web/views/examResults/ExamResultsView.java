@@ -1,25 +1,23 @@
 package org.raksti.web.views.examResults;
 
-import com.vaadin.flow.component.html.Paragraph;
-import org.apache.commons.text.StringEscapeUtils;
-import org.raksti.web.data.entity.ExamData;
-import org.raksti.web.data.entity.OfflineLocation;
-import org.raksti.web.data.entity.User;
-import org.raksti.web.data.service.ExamDataService;
-import org.raksti.web.security.UserDetailsServiceImpl;
-import org.raksti.web.views.MainLayout;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.grid.HeaderRow;
 import com.vaadin.flow.component.grid.dataview.GridListDataView;
 import com.vaadin.flow.component.html.Label;
+import com.vaadin.flow.component.html.Paragraph;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.component.textfield.TextFieldVariant;
 import com.vaadin.flow.data.value.ValueChangeMode;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
-import org.raksti.web.views.newExam.Exam;
+import org.apache.commons.text.StringEscapeUtils;
+import org.raksti.web.data.entity.ExamData;
+import org.raksti.web.data.entity.User;
+import org.raksti.web.data.service.ExamDataService;
+import org.raksti.web.security.UserDetailsServiceImpl;
+import org.raksti.web.views.MainLayout;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +28,10 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.nio.charset.StandardCharsets;
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.Optional;
 import java.util.function.Consumer;
 
 @PageTitle("Diktātu rezultāti")

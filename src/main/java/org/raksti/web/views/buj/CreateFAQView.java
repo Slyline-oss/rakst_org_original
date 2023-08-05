@@ -5,14 +5,12 @@ import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.notification.NotificationVariant;
-import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.select.Select;
 import com.vaadin.flow.component.textfield.TextArea;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
-
 import org.raksti.web.data.entity.FAQ;
 import org.raksti.web.data.service.FAQService;
 import org.raksti.web.views.MainLayout;
@@ -76,7 +74,7 @@ public class CreateFAQView extends VerticalLayout {
     //deletes question
     private void deleteQuestion() {
         Set<FAQ> list = grid.getSelectedItems();
-        if (list.size() > 0) {
+        if (!list.isEmpty()) {
             faqService.deleteItems(list);
             loadQuestions();
             grid.setItems(questionList);

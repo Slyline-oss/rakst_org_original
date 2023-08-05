@@ -62,7 +62,7 @@ public class AboutView extends VerticalLayout implements BeforeEnterObserver {
     private void landing() {
         List<About> aboutList = aboutService.getAll();
         About about = null;
-        if (aboutList.size() > 0) {
+        if (!aboutList.isEmpty()) {
             about = aboutList.get(0);
         }
 

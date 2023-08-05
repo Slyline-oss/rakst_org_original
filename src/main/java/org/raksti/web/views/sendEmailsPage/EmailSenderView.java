@@ -1,28 +1,26 @@
 package org.raksti.web.views.sendEmailsPage;
 
-import com.vaadin.flow.component.notification.Notification;
-import com.vaadin.flow.component.notification.NotificationVariant;
-import com.vaadin.flow.component.textfield.TextArea;
-import com.vaadin.flow.component.upload.receivers.FileData;
-import  org.raksti.web.data.entity.User;
-import org.raksti.web.data.service.UserRepository;
-import  org.raksti.web.emailSender.EmailSenderService;
-import  org.raksti.web.views.MainLayout;
-import  org.raksti.web.views.registration.EmailAndPasswordValidation;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.component.textfield.TextArea;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.component.upload.Upload;
 import com.vaadin.flow.component.upload.UploadI18N;
 import com.vaadin.flow.component.upload.receivers.MultiFileMemoryBuffer;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
+import org.raksti.web.data.service.UserRepository;
+import org.raksti.web.emailSender.EmailSenderService;
+import org.raksti.web.views.MainLayout;
+import org.raksti.web.views.registration.EmailAndPasswordValidation;
 
 import javax.annotation.security.RolesAllowed;
 import java.io.InputStream;
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Scanner;
 
 @PageTitle("Sūtīt vēstules")
 @Route(value = "email-sender", layout = MainLayout.class)

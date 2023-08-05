@@ -1,9 +1,6 @@
 package org.raksti.web.views.newExam;
 
-import org.raksti.web.data.entity.ExamData;
-
 import javax.persistence.*;
-import java.util.List;
 
 @Entity
 @Table(name = "exams")

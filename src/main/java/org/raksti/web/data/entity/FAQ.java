@@ -1,7 +1,6 @@
 package org.raksti.web.data.entity;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "faq_content")

@@ -1,13 +1,11 @@
 package org.raksti.web.data.entity;
 
-import org.hibernate.annotations.Proxy;
-import org.raksti.web.data.Role;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.raksti.web.data.Role;
 
-import java.time.LocalDate;
-import java.util.HashSet;
-import java.util.Set;
 import javax.persistence.*;
+import java.time.LocalDate;
+import java.util.Set;
 
 @Entity
 @Table(name = "application_user")

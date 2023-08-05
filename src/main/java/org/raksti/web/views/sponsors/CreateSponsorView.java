@@ -99,7 +99,7 @@ public class CreateSponsorView extends VerticalLayout {
 
     private void deleteItems() {
         Set<Sponsor> deleteList = grid.getSelectedItems();
-        if (deleteList.size() > 0) {
+        if (!deleteList.isEmpty()) {
             sponsorService.deleteEntities(deleteList);
             loadSponsors();
             grid.setItems(sponsorList);

@@ -1,8 +1,6 @@
 package org.raksti.web.emailSender;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.FileSystemResource;
-import org.springframework.mail.MailException;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -53,7 +51,7 @@ public class EmailSenderService {
             mimeMessage.setSubject(subject);
 
 
-            if (!attachment.equals("")) {
+            if (!attachment.isEmpty()) {
                 FileSystemResource file = new FileSystemResource(new File(attachment));
                 mimeMessageHelper.addAttachment(Objects.requireNonNull(file.getFilename()), file);
             }

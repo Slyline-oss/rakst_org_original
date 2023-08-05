@@ -1,9 +1,5 @@
 package org.raksti.web.views.registration;
 
-import org.raksti.web.data.entity.User;
-import org.raksti.web.data.service.UserRepository;
-import org.raksti.web.emailSender.EmailSenderService;
-import org.raksti.web.security.UserDetailsServiceImpl;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.checkbox.Checkbox;
@@ -15,50 +11,41 @@ import com.vaadin.flow.component.notification.NotificationVariant;
 import com.vaadin.flow.component.textfield.EmailField;
 import com.vaadin.flow.component.textfield.PasswordField;
 import com.vaadin.flow.component.textfield.TextField;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.raksti.web.data.entity.User;
+import org.raksti.web.data.service.UserRepository;
+import org.raksti.web.emailSender.EmailSenderService;
+import org.raksti.web.security.UserDetailsServiceImpl;
 
 import java.util.Locale;
 import java.util.UUID;
 
 public class RegistrationForm extends FormLayout {
 
-    private H3 title;
-
-    private TextField firstName;
-    private TextField lastName;
-
-    private EmailField email;
-
-    private PasswordField password;
-    private PasswordField passwordConfirm;
-
-    private Checkbox allowMarketing;
-
-    private Checkbox anonymous;
-
-    private Span errorMessageField;
-
-    private Button submitButton;
-
+    private final TextField firstName;
+    private final TextField lastName;
+    private final EmailField email;
+    private final PasswordField password;
+    private final PasswordField passwordConfirm;
+    private final Checkbox anonymous;
 
     private final UserDetailsServiceImpl userDetailsService;
     private final UserRepository userRepository;
-    @Autowired
     private final EmailAndPasswordValidation emailAndPasswordValidation;
     private final EmailSenderService emailSenderService;
 
-    public RegistrationForm(UserDetailsServiceImpl userDetailsService, UserRepository userRepository, EmailAndPasswordValidation emailAndPasswordValidation, EmailSenderService emailSenderService) {
+    public RegistrationForm(UserDetailsServiceImpl userDetailsService, UserRepository userRepository,
+                            EmailAndPasswordValidation emailAndPasswordValidation, EmailSenderService emailSenderService) {
         this.userDetailsService = userDetailsService;
         this.userRepository = userRepository;
         this.emailAndPasswordValidation = emailAndPasswordValidation;
         this.emailSenderService = emailSenderService;
 
-        title = new H3("Reģistrācijas forma");
+        H3 title = new H3("Reģistrācijas forma");
         firstName = new TextField("Vārds");
         lastName = new TextField("Uzvārds");
         email = new EmailField("E-pasts");
 
-        allowMarketing = new Checkbox("Piekrītu jaunumu saņemšanai");
+        Checkbox allowMarketing = new Checkbox("Piekrītu jaunumu saņemšanai");
         allowMarketing.getStyle().set("margin-top", "10px");
 
         anonymous = new Checkbox("Reģistrēties anonīmi");
@@ -67,9 +54,9 @@ public class RegistrationForm extends FormLayout {
         password = new PasswordField("Parole");
         passwordConfirm = new PasswordField("Apstipriniet paroli");
 
-        errorMessageField = new Span();
+        Span errorMessageField = new Span();
 
-        submitButton = new Button("Pievienoties");
+        Button submitButton = new Button("Pievienoties");
         submitButton.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
 
 
@@ -110,11 +97,6 @@ public class RegistrationForm extends FormLayout {
         });
     }
 
-    public Span getErrorMessageField() {
-        return errorMessageField;
-    }
-
-
     public void register(String firstName, String lastName, String email, String password1, String password2) {
         User user = userRepository.findByEmail(email);
         if (firstName.trim().isEmpty() || lastName.trim().isEmpty() || email.trim().isEmpty())  {
@@ -128,8 +110,8 @@ public class RegistrationForm extends FormLayout {
         } else if(!emailAndPasswordValidation.validateEmail(email)) {
             Notification.show("Ievadiet pareizo e-pastu", 5000, Notification.Position.TOP_START);
         } else if(!emailAndPasswordValidation.validatePassword(password1)) {
-            Notification.show("Parolei jābūt vismāz 8 simbolu garai, iekļaujot lielus, mazus burtus un vienu speciālu" +
-                    "simbolu (#, $, %, ..)", 5000, Notification.Position.TOP_START);
+            Notification.show("Parolei jābūt vismāz 8 simbolu garai, iekļaujot lielus, mazus burtus un ciparus",
+                    5000, Notification.Position.TOP_START);
         } else {
             String token = UUID.randomUUID().toString();
             userDetailsService.register(firstName, lastName, email, password1, token);
@@ -163,7 +145,7 @@ public class RegistrationForm extends FormLayout {
         } else if(!emailAndPasswordValidation.validateEmail(email)) {
             Notification.show("Ievadiet pareizo e-pastu", 5000, Notification.Position.TOP_START);
         } else if(!emailAndPasswordValidation.validatePassword(password1)) {
-            Notification.show("Parolei jābūt vismāz 8 simbolu garai", 5000, Notification.Position.TOP_START);
+            Notification.show("Parolei jābūt vismāz 8 simbolu garai, iekļaujot lielus, mazus burtus un ciparus", 5000, Notification.Position.TOP_START);
         } else {
             String token = UUID.randomUUID().toString();
             userDetailsService.register(email.toLowerCase(Locale.ROOT), password1, token);

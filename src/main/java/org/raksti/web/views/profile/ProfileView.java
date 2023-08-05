@@ -309,8 +309,7 @@ public class ProfileView extends VerticalLayout {
         } else if(!passwordEncoder.matches(password, user.getHashedPassword())) {
             Notification.show("Tiek ievadīta nepareiza tekoša parole", 5000, Notification.Position.TOP_START).addThemeVariants(NotificationVariant.LUMO_ERROR);
         } else if(!emailAndPasswordValidation.validatePassword(newPassword)) {
-            Notification.show("Parolei jābūt vismāz 8 simbolu garai, iekļaujot lielus, mazus burtus un vienu speciālu" +
-                    "simbolu (#, $, %, ..)", 5000, Notification.Position.TOP_START);
+            Notification.show("Parolei jābūt vismāz 8 simbolu garai, iekļaujot lielus, mazus burtus un ciparus", 5000, Notification.Position.TOP_START);
         } else {
             userDetailsService.updatePassword(user.getEmail(), newPassword);
             Notification notification = Notification.show("Parole veiksmīgi pamainīta!");

@@ -21,21 +21,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 @AnonymousAllowed
 public class RestorePasswordView extends VerticalLayout implements BeforeEnterObserver {
 
-    private Button submit;
-    private PasswordField password;
-    private PasswordField confirmPassword;
+    private final PasswordField password;
+    private final PasswordField confirmPassword;
     private String token;
 
+    private final UserDetailsServiceImpl userDetailsService;
+    private final EmailAndPasswordValidation emailAndPasswordValidation;
 
     @Autowired
-    private EmailAndPasswordValidation emailAndPasswordValidation;
-
-    private final UserDetailsServiceImpl userDetailsService;
-
-    public RestorePasswordView(UserDetailsServiceImpl userDetailsService) {
+    public RestorePasswordView(UserDetailsServiceImpl userDetailsService, EmailAndPasswordValidation emailAndPasswordValidation) {
         this.userDetailsService = userDetailsService;
+        this.emailAndPasswordValidation = emailAndPasswordValidation;
 
-        submit = new Button();
+        Button submit = new Button();
         password = new PasswordField();
         confirmPassword = new PasswordField();
 
@@ -65,8 +63,8 @@ public class RestorePasswordView extends VerticalLayout implements BeforeEnterOb
         if (!password.getValue().equals(confirmPassword.getValue())) {
             Notification.show("Paroles nesakrīt!", 5000, Notification.Position.TOP_START).addThemeVariants(NotificationVariant.LUMO_ERROR);
         } else if (!emailAndPasswordValidation.validatePassword(password.getValue())) {
-            Notification.show("Parolei jābūt vismāz 8 simbolu garai, iekļaujot lielus, mazus burtus un vienu speciālu" +
-                    "simbolu (#, $, %, ..)", 5000, Notification.Position.TOP_START);
+            Notification.show("Parolei jābūt vismāz 8 simbolu garai, iekļaujot lielus, mazus burtus un ciparus",
+                    5000, Notification.Position.TOP_START);
         } else {
             User user = userDetailsService.getByResetPasswordToken(token);
             userDetailsService.updateResetPasswordToken("",user.getEmail());

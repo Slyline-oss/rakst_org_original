@@ -15,23 +15,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 @AnonymousAllowed
 public class RegistrationView extends VerticalLayout {
 
-   private final UserDetailsServiceImpl userDetailsService;
-   private final UserRepository userRepository;
-   @Autowired
-   private final EmailAndPasswordValidation emailAndPasswordValidation;
-   private final EmailSenderService emailSenderService;
+    @Autowired
+    public RegistrationView(UserDetailsServiceImpl userDetailsService, UserRepository userRepository,
+                            EmailAndPasswordValidation emailAndPasswordValidation, EmailSenderService emailSenderService) {
+        RegistrationForm registrationForm = new RegistrationForm(
+                userDetailsService, userRepository, emailAndPasswordValidation, emailSenderService);
 
-   public RegistrationView(UserDetailsServiceImpl userDetailsService, UserRepository userRepository, EmailAndPasswordValidation emailAndPasswordValidation, EmailSenderService emailSenderService) {
-       this.userDetailsService = userDetailsService;
-       this.userRepository = userRepository;
-       this.emailAndPasswordValidation = emailAndPasswordValidation;
-       this.emailSenderService = emailSenderService;
-       RegistrationForm registrationForm = new RegistrationForm(this.userDetailsService, this.userRepository, this.emailAndPasswordValidation, this.emailSenderService);
-       setHorizontalComponentAlignment(Alignment.CENTER, registrationForm);
-
-       add(registrationForm);
-
-   }
+        setHorizontalComponentAlignment(Alignment.CENTER, registrationForm);
+        add(registrationForm);
+    }
 
 
 }

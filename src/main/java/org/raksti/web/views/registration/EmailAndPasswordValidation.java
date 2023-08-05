@@ -8,18 +8,19 @@ import java.util.regex.Pattern;
 @Component
 public class EmailAndPasswordValidation {
 
-    private final String EMAIL_REGEX = "^[\\w!#$%&'*+/=?`{|}~^-]+(?:\\.[\\w!#$%&'*+/=?`{|}~^-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,6}$";
-    private final String PASSWORD_REGEX = "^(?=.*[a-z])(?=.*[A-Z]).{8,20}$";
+    private final static String EMAIL_REGEX = "^[\\w!#$%&'*+/=?`{|}~^-]+(?:\\.[\\w!#$%&'*+/=?`{|}~^-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,6}$";
+    private final static String PASSWORD_REGEX = "^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9]).{8,20}$";
+
+    private final static Pattern EMAIL_PATTERN = Pattern.compile(EMAIL_REGEX);
+    private final static Pattern PASSWORD_PATTERN = Pattern.compile(PASSWORD_REGEX);
 
     public boolean validateEmail(String email) {
-        Pattern pattern = Pattern.compile(EMAIL_REGEX);
-        Matcher matcher = pattern.matcher(email);
+        Matcher matcher = EMAIL_PATTERN.matcher(email);
         return matcher.matches();
     }
 
     public boolean validatePassword(String password) {
-        Pattern pattern = Pattern.compile(PASSWORD_REGEX);
-        Matcher matcher = pattern.matcher(password);
+        Matcher matcher = PASSWORD_PATTERN.matcher(password);
         return matcher.matches();
     }
 }

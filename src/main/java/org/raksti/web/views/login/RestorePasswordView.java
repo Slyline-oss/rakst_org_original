@@ -65,8 +65,8 @@ public class RestorePasswordView extends VerticalLayout implements BeforeEnterOb
         if (!password.getValue().equals(confirmPassword.getValue())) {
             Notification.show("Paroles nesakrīt!", 5000, Notification.Position.TOP_START).addThemeVariants(NotificationVariant.LUMO_ERROR);
         } else if (!emailAndPasswordValidation.validatePassword(password.getValue())) {
-            Notification.show("Parolei jābūt vismāz 8 simbolu garai, iekļaujot lielus, mazus burtus un vienu speciālu" +
-                    "simbolu (#, $, %, ..)", 5000, Notification.Position.TOP_START);
+            Notification.show("Parolei jābūt vismāz 8 simbolu garai, iekļaujot lielus, mazus burtus un vienu ciparu",
+                    5000, Notification.Position.TOP_START);
         } else {
             User user = userDetailsService.getByResetPasswordToken(token);
             userDetailsService.updateResetPasswordToken("",user.getEmail());

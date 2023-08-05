@@ -132,6 +132,7 @@ public class MainLayout extends AppLayout {
         Div layout = new Div();
         layout.addClassNames("flex", "items-center", "px-l");
         Image image = new Image("images/logo.png", "logo");
+		  image.setHeight("80px");
         image.setWidth("80px");
         Anchor link = new Anchor("/");
         link.add(image);

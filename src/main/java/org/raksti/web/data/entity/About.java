@@ -17,9 +17,7 @@ public class About {
     private String text;
 
 
-    public About() {
-
-    }
+    public About() {}
 
     public About(String title, String text) {
         this.title = title;

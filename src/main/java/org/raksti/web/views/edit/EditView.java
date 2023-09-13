@@ -5,7 +5,7 @@ import com.vaadin.flow.component.notification.NotificationVariant;
 import org.raksti.web.data.entity.Text;
 import org.raksti.web.data.service.TextRepository;
 import org.raksti.web.views.MainLayout;
-import org.raksti.web.views.about.AboutViewService;
+import org.raksti.web.views.about.AboutService;
 import org.raksti.web.views.profile.ProfileViewService;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
@@ -32,11 +32,11 @@ public class EditView extends VerticalLayout {
     private Button sendButton;
 
     @Autowired
-    private final AboutViewService aboutView;
+    private final AboutService aboutView;
     private final ProfileViewService profileViewService;
 
     private final TextRepository textRepository;
-    public EditView(AboutViewService aboutView, ProfileViewService profileViewService, TextRepository textRepository) {
+    public EditView(AboutService aboutView, ProfileViewService profileViewService, TextRepository textRepository) {
         this.aboutView = aboutView;
         this.profileViewService = profileViewService;
         this.textRepository = textRepository;
@@ -57,7 +57,7 @@ public class EditView extends VerticalLayout {
     }
 
     private void changeParagraph() {
-        aboutView.setText(aboutTextArea.getValue());
+        //aboutView.setText(aboutTextArea.getValue());
     }
 
     private void changeNotification() {

@@ -11,7 +11,7 @@
 
     <properties>
         <java.version>11</java.version>
-        <vaadin.version>23.1.0</vaadin.version>
+        <vaadin.version>23.1.1</vaadin.version>
         <selenium.version>4.1.2</selenium.version>
     </properties>
 
@@ -161,6 +161,11 @@
             <groupId>org.apache.pdfbox</groupId>
             <artifactId>pdfbox</artifactId>
             <version>2.0.27</version>
+        </dependency>
+        <dependency>
+            <groupId>org.jetbrains</groupId>
+            <artifactId>annotations</artifactId>
+            <version>24.0.1</version>
         </dependency>
         <dependency>
             <groupId>com.vaadin</groupId>

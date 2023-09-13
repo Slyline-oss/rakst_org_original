@@ -1,19 +1,21 @@
 package org.raksti.web.views.about;
 
 import com.vaadin.flow.component.Text;
+import com.vaadin.flow.component.accordion.Accordion;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.html.*;
+import com.vaadin.flow.component.html.Image;
 import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.notification.NotificationVariant;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.server.VaadinService;
+import org.apache.commons.lang3.StringUtils;
 import org.raksti.web.data.Role;
 import org.raksti.web.data.entity.About;
 import org.raksti.web.data.entity.ExamData;
 import org.raksti.web.data.entity.User;
-import org.raksti.web.data.service.AboutService;
 import org.raksti.web.data.service.ExamDataService;
 import org.raksti.web.data.service.ExamService;
 import org.raksti.web.security.AuthenticatedUser;
@@ -30,16 +32,12 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
-
-
 @PageTitle("Sākumlapa")
 @Route(value = "/", layout = MainLayout.class)
 @RouteAlias(value = "about", layout = MainLayout.class)
 @AnonymousAllowed
 public class AboutView extends VerticalLayout implements BeforeEnterObserver {
-
     private final static Logger logger = LoggerFactory.getLogger(AboutView.class);
-
 
     private final ExamService examService;
     private final ExamDataService examDataService;
@@ -58,79 +56,85 @@ public class AboutView extends VerticalLayout implements BeforeEnterObserver {
         dealWithCookie();
     }
 
-
     private void landing() {
-        List<About> aboutList = aboutService.getAll();
-        About about = null;
-        if (!aboutList.isEmpty()) {
-            about = aboutList.get(0);
-        }
-
         HorizontalLayout hl = new HorizontalLayout();
         hl.addClassNames("about-view-content");
         hl.setJustifyContentMode(JustifyContentMode.AROUND);
         hl.setSpacing(true);
         hl.setPadding(true);
         hl.setAlignItems(Alignment.CENTER);
-        //Div with alphabetical content
-        Div content = new Div();
-        content.addClassNames("content");
-        content.getStyle().set("display", "flex");
-        content.getStyle().set("flex-direction", "column");
-        content.getStyle().set("justify-content", "flex-start");
-        content.getStyle().set("color", "#35294c");
-        content.getStyle().set("width", "50%");
 
-        //H1 and paragraph that contains div "text-content"
-//        H1 title = new H1(about != null ? about.getTitle() : "");
-//        title.getStyle().set("font-family", "Raksti-DalaFloda,Times,monospace");
-//        Paragraph text = new Paragraph(about != null ? about.getText() : "");
+        Main main = new Main();
 
-        //Div "text-content" that contains h1 and paragraph
-        Div textContent = new Div();
+        HorizontalLayout content = new HorizontalLayout();
+//        content.addClassNames("content");
+//        content.getStyle().set("display", "flex");
+//        content.getStyle().set("flex-direction", "column");
+//        content.getStyle().set("justify-content", "flex-start");
+//        content.getStyle().set("color", "#35294c");
+//        content.getStyle().set("width", "50%");
+
+        HorizontalLayout textContent = new HorizontalLayout();
 
         textContent.addClassNames("text-content");
-        assert about != null;
-        String[] paragraphs = about.split();
-        boolean firstParagraph = true;
-        for (String paragraph : paragraphs) {
-            if (firstParagraph) {
-                H2 text = new H2(paragraph);
-                text.getStyle().set("font-family", "Raksti-DalaFloda,Times,monospace");
-                textContent.add(text);
-                firstParagraph = false;
-            } else {
-                Paragraph text = new Paragraph(paragraph);
-                text.getStyle().set("font-family", "Raksti-DalaFloda,Times,monospace");
-                textContent.add(text);
+        List<About> blocks = aboutService.getAll();
+
+        Image img = new Image("images/img.png", "pic");
+        //img.setWidth(30, Unit.PERCENTAGE);
+        Div imageContainer = new Div(img);
+        imageContainer.setId("side_image");
+//        Aside aside = new Aside();
+//        aside.setWidth(30, Unit.PERCENTAGE);
+//        aside.getStyle().set("align-self", "top");
+//        aside.getStyle().set("float", "right");
+//        aside.add(img);
+
+
+//        boolean firstBlock = true;
+//        for (About block : blocks) {
+//            H1 header = new H1(firstBlock ? block.getTitle() : block.getTitle() + " (...)");
+//            textContent.add(header);
+//            String[] lines = block.split();
+//
+//            for (String line : lines) {
+//                Paragraph p = new Paragraph(line);
+//                p.getStyle().set("font-family", "Raksti-DalaFloda,Times,monospace");
+//                textContent.add(p);
+//                if (!firstBlock) {
+//                    p.setVisible(false);
+//                    header.addClickListener(e -> {
+//                        p.setVisible(!p.isVisible());
+//                    });
+//                }
+//            }
+//            firstBlock = false;
+//        }
+        Accordion accordion = new Accordion();
+        for (About block : blocks) {
+            String header = block.getTitle();
+            String[] lines = block.split();
+            HorizontalLayout div = new HorizontalLayout();
+            Main blockContent = new Main();
+
+            for (String line : lines) {
+                if (StringUtils.isNotBlank(line)) {
+                    Paragraph p = new Paragraph(line);
+                    blockContent.add(p);
+                }
             }
+
+            div.add(blockContent);
+            accordion.add(header, div);
         }
 
-        content.add(textContent);
+        main.add(accordion);
+        //textContent.add(accordion);
+        content.add(main);
 
-
-
-        //Div with image
-//        Div image = new Div();
-//        image.addClassNames("image");
-
-        Aside aside = new Aside();
-        aside.getStyle().set("width", "50%");
-        aside.getStyle().set("align-self", "center");
-        //Image
-        Image img = new Image("images/img.png", "main img");
-        aside.add(img);
-        img.getStyle().set("width", "100%");
-        img.getStyle().set("margin", "auto");
-        img.getStyle().set("max-width", "100%");
-        img.getStyle().set("max-height", "100%");
-
-        hl.add(content, aside);
-
+        hl.add(content);
         hl.setHeightFull();
 
         add(hl);
-
     }
 
 

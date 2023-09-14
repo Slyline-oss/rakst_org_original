@@ -1,6 +1,7 @@
 package org.raksti.web.views.about;
 
 import com.vaadin.flow.component.Text;
+import com.vaadin.flow.component.Unit;
 import com.vaadin.flow.component.accordion.Accordion;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
@@ -67,67 +68,65 @@ public class AboutView extends VerticalLayout implements BeforeEnterObserver {
         Main main = new Main();
 
         HorizontalLayout content = new HorizontalLayout();
-//        content.addClassNames("content");
-//        content.getStyle().set("display", "flex");
-//        content.getStyle().set("flex-direction", "column");
-//        content.getStyle().set("justify-content", "flex-start");
-//        content.getStyle().set("color", "#35294c");
-//        content.getStyle().set("width", "50%");
+        content.addClassNames("content");
+        content.getStyle().set("display", "flex");
+        content.getStyle().set("flex-direction", "column");
+        content.getStyle().set("justify-content", "flex-start");
+        content.getStyle().set("color", "#35294c");
+        content.getStyle().set("width", "70%");
 
-        HorizontalLayout textContent = new HorizontalLayout();
+        Main textContent = new Main();
 
         textContent.addClassNames("text-content");
         List<About> blocks = aboutService.getAll();
 
         Image img = new Image("images/img.png", "pic");
-        //img.setWidth(30, Unit.PERCENTAGE);
-        Div imageContainer = new Div(img);
-        imageContainer.setId("side_image");
-//        Aside aside = new Aside();
-//        aside.setWidth(30, Unit.PERCENTAGE);
-//        aside.getStyle().set("align-self", "top");
-//        aside.getStyle().set("float", "right");
-//        aside.add(img);
+        img.addClassNames("image-img");
+        Aside aside = new Aside();
+        aside.setWidth(30, Unit.PERCENTAGE);
+        aside.getStyle().set("align-self", "top");
+        aside.getStyle().set("float", "right");
+        aside.add(img);
 
-
-//        boolean firstBlock = true;
-//        for (About block : blocks) {
-//            H1 header = new H1(firstBlock ? block.getTitle() : block.getTitle() + " (...)");
-//            textContent.add(header);
-//            String[] lines = block.split();
-//
-//            for (String line : lines) {
-//                Paragraph p = new Paragraph(line);
-//                p.getStyle().set("font-family", "Raksti-DalaFloda,Times,monospace");
-//                textContent.add(p);
-//                if (!firstBlock) {
-//                    p.setVisible(false);
-//                    header.addClickListener(e -> {
-//                        p.setVisible(!p.isVisible());
-//                    });
-//                }
-//            }
-//            firstBlock = false;
-//        }
-        Accordion accordion = new Accordion();
+        boolean firstBlock = true;
         for (About block : blocks) {
-            String header = block.getTitle();
+            Paragraph header = new Paragraph(firstBlock ? block.getTitle() : block.getTitle() + " (...)");
+            header.addClassName("about-block-header");
+            textContent.add(header);
             String[] lines = block.split();
-            HorizontalLayout div = new HorizontalLayout();
-            Main blockContent = new Main();
 
             for (String line : lines) {
-                if (StringUtils.isNotBlank(line)) {
-                    Paragraph p = new Paragraph(line);
-                    blockContent.add(p);
-                }
+                Paragraph p = new Paragraph(line);
+                p.addClassName("about-block-body");
+                textContent.add(p);
+                p.setVisible(firstBlock);
+                header.addClickListener(e -> {
+                    p.setVisible(!p.isVisible());
+                });
             }
-
-            div.add(blockContent);
-            accordion.add(header, div);
+            firstBlock = false;
         }
 
-        main.add(accordion);
+//        Accordion accordion = new Accordion();
+//        for (About block : blocks) {
+//            H1 header = new H1(block.getTitle());
+//            header.
+//            String[] lines = block.split();
+//            HorizontalLayout div = new HorizontalLayout();
+//            Main blockContent = new Main();
+//
+//            for (String line : lines) {
+//                if (StringUtils.isNotBlank(line)) {
+//                    Paragraph p = new Paragraph(line);
+//                    blockContent.add(p);
+//                }
+//            }
+//
+//            div.add(blockContent);
+//            accordion.add(header, div);
+//        }
+
+        main.add(textContent);
         //textContent.add(accordion);
         content.add(main);
 

@@ -1,10 +1,24 @@
-@media screen and (max-width: 1400px) {
 
-    .about-view-content {
-        flex-direction: column;
-    }
+.about-view-content {
+    flex-direction: column;
+}
 
-    .about-view-content aside {
-        align-self: center;
-    }
+.about-view-content aside {
+    align-self: center;
+}
+
+.about-block-header {
+    font-family: Raksti-Verb,Arial,monospace;
+    font-weight: 600;
+    line-height: 1.3em;
+}
+
+.about-block-body {
+    font-family: Raksti-FreightTextPro,Times,monospace;
+    line-height: 1.3em;
+    font-weight: 400;
+}
+
+.image-img {
+    width: 810px;
 }

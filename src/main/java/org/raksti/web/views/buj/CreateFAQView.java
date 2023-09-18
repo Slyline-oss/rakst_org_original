@@ -1,136 +1,86 @@
 package org.raksti.web.views.buj;
 
+import com.vaadin.flow.component.UI;
+import com.vaadin.flow.component.Unit;
 import com.vaadin.flow.component.button.Button;
-import com.vaadin.flow.component.button.ButtonVariant;
-import com.vaadin.flow.component.grid.Grid;
-import com.vaadin.flow.component.notification.Notification;
-import com.vaadin.flow.component.notification.NotificationVariant;
+import com.vaadin.flow.component.dialog.Dialog;
+import com.vaadin.flow.component.html.Label;
+import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
-import com.vaadin.flow.component.select.Select;
 import com.vaadin.flow.component.textfield.TextArea;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
+import org.jetbrains.annotations.NotNull;
 import org.raksti.web.data.entity.FAQ;
 import org.raksti.web.data.service.FAQService;
 import org.raksti.web.views.MainLayout;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.annotation.security.RolesAllowed;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
-import java.util.Set;
 
-@PageTitle("BUJ - izveidot")
+@PageTitle("Rediģēt BUJ")
 @Route(value = "buj-create", layout = MainLayout.class)
 @RolesAllowed("ADMIN")
 public class CreateFAQView extends VerticalLayout {
-
-    private final Select<String> faqSelect = new Select<>();
-    private final TextArea answer = new TextArea();
-    private final TextField question = new TextField();
-    private final Button create = new Button("Izveidot jautājumu");
-    private final Button delete = new Button("Dzēst");
-    Grid<FAQ> grid = new Grid<>(FAQ.class, false);
-    private List<FAQ> questionList;
-    private List<String> questionTitles = new ArrayList<>();
-
     private final FAQService faqService;
 
-    public CreateFAQView(FAQService faqService) {
+    @Autowired
+    public CreateFAQView(@NotNull FAQService faqService) {
         this.faqService = faqService;
-        loadQuestions();
         landing();
     }
 
     //makes layout of page
     private void landing() {
-        //selector
-        faqSelect.setEmptySelectionAllowed(true);
-        faqSelect.setLabel("Izveidotie jautājumi");
-        faqSelect.addValueChangeListener(e -> returnText(e.getValue()));
-        //text area with answer
-        answer.setLabel("Atbilde uz jautājumu");
-        answer.setWidth("400px");
-        answer.setClearButtonVisible(true);
-        //text field with title of question
-        question.setClearButtonVisible(true);
-        question.setPlaceholder("Jautājums");
-        question.setLabel("Jauns jautājums");
-        question.setMinWidth("400px");
-        //Button create
-        create.addClickListener(e -> createQuestion());
-        //Grid
-        grid.setSelectionMode(Grid.SelectionMode.MULTI);
-        grid.addColumn(FAQ::getQuestion).setAutoWidth(true).setHeader("Jautājums");
-        grid.setItems(questionList);
-        //Button delete
-        delete.addClickListener(e -> deleteQuestion());
-        delete.addThemeVariants(ButtonVariant.LUMO_ERROR);
+        Button add = new Button("ADD NEW QUESTION AND ANSWER");
+        add.addClickListener(e -> editBlock(new FAQ("", "")));
+        this.add(add);
 
-        add(faqSelect, question, answer, create, grid, delete);
-    }
-
-    //deletes question
-    private void deleteQuestion() {
-        Set<FAQ> list = grid.getSelectedItems();
-        if (!list.isEmpty()) {
-            faqService.deleteItems(list);
-            loadQuestions();
-            grid.setItems(questionList);
-            Notification.show("Jautājums dzēsts!", 5000, Notification.Position.TOP_START).addThemeVariants(NotificationVariant.LUMO_SUCCESS);
-        } else Notification.show("Izvēlēties, ko dzēst", 5000, Notification.Position.TOP_START).addThemeVariants(NotificationVariant.LUMO_CONTRAST);
-    }
-
-    //sets answer and question data of chosen value in fields
-    private void returnText(String value) {
-        for (FAQ faq : questionList) {
-            if (Objects.equals(value, faq.getQuestion())) {
-                question.setValue(value);
-                answer.setValue(faq.getAnswer());
-            }
-        }
-        if (value == null) {
-            question.setValue("");
-            answer.setValue("");
+        List<FAQ> blocks = faqService.getAll();
+        for (FAQ block : blocks) {
+            HorizontalLayout hl = new HorizontalLayout();
+            Label label = new Label(block.getQuestion());
+            hl.add(label);
+            Button edit = new Button("EDIT");
+            edit.addClickListener(e -> editBlock(block));
+            hl.add(edit);
+            Button delete = new Button("DELETE");
+            delete.addClickListener(e -> faqService.delete(block));
+            hl.add(delete);
+            this.add(hl);
         }
     }
 
-    //validate fields
-    private boolean validate() {
-        if (question.getValue().isEmpty() || answer.getValue().isEmpty()) {
-            Notification.show("Aizpildiet lūdzu visus laukus!", 5000, Notification.Position.TOP_START).addThemeVariants(NotificationVariant.LUMO_ERROR);
-            return false;
-        } else if (faqService.getByQuestion(question.getValue()) != null) {
-            Notification.show("Tāds jautājums jau pastāv", 5000, Notification.Position.TOP_START).addThemeVariants(NotificationVariant.LUMO_ERROR);
-            return false;
-        }
-        return true;
-    }
+    private void editBlock(@NotNull FAQ block) {
+        Dialog dialog = new Dialog();
 
-    //creates question in writes it in db
-    private void createQuestion() {
-        if (validate()) {
-            faqService.save(new FAQ(question.getValue(), answer.getValue()));
-            loadQuestions();
-            grid.setItems(questionList);
-            Notification.show("Jautājums izveidots!", 5000, Notification.Position.TOP_START).addThemeVariants(NotificationVariant.LUMO_SUCCESS);
-        }
-    }
+        TextField title = new TextField("Title");
+        title.setValue(block.getQuestion());
+        title.setWidth(90, Unit.PERCENTAGE);
+        TextArea body = new TextArea("Information");
+        body.setValue(block.getAnswer());
+        body.setWidth(90, Unit.PERCENTAGE);
+        VerticalLayout vl = new VerticalLayout(title, body);
 
-    //sets created question in selector
-    private void loadQuestionTitles() {
-        for (FAQ faq : questionList) {
-            questionTitles.add(faq.getQuestion());
-        }
-    }
+        HorizontalLayout buttons = new HorizontalLayout();
+        Button ok = new Button("OK");
+        ok.addClickListener(e -> {
+            block.setQuestion(title.getValue());
+            block.setAnswer(body.getValue());
+            faqService.save(block);
+            dialog.close();
+            UI.getCurrent().getPage().reload();
+        });
+        Button cancel = new Button("Cancel");
+        cancel.addClickListener(e -> dialog.close());
+        buttons.add(ok, cancel);
 
-    //updates question list and titles
-    private void loadQuestions() {
-        questionList = faqService.getAllFAQ();
-        questionTitles.clear();
-        loadQuestionTitles();
-        faqSelect.setItems(questionTitles);
+        dialog.add(vl, buttons);
+
+        dialog.setWidth(90, Unit.PERCENTAGE);
+        dialog.open();
     }
 
 }

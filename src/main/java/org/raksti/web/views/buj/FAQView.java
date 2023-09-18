@@ -25,7 +25,7 @@ public class FAQView extends VerticalLayout {
     private final List<FAQ> faqList;
 
     public FAQView(FAQService faqService) {
-        faqList = faqService.getAllFAQ();
+        faqList = faqService.getAll();
         addClassNames("faq-view");
         getStyle().set("padding-top", "30px");
         landing();

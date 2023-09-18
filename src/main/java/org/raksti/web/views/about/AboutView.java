@@ -2,7 +2,6 @@ package org.raksti.web.views.about;
 
 import com.vaadin.flow.component.Text;
 import com.vaadin.flow.component.Unit;
-import com.vaadin.flow.component.accordion.Accordion;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.html.*;
@@ -12,11 +11,11 @@ import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.notification.NotificationVariant;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.server.VaadinService;
-import org.apache.commons.lang3.StringUtils;
 import org.raksti.web.data.Role;
 import org.raksti.web.data.entity.About;
 import org.raksti.web.data.entity.ExamData;
 import org.raksti.web.data.entity.User;
+import org.raksti.web.data.service.AboutService;
 import org.raksti.web.data.service.ExamDataService;
 import org.raksti.web.data.service.ExamService;
 import org.raksti.web.security.AuthenticatedUser;
@@ -100,34 +99,12 @@ public class AboutView extends VerticalLayout implements BeforeEnterObserver {
                 p.addClassName("about-block-body");
                 textContent.add(p);
                 p.setVisible(firstBlock);
-                header.addClickListener(e -> {
-                    p.setVisible(!p.isVisible());
-                });
+                header.addClickListener(e -> p.setVisible(!p.isVisible()));
             }
             firstBlock = false;
         }
 
-//        Accordion accordion = new Accordion();
-//        for (About block : blocks) {
-//            H1 header = new H1(block.getTitle());
-//            header.
-//            String[] lines = block.split();
-//            HorizontalLayout div = new HorizontalLayout();
-//            Main blockContent = new Main();
-//
-//            for (String line : lines) {
-//                if (StringUtils.isNotBlank(line)) {
-//                    Paragraph p = new Paragraph(line);
-//                    blockContent.add(p);
-//                }
-//            }
-//
-//            div.add(blockContent);
-//            accordion.add(header, div);
-//        }
-
         main.add(textContent);
-        //textContent.add(accordion);
         content.add(main);
 
         hl.add(content);
@@ -135,7 +112,6 @@ public class AboutView extends VerticalLayout implements BeforeEnterObserver {
 
         add(hl);
     }
-
 
     @Override
     public void beforeEnter(BeforeEnterEvent beforeEnterEvent) {
@@ -173,13 +149,13 @@ public class AboutView extends VerticalLayout implements BeforeEnterObserver {
         try {
             Cookie[] cookies = VaadinService.getCurrentRequest().getCookies();
             if (cookies != null && cookies.length > 0) {
-                boolean cookiePresent = Arrays.asList(cookies).stream().filter(cookie -> "raksti.org".equals(cookie.getName())).count() > 0;
+                boolean cookiePresent = Arrays.stream(cookies).anyMatch(cookie -> "raksti.org".equals(cookie.getName()));
                 if (!cookiePresent) {
                     createNotification();
                 }
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error("Failed cookies operation: " + e.getMessage());
         }
     }
 
@@ -206,9 +182,7 @@ public class AboutView extends VerticalLayout implements BeforeEnterObserver {
         Button closeButton = new Button(new Icon("lumo", "cross"));
         closeButton.addThemeVariants(ButtonVariant.LUMO_TERTIARY_INLINE);
         closeButton.getElement().setAttribute("aria-label", "Close");
-        closeButton.addClickListener(event -> {
-            notification.close();
-        });
+        closeButton.addClickListener(event -> notification.close());
 
         HorizontalLayout layout = new HorizontalLayout(statusText, retryButton,
                 closeButton);

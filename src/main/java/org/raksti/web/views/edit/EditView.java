@@ -1,22 +1,23 @@
 package org.raksti.web.views.edit;
 
+import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.notification.NotificationVariant;
-import org.raksti.web.data.entity.Text;
-import org.raksti.web.data.service.TextRepository;
-import org.raksti.web.views.MainLayout;
-import org.raksti.web.views.about.AboutService;
-import org.raksti.web.views.profile.ProfileViewService;
-import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.component.select.Select;
 import com.vaadin.flow.component.textfield.TextArea;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
-import org.springframework.beans.factory.annotation.Autowired;
-
+import org.raksti.web.data.entity.Text;
+import org.raksti.web.data.service.TextRepository;
+import org.raksti.web.views.MainLayout;
+import org.raksti.web.views.profile.ProfileViewService;
 
 import javax.annotation.security.RolesAllowed;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 
@@ -25,19 +26,17 @@ import java.util.stream.Collectors;
 @RolesAllowed("ADMIN")
 public class EditView extends VerticalLayout {
 
-    private com.vaadin.flow.component.button.Button submitButton;
-    private com.vaadin.flow.component.textfield.TextArea aboutTextArea;
-    private com.vaadin.flow.component.select.Select<String> historySelector;
-    private TextArea profileImportantMessageArea;
-    private Button sendButton;
+    private Button submitButton;
+    private final TextArea aboutTextArea;
+    private final Select<String> historySelector;
+    private final TextArea profileImportantMessageArea;
+    private final Button sendButton;
 
-    @Autowired
-    private final AboutService aboutView;
     private final ProfileViewService profileViewService;
 
     private final TextRepository textRepository;
-    public EditView(AboutService aboutView, ProfileViewService profileViewService, TextRepository textRepository) {
-        this.aboutView = aboutView;
+
+    public EditView(ProfileViewService profileViewService, TextRepository textRepository) {
         this.profileViewService = profileViewService;
         this.textRepository = textRepository;
         this.historySelector = new com.vaadin.flow.component.select.Select<>();
@@ -84,23 +83,20 @@ public class EditView extends VerticalLayout {
     }
 
     private void returnText(String text) {
-        if (!text.equals(null)) {
-            aboutTextArea.setValue(text);
-        }
+        aboutTextArea.setValue(text);
     }
 
     private Collection<String> getHistoryItems() {
-        Optional<Text> maybeText = textRepository.findById("about");
-        Text text = null;
-        if (maybeText.isPresent()) {
-            text = maybeText.get();
-        }
         Collection<String> collection = new ArrayList<>();
-        collection.add(text.getContent_1());
-        collection.add(text.getContent_2());
-        collection.add(text.getContent_3());
+        Optional<Text> maybeText = textRepository.findById("about");
+        if (maybeText.isPresent()) {
+            Text text = maybeText.get();
+            collection.add(text.getContent_1());
+            collection.add(text.getContent_2());
+            collection.add(text.getContent_3());
 
-        collection = collection.stream().filter(Objects::nonNull).collect(Collectors.toList());
+            collection = collection.stream().filter(Objects::nonNull).collect(Collectors.toList());
+        }
         return collection;
     }
 }

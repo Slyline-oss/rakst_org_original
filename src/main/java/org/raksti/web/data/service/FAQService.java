@@ -1,43 +1,41 @@
 package org.raksti.web.data.service;
 
+import org.jetbrains.annotations.NotNull;
 import org.raksti.web.data.entity.FAQ;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.CacheManager;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.Objects;
 
 @Service(value = "faq_service")
 public class FAQService {
 
     private final FAQRepository faqRepository;
+    private final CacheManager cacheManager;
 
-    public FAQService(FAQRepository faqRepository) {
+    @Autowired
+    public FAQService(@NotNull FAQRepository faqRepository, @NotNull CacheManager cacheManager) {
         this.faqRepository = faqRepository;
+        this.cacheManager = cacheManager;
     }
 
-    public Optional<FAQ> getById(Long id) {
-        return faqRepository.findById(id);
+    public void delete(@NotNull FAQ item) {
+        faqRepository.delete(item);
+        Objects.requireNonNull(cacheManager.getCache("faq")).clear();
     }
 
-    public void deleteItems(Set<FAQ> list) {
-        faqRepository.deleteAll(list);
-    }
-
-    public Long count() {
-        return faqRepository.count();
-    }
-
-    public List<FAQ> getAllFAQ() {
+    @NotNull
+    @Cacheable(value = "faq")
+    public List<FAQ> getAll() {
         return faqRepository.findAll();
     }
 
-    public void save(FAQ faq) {
+    public void save(@NotNull FAQ faq) {
         faqRepository.save(faq);
-    }
-
-    public FAQ getByQuestion(String question) {
-        return faqRepository.findByQuestion(question);
+        Objects.requireNonNull(cacheManager.getCache("faq")).clear();
     }
 
 }

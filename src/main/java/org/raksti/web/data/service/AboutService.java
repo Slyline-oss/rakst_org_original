@@ -1,7 +1,6 @@
-package org.raksti.web.views.about;
+package org.raksti.web.data.service;
 
 import org.raksti.web.data.entity.About;
-import org.raksti.web.data.service.AboutRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.CacheEvict;

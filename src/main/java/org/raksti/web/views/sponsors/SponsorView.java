@@ -106,7 +106,7 @@ public class SponsorView extends VerticalLayout {
         posti.setText("Pasaules diktāta latviešu valodā portāls raksti.org ir tapis pateicoties mūsu lieldraugam, Somijas pastam piederošajam uzņēmumam Posti Messaging.");
         wrapper2.add(aboutExam, principles);
         wrapper.add(sponsors, places);
-        add(titles, wrapper, wrapper2, posti);
+        add(wrapper2, titles, wrapper);
     }
 
 

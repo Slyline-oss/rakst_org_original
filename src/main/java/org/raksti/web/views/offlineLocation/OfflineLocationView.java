@@ -1,16 +1,21 @@
 package org.raksti.web.views.offlineLocation;
 
+import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.html.Div;
+import com.vaadin.flow.component.html.Label;
 import com.vaadin.flow.component.html.Paragraph;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.notification.NotificationVariant;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
+import org.apache.commons.lang3.StringUtils;
+import org.jetbrains.annotations.NotNull;
 import org.raksti.web.data.Role;
 import org.raksti.web.data.entity.OfflineLocation;
 import org.raksti.web.data.entity.User;
@@ -19,8 +24,8 @@ import org.raksti.web.data.service.UserRepository;
 import org.raksti.web.emailSender.EmailSenderService;
 import org.raksti.web.security.AuthenticatedUser;
 import org.raksti.web.views.MainLayout;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.raksti.web.views.profile.ProfileView;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.annotation.security.RolesAllowed;
 import java.util.UUID;
@@ -29,9 +34,6 @@ import java.util.UUID;
 @Route(value = "offline-locations", layout = MainLayout.class)
 @RolesAllowed({"USER", "ADMIN"})
 public class OfflineLocationView extends VerticalLayout {
-
-    Logger logger = LoggerFactory.getLogger(getClass());
-    private final AuthenticatedUser authenticatedUser;
     private final EmailSenderService emailSenderService;
     private final UserRepository userRepository;
     private final User user;
@@ -41,12 +43,15 @@ public class OfflineLocationView extends VerticalLayout {
     private final Dialog confirmationDialog = new Dialog();
     private final OfflineLocationForm offlineLocationForm = new OfflineLocationForm();
 
-    public OfflineLocationView(AuthenticatedUser authenticatedUser, EmailSenderService emailSenderService, UserRepository userRepository, OfflineLocationService offlineLocationService) {
-        this.authenticatedUser = authenticatedUser;
+    @Autowired
+    public OfflineLocationView(@NotNull AuthenticatedUser authenticatedUser,
+                               @NotNull EmailSenderService emailSenderService,
+                               @NotNull UserRepository userRepository,
+                               @NotNull OfflineLocationService offlineLocationService) {
         this.emailSenderService = emailSenderService;
         this.userRepository = userRepository;
         this.offlineLocationService = offlineLocationService;
-        this.user = authenticatedUser.get().get();
+        this.user = authenticatedUser.get().orElseThrow(() -> new IllegalStateException("No user found"));
 
         offlineLocationDialog.add(offlineLocationForm);
         configureForm();
@@ -55,11 +60,12 @@ public class OfflineLocationView extends VerticalLayout {
 
         getData();
         add(offlineLocationDialog);
-        if (authenticatedUser.get().get().getRoles().contains(Role.ADMIN)) {
+        if (user.getRoles().contains(Role.ADMIN)) {
             add(addOfflineLocationButton);
         }
         Div infoText = new Div();
-        infoText.setText("Klātienes reģistrācijas mājaslapā noslēgsies piektdien, 14. oktrobrī, pulksten 15.00. Tie, kuri nebūs paspējuši reģistrēties mājaslapā, to varēs izdarīt diktāta rakstīšanas vietā." +
+        infoText.setText("Klātienes reģistrācijas mājaslapā noslēgsies piektdien, 13. oktrobrī, pulksten 12.00." +
+                " Tie, kuri nebūs paspējuši reģistrēties mājaslapā, to varēs izdarīt diktāta rakstīšanas vietā." +
                 " Lai gan vietu skaits ir ierobežots, vēl nav bijusi reize, kurā kāds rakstīt gribētājs būtu aizsūtīts mājās.");
         add(offlineExamGrid, infoText);
     }
@@ -71,13 +77,13 @@ public class OfflineLocationView extends VerticalLayout {
         offlineExamGrid.addColumn(OfflineLocation::getAddress).setHeader("Adrese").setSortable(true);
         offlineExamGrid.addColumn(OfflineLocation::getSlotsTotal).setHeader("Kopējais vietu skaits").setSortable(true);
         offlineExamGrid.addColumn(offlineLocation -> offlineLocation.getSlotsTotal() - offlineLocation.getSlotsTaken()).setHeader("Brīvo vietu skaits").setSortable(true);
-//        offlineExamGrid.addComponentColumn(offlineLocation -> {
-//            Button participate = new Button("Pieteikties");
-//            participate.addClickListener(buttonClickEvent -> participate(offlineLocation.getId()));
-//            return participate;
-//        });
+        offlineExamGrid.addComponentColumn(offlineLocation -> {
+            Button participate = new Button("Pieteikties");
+            participate.addClickListener(buttonClickEvent -> participate(offlineLocation.getId()));
+            return participate;
+        });
 
-        if (authenticatedUser.get().get().getRoles().contains(Role.ADMIN)) {
+        if (user.getRoles().contains(Role.ADMIN)) {
             offlineExamGrid.addComponentColumn(offlineLocation -> {
                 Button editButton = new Button("Rediģēt");
                 editButton.addClickListener(buttonClickEvent -> editOfflineLocation(offlineLocation));
@@ -91,7 +97,6 @@ public class OfflineLocationView extends VerticalLayout {
         offlineExamGrid.setMultiSort(true);
 
         updateList();
-
     }
 
     private void configureForm() {
@@ -149,29 +154,54 @@ public class OfflineLocationView extends VerticalLayout {
         offlineExamGrid.setItems(offlineLocationService.getAll());
     }
 
+    @SuppressWarnings("ExtractMethodRecommender")
     private void participate(UUID offlineLocationId) {
-        OfflineLocation offlineLocation = offlineLocationService.getById(offlineLocationId);
-        if (validateParticipationConditions(offlineLocation)) {
-            user.setOfflineLocation(offlineLocation);
-            userRepository.save(user);
-            emailSenderService.sendEmail(user.getEmail(), getParticipationNotificationEmailBody(offlineLocation), "Aicinām piedalīties VIII pasaules diktātā latviešu valodā!");
+        Dialog dialog = new Dialog();
+        VerticalLayout vl = new VerticalLayout();
 
-            offlineLocation.setSlotsTaken(offlineLocation.getSlotsTaken()+1);
-            offlineLocation.getParticipants().add(user);
-            offlineLocationService.save(offlineLocation);
-        }
-        updateList();
+        OfflineLocation offlineLocation = offlineLocationService.getById(offlineLocationId);
+
+        dialog.setHeaderTitle("Lūdzu apstipriniet");
+        vl.add(new Label("Lūdzu apstipriniet diktātā piedalīšanos klātienē:"));
+        vl.add(new Label(offlineLocation.getCity()));
+        vl.add(new Label(offlineLocation.getAddress()));
+        TextField note = new TextField("Informācija organizatoram");
+        vl.add(note);
+
+        Button cancel = new Button("Aizvērt");
+        cancel.addClickListener(e -> dialog.close());
+
+        Button ok = new Button("Piekrītu");
+        ok.addClickListener(e -> {
+            if (validateParticipationConditions(offlineLocation)) {
+                user.setOfflineLocation(offlineLocation);
+                user.setOfflineNote(note.getValue());
+                userRepository.save(user);
+                emailSenderService.sendEmail(user.getEmail(), getParticipationNotificationEmailBody(offlineLocation),
+                        "Aicinām piedalīties IX. pasaules diktātā latviešu valodā!");
+                offlineLocation.setSlotsTaken(offlineLocation.getSlotsTaken() + 1);
+                offlineLocation.getParticipants().add(user);
+                offlineLocationService.save(offlineLocation);
+            }
+            updateList();
+            dialog.close();
+            UI.getCurrent().navigate(ProfileView.class);
+        });
+
+        dialog.add(vl, new HorizontalLayout(cancel, ok));
+        dialog.open();
     }
 
     private String getParticipationNotificationEmailBody(OfflineLocation offlineLocation) {
         String country = offlineLocation.getCountry();
         String city = offlineLocation.getCity();
         String address = offlineLocation.getAddress();
-        return "Sveicināti!\n" +
+        return "Sveicināti!\n\n" +
                 "Paldies, Jūsu pieteikums ir saņemts!\n" +
-                "Gaidīsim Jūs 2022. gada 15. oktobrī plkst. 12.20 izvēlētajā rakstīšanas vietā!\n" +
+                "Gaidīsim Jūs 2023. gada 14. oktobrī plkst. 12.15 izvēlētajā rakstīšanas vietā!\n\n" +
                 "Vārds: " + user.getFirstName() + "\n" +
                 "Uzvārds: " + user.getLastName() + "\n" +
+                (StringUtils.isNotBlank(user.getOfflineNote()) ? "Informācija organizatoram: " + user.getOfflineNote() + "\n" : "") +
                 "Vieta: " + city + "\n" +
                 "Adrese: " + address;
     }
@@ -193,7 +223,7 @@ public class OfflineLocationView extends VerticalLayout {
             return false;
         }
         if (user.getOfflineLocation() != null) {
-            showNotification("Jau piedalīties citā vietā!");
+            showNotification("Jūs jau piedalāties citā vietā!");
             return false;
         }
         return true;

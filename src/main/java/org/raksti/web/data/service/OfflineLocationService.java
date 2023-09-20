@@ -1,6 +1,8 @@
 package org.raksti.web.data.service;
 
+import org.jetbrains.annotations.NotNull;
 import org.raksti.web.data.entity.OfflineLocation;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -10,7 +12,8 @@ import java.util.UUID;
 public class OfflineLocationService {
     private final OfflineLocationRepository offlineLocationRepository;
 
-    public OfflineLocationService(OfflineLocationRepository offlineLocationRepository) {
+    @Autowired
+    public OfflineLocationService(@NotNull OfflineLocationRepository offlineLocationRepository) {
         this.offlineLocationRepository = offlineLocationRepository;
     }
 
@@ -18,13 +21,10 @@ public class OfflineLocationService {
         return offlineLocationRepository.findAll();
     }
 
-    public List<OfflineLocation> getAllByCountyAndByCityAndByAddress(String country, String city, String address) {
-        return offlineLocationRepository.findAllByCountryAndCityAndAddress(country, city, address);
-    }
-
     public OfflineLocation getById(UUID uuid) {
         return offlineLocationRepository.getReferenceById(uuid);
     }
+
 
     public void save(OfflineLocation offlineLocation) {
         offlineLocationRepository.save(offlineLocation);
@@ -33,4 +33,5 @@ public class OfflineLocationService {
     public void delete(OfflineLocation offlineLocation) {
         offlineLocationRepository.delete(offlineLocation);
     }
+
 }

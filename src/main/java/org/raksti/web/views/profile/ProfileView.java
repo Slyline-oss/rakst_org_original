@@ -1,6 +1,8 @@
 package org.raksti.web.views.profile;
 
 import com.vaadin.flow.component.html.*;
+import org.apache.commons.lang3.StringUtils;
+import org.jetbrains.annotations.NotNull;
 import org.raksti.web.countriesAndLanguages.CountriesAndLanguages;
 import org.raksti.web.data.entity.OfflineLocation;
 import org.raksti.web.data.entity.User;
@@ -39,12 +41,11 @@ import java.util.Optional;
 @RolesAllowed({"USER", "ADMIN"})
 public class ProfileView extends VerticalLayout {
 
-    private final OfflineLocationService offlineLocationService;
-    private final PasswordField password = new PasswordField();;
-    private final PasswordField newPassword = new PasswordField();;
+    private final PasswordField password = new PasswordField();
+    private final PasswordField newPassword = new PasswordField();
     private final AuthenticatedUser authenticatedUser;
     private final TextField name = new TextField("Jūsu vārds:");
-    private final TextField surname = new TextField("Jūsu uzvārds:");;
+    private final TextField surname = new TextField("Jūsu uzvārds:");
     private final DatePicker birthDate = new DatePicker();
     private final Locale LATVIAN_LOCALE = new Locale("lv", "LV");
     private final TextField telNumber = new TextField("Telefona numurs:");
@@ -55,35 +56,35 @@ public class ProfileView extends VerticalLayout {
     private final Select<String> education = new Select<>();
     private final Select<String> language = new Select<>();
     private final Checkbox anonymous = new Checkbox("Anonīms");
-    private com.vaadin.flow.component.dialog.Dialog confirmationDialog = new Dialog();;
+    private final com.vaadin.flow.component.dialog.Dialog confirmationDialog = new Dialog();
 
     private final UserDetailsServiceImpl userDetailsService;
 
     private final EmailAndPasswordValidation emailAndPasswordValidation;
     private User user;
-    @Autowired
-    private PasswordEncoder passwordEncoder;
+
+    private final PasswordEncoder passwordEncoder;
     private final CountriesAndLanguages countriesAndLanguages;
 
-    public ProfileView(AuthenticatedUser authenticatedUser, UserDetailsServiceImpl userDetailsService, EmailAndPasswordValidation emailAndPasswordValidation, ProfileViewService profileViewService, OfflineLocationService offlineLocationService, CountriesAndLanguages countriesAndLanguages) {
+    @Autowired
+    public ProfileView(@NotNull AuthenticatedUser authenticatedUser,
+                       @NotNull UserDetailsServiceImpl userDetailsService,
+                       @NotNull EmailAndPasswordValidation emailAndPasswordValidation,
+                       @NotNull ProfileViewService profileViewService,
+                       @NotNull CountriesAndLanguages countriesAndLanguages,
+                       @NotNull PasswordEncoder passwordEncoder,
+                       @NotNull OfflineLocationService offlineLocationService) {
         this.authenticatedUser = authenticatedUser;
         this.userDetailsService = userDetailsService;
         this.emailAndPasswordValidation = emailAndPasswordValidation;
-        this.offlineLocationService = offlineLocationService;
         this.countriesAndLanguages = countriesAndLanguages;
+        this.passwordEncoder = passwordEncoder;
 
         getStyle().set("padding-top", "30px");
 
         LocalDate now = LocalDate.now(ZoneId.systemDefault());
 
-        DatePicker.DatePickerI18n latvianI18n = new DatePicker.DatePickerI18n();
-        latvianI18n.setMonthNames(List.of("Janvāris", "Februāris", "Marts", "Aprīlis", "Maijs",
-                "Jūnijs", "Jūlijs", "Augusts", "Septembris", "Oktobris", "Novembris", "Decembris"));
-        latvianI18n.setWeekdays(List.of("Svētdiena", "Pirmdiena", "Otrdiena", "Trešdiena", "Ceturtdiena", "Piektdiena", "Sestdiena" ));
-        latvianI18n.setWeekdaysShort(List.of("Sv", "P", "O", "T", "C", "Pk", "S"));
-        latvianI18n.setFirstDayOfWeek(1);
-        latvianI18n.setWeek("Nedēļa");
-        latvianI18n.setToday("Šodien");
+        DatePicker.DatePickerI18n latvianI18n = getDatePickerI18n();
 
         language.setLabel("Dzimtā valoda");
         language.setPlaceholder("Valoda");
@@ -157,9 +158,8 @@ public class ProfileView extends VerticalLayout {
 
         newPassword.setLabel("Jaunā parole:");
         newPassword.setClearButtonVisible(true);
-        newPassword.setPattern("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#&()–[{}]:;',?/*~$^+=<>]).{8,20}$");
-        newPassword.setHelperText("Parolei jābūt vismāz 8 simbolu garai, iekļaujot lielus, mazus burtus un vienu speciālu\" +\n" +
-                "\"simbolu (#, $, %, ..)");
+        newPassword.setPattern(EmailAndPasswordValidation.PASSWORD_REGEX);
+        newPassword.setHelperText("Parolei jābūt vismāz 8 simbolu garai, iekļaujot lielus, mazus burtus un ciparus");
 
         Button btnPassword = new Button("Mainīt");
         btnPassword.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
@@ -210,6 +210,19 @@ public class ProfileView extends VerticalLayout {
         } catch(Exception e) {
             System.out.println("Error occurred");
         }
+    }
+
+    @NotNull
+    private static DatePicker.DatePickerI18n getDatePickerI18n() {
+        DatePicker.DatePickerI18n latvianI18n = new DatePicker.DatePickerI18n();
+        latvianI18n.setMonthNames(List.of("Janvāris", "Februāris", "Marts", "Aprīlis", "Maijs",
+                "Jūnijs", "Jūlijs", "Augusts", "Septembris", "Oktobris", "Novembris", "Decembris"));
+        latvianI18n.setWeekdays(List.of("Svētdiena", "Pirmdiena", "Otrdiena", "Trešdiena", "Ceturtdiena", "Piektdiena", "Sestdiena" ));
+        latvianI18n.setWeekdaysShort(List.of("Sv", "P", "O", "T", "C", "Pk", "S"));
+        latvianI18n.setFirstDayOfWeek(1);
+        latvianI18n.setWeek("Nedēļa");
+        latvianI18n.setToday("Šodien");
+        return latvianI18n;
     }
 
     private void changeUserStatus(boolean status) {
@@ -295,24 +308,23 @@ public class ProfileView extends VerticalLayout {
 
 
     private void completeProfileNotification() {
-        if (language.getValue() == "" || name.getValue() == "" || surname.getValue() == ""
-        || birthDate.getValue() == null || telNumber.getValue() == "" || age.getValue() == ""
-        || country.getValue() == null || city.getValue() == "" || gender.getValue() == null ||
-        education.getValue() == null) {
-            Notification.show("Lūdzu papildiniet informāciju profilā!", 5000, Notification.Position.TOP_START).addThemeVariants(NotificationVariant.LUMO_CONTRAST);
+        if (StringUtils.isAnyBlank(language.getValue(), name.getValue(), surname.getValue(),
+                    country.getValue(), city.getValue(), gender.getValue(), education.getValue())) {
+            Notification.show("Lūdzu papildiniet informāciju profilā!", 5000,
+                    Notification.Position.TOP_START).addThemeVariants(NotificationVariant.LUMO_CONTRAST);
         }
     }
 
     private void changePassword(String password, String newPassword) {
         if (newPassword.trim().isEmpty() || password.trim().isEmpty()) {
-            Notification.show("Aizpildiet visus laukus!", 5000, Notification.Position.TOP_START).addThemeVariants(NotificationVariant.LUMO_ERROR);
+            Notification.show("Lūdzu aizpildiet visus laukus!", 5000, Notification.Position.TOP_START).addThemeVariants(NotificationVariant.LUMO_ERROR);
         } else if(!passwordEncoder.matches(password, user.getHashedPassword())) {
             Notification.show("Tiek ievadīta nepareiza tekoša parole", 5000, Notification.Position.TOP_START).addThemeVariants(NotificationVariant.LUMO_ERROR);
         } else if(!emailAndPasswordValidation.validatePassword(newPassword)) {
             Notification.show("Parolei jābūt vismāz 8 simbolu garai, iekļaujot lielus, mazus burtus un ciparus", 5000, Notification.Position.TOP_START);
         } else {
             userDetailsService.updatePassword(user.getEmail(), newPassword);
-            Notification notification = Notification.show("Parole veiksmīgi pamainīta!");
+            Notification notification = Notification.show("Parole veiksmīgi nomainīta!");
             notification.addThemeVariants(NotificationVariant.LUMO_SUCCESS);
             notification.setPosition(Notification.Position.TOP_START);
         }

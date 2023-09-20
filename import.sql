@@ -1,0 +1,1 @@
+ALTER TABLE application_user ADD COLUMN IF NOT EXISTS offline_note VARCHAR(255);

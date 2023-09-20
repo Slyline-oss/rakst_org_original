@@ -18,10 +18,6 @@ public class PagesService {
         return pagesRepository.findById(id);
     }
 
-    public void createOriginalText() {
-        pagesRepository.save(new Pages("original-text", false));
-    }
-
     public void savePage(Pages pages) {
         pagesRepository.save(pages);
     }

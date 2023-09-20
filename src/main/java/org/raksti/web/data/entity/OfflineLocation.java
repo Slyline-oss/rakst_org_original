@@ -6,6 +6,7 @@ import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
 
+@SuppressWarnings("unused")
 @Entity
 @Table(name = "offline_locations")
 public class OfflineLocation extends AbstractEntity{
@@ -17,6 +18,7 @@ public class OfflineLocation extends AbstractEntity{
     @JsonIgnore
     @OneToMany(mappedBy = "offlineLocation", fetch = FetchType.LAZY)
     private Set<User> participants = new HashSet<>();
+
     public OfflineLocation(String country, String city, String address, Integer slotsTotal) {
         this.country = country;
         this.city = city;
@@ -24,9 +26,7 @@ public class OfflineLocation extends AbstractEntity{
         this.slotsTotal = slotsTotal;
     }
 
-    public OfflineLocation() {
-
-    }
+    public OfflineLocation() {}
 
     public String getCountry() {
         return country;

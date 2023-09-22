@@ -1,13 +1,13 @@
 package org.raksti.web.views.login;
 
-import org.raksti.web.data.entity.User;
-import org.raksti.web.data.service.UserRepository;
-import org.raksti.web.emailSender.EmailSenderService;
-import org.raksti.web.security.UserDetailsServiceImpl;
-import org.raksti.web.views.registration.EmailAndPasswordValidation;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.notification.NotificationVariant;
 import com.vaadin.flow.component.textfield.EmailField;
+import org.jetbrains.annotations.NotNull;
+import org.raksti.web.data.entity.User;
+import org.raksti.web.data.service.UserRepository;
+import org.raksti.web.emailSender.EmailSenderService;
+import org.raksti.web.views.registration.EmailAndPasswordValidation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
@@ -16,16 +16,14 @@ import java.util.UUID;
 @Controller
 public class ForgotPasswordController {
 
-    @Autowired
     private final EmailAndPasswordValidation emailAndPasswordValidation;
     private final UserRepository userRepository;
-    @Autowired
     private final EmailSenderService emailSenderService;
 
     @Autowired
-    private UserDetailsServiceImpl userDetailsService;
-
-    public ForgotPasswordController(EmailAndPasswordValidation emailAndPasswordValidation, UserRepository userRepository, EmailSenderService emailSenderService) {
+    public ForgotPasswordController(@NotNull EmailAndPasswordValidation emailAndPasswordValidation,
+                                    @NotNull UserRepository userRepository,
+                                    @NotNull EmailSenderService emailSenderService) {
         this.emailAndPasswordValidation = emailAndPasswordValidation;
         this.userRepository = userRepository;
         this.emailSenderService = emailSenderService;
@@ -38,7 +36,7 @@ public class ForgotPasswordController {
         String content = "Klikšķiniet uz saites, lai mainītu paroli. " +
                 "Ignorējiet šo e-pastu, ja atceraties savu paroli, vai arī neesat veikuši šo pieprasījumu. " +
                 "https://raksti.org/reset-password/" + link;
-        if (!emailAndPasswordValidation.validateEmail(emailText)) {
+        if (emailAndPasswordValidation.validateEmail(emailText)) {
             Notification.show("Nepareizi ievadīts e-pasts!").setPosition(Notification.Position.TOP_START);
         } else {
             User user = userRepository.findByEmail(emailText);

@@ -1,0 +1,3 @@
+Fix download of the offline users list
+Make it possible to send mass-emails to registered users that agree to receive it
+Make original text editable

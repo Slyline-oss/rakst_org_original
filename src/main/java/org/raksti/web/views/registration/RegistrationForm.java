@@ -107,7 +107,7 @@ public class RegistrationForm extends FormLayout {
             Notification.show("Paroles nesakrīt!", 5000, Notification.Position.TOP_START).addThemeVariants(NotificationVariant.LUMO_ERROR);
         } else if(user != null) {
             Notification.show("Tāds lietotājs jau pastāv", 5000, Notification.Position.TOP_START).addThemeVariants(NotificationVariant.LUMO_ERROR);
-        } else if(!emailAndPasswordValidation.validateEmail(email)) {
+        } else if(emailAndPasswordValidation.validateEmail(email)) {
             Notification.show("Ievadiet pareizo e-pastu", 5000, Notification.Position.TOP_START);
         } else if(!emailAndPasswordValidation.validatePassword(password1)) {
             Notification.show("Parolei jābūt vismāz 8 simbolu garai, iekļaujot lielus, mazus burtus un ciparus",
@@ -136,15 +136,15 @@ public class RegistrationForm extends FormLayout {
         User user = userRepository.findByEmail(email);
         if (user != null) {
             Notification.show("Tāds lietotājs jau pastāv", 5000, Notification.Position.TOP_START).addThemeVariants(NotificationVariant.LUMO_ERROR);
-        } else if(email.trim().isEmpty()) {
+        } else if (email.trim().isEmpty()) {
             Notification.show("Aizpildiet visus laukus", 5000, Notification.Position.TOP_START).addThemeVariants(NotificationVariant.LUMO_ERROR);
-        } else if(password1.isEmpty()) {
+        } else if (password1.isEmpty()) {
             Notification.show("Parole ir tukša", 5000, Notification.Position.TOP_START).addThemeVariants(NotificationVariant.LUMO_ERROR);
         } else if (!password1.equals(password2)) {
             Notification.show("Paroles nesakrīt!", 5000, Notification.Position.TOP_START).addThemeVariants(NotificationVariant.LUMO_ERROR);
-        } else if(!emailAndPasswordValidation.validateEmail(email)) {
+        } else if (emailAndPasswordValidation.validateEmail(email)) {
             Notification.show("Ievadiet pareizo e-pastu", 5000, Notification.Position.TOP_START);
-        } else if(!emailAndPasswordValidation.validatePassword(password1)) {
+        } else if (!emailAndPasswordValidation.validatePassword(password1)) {
             Notification.show("Parolei jābūt vismāz 8 simbolu garai, iekļaujot lielus, mazus burtus un ciparus", 5000, Notification.Position.TOP_START);
         } else {
             String token = UUID.randomUUID().toString();

@@ -13,7 +13,7 @@ import com.vaadin.flow.router.Route;
 import com.vaadin.flow.server.auth.AnonymousAllowed;
 import org.raksti.web.data.entity.User;
 import org.raksti.web.security.UserDetailsServiceImpl;
-import org.raksti.web.views.registration.EmailAndPasswordValidation;
+import org.raksti.web.views.registration.EmailAndPasswordValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 
 @PageTitle("Reset Password")
@@ -26,10 +26,10 @@ public class RestorePasswordView extends VerticalLayout implements BeforeEnterOb
     private String token;
 
     private final UserDetailsServiceImpl userDetailsService;
-    private final EmailAndPasswordValidation emailAndPasswordValidation;
+    private final EmailAndPasswordValidator emailAndPasswordValidation;
 
     @Autowired
-    public RestorePasswordView(UserDetailsServiceImpl userDetailsService, EmailAndPasswordValidation emailAndPasswordValidation) {
+    public RestorePasswordView(UserDetailsServiceImpl userDetailsService, EmailAndPasswordValidator emailAndPasswordValidation) {
         this.userDetailsService = userDetailsService;
         this.emailAndPasswordValidation = emailAndPasswordValidation;
 

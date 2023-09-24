@@ -16,7 +16,6 @@ import org.raksti.web.data.service.UserRepository;
 import org.raksti.web.emailSender.EmailSenderService;
 import org.raksti.web.security.UserDetailsServiceImpl;
 
-import java.util.Locale;
 import java.util.UUID;
 
 public class RegistrationForm extends FormLayout {
@@ -30,11 +29,11 @@ public class RegistrationForm extends FormLayout {
 
     private final UserDetailsServiceImpl userDetailsService;
     private final UserRepository userRepository;
-    private final EmailAndPasswordValidation emailAndPasswordValidation;
+    private final EmailAndPasswordValidator emailAndPasswordValidation;
     private final EmailSenderService emailSenderService;
 
     public RegistrationForm(UserDetailsServiceImpl userDetailsService, UserRepository userRepository,
-                            EmailAndPasswordValidation emailAndPasswordValidation, EmailSenderService emailSenderService) {
+                            EmailAndPasswordValidator emailAndPasswordValidation, EmailSenderService emailSenderService) {
         this.userDetailsService = userDetailsService;
         this.userRepository = userRepository;
         this.emailAndPasswordValidation = emailAndPasswordValidation;
@@ -90,17 +89,19 @@ public class RegistrationForm extends FormLayout {
 
         submitButton.addClickListener(e -> {
             if (anonymous.getValue()) {
-                register(email.getValue(), password.getValue(), passwordConfirm.getValue());
+                register("Anonims", "Anonims", email.getValue(),
+                        password.getValue(), passwordConfirm.getValue(), allowMarketing.getValue());
             } else {
-                register(firstName.getValue(), lastName.getValue(), email.getValue(), password.getValue(), passwordConfirm.getValue());
+                register(firstName.getValue(), lastName.getValue(), email.getValue(),
+                        password.getValue(), passwordConfirm.getValue(), allowMarketing.getValue());
             }
         });
     }
 
-    public void register(String firstName, String lastName, String email, String password1, String password2) {
+    public void register(String firstName, String lastName, String email, String password1, String password2, boolean allowMarketing) {
         User user = userRepository.findByEmail(email);
         if (firstName.trim().isEmpty() || lastName.trim().isEmpty() || email.trim().isEmpty())  {
-            Notification.show("Aizpildiet visus laukus!", 5000, Notification.Position.TOP_START).addThemeVariants(NotificationVariant.LUMO_ERROR);
+            Notification.show("Lūdzu aizpildiet visus laukus!", 5000, Notification.Position.TOP_START).addThemeVariants(NotificationVariant.LUMO_ERROR);
         } else if(password1.isEmpty()) {
             Notification.show("Parole ir tukša", 5000, Notification.Position.TOP_START).addThemeVariants(NotificationVariant.LUMO_ERROR);
         } else if (!password1.equals(password2)) {
@@ -114,7 +115,7 @@ public class RegistrationForm extends FormLayout {
                     5000, Notification.Position.TOP_START);
         } else {
             String token = UUID.randomUUID().toString();
-            userDetailsService.register(firstName, lastName, email, password1, token);
+            userDetailsService.register(firstName, lastName, email, password1, token, allowMarketing);
             Notification notification = new Notification("Reģistrācija izdevās! Lūdzu, apstipriniet e-pastu! Jums ir nosūtīta vēstule uz noradīto e-pastu");
             sendEmail(token, email);
             notification.addThemeVariants(NotificationVariant.LUMO_SUCCESS);
@@ -130,33 +131,6 @@ public class RegistrationForm extends FormLayout {
         String content = "Sveiki! Apsveicām ar reģistrāciju! Klikšķiniet uz saiti " + "https://raksti.org/confirm-email/" +
                 token + " un apstipriniet savu e-pastu!";
         emailSenderService.sendEmail(email, content, subject);
-    }
-
-    public void register(String email, String password1, String password2) {
-        User user = userRepository.findByEmail(email);
-        if (user != null) {
-            Notification.show("Tāds lietotājs jau pastāv", 5000, Notification.Position.TOP_START).addThemeVariants(NotificationVariant.LUMO_ERROR);
-        } else if (email.trim().isEmpty()) {
-            Notification.show("Aizpildiet visus laukus", 5000, Notification.Position.TOP_START).addThemeVariants(NotificationVariant.LUMO_ERROR);
-        } else if (password1.isEmpty()) {
-            Notification.show("Parole ir tukša", 5000, Notification.Position.TOP_START).addThemeVariants(NotificationVariant.LUMO_ERROR);
-        } else if (!password1.equals(password2)) {
-            Notification.show("Paroles nesakrīt!", 5000, Notification.Position.TOP_START).addThemeVariants(NotificationVariant.LUMO_ERROR);
-        } else if (emailAndPasswordValidation.validateEmail(email)) {
-            Notification.show("Ievadiet pareizo e-pastu", 5000, Notification.Position.TOP_START);
-        } else if (!emailAndPasswordValidation.validatePassword(password1)) {
-            Notification.show("Parolei jābūt vismāz 8 simbolu garai, iekļaujot lielus, mazus burtus un ciparus", 5000, Notification.Position.TOP_START);
-        } else {
-            String token = UUID.randomUUID().toString();
-            userDetailsService.register(email.toLowerCase(Locale.ROOT), password1, token);
-            Notification notification = new Notification("Pēc reģistrēšanās uz Jūsu e-pastu tiks nosūtīts apstiprinājuma e-pasts. Ja to nesaņemat dažu minūšu laikā, pārbaudiet, vai e-pasts nav iekritis surogātpasta (spam) mapē. Neskaidrību gadījumā sazināties ar raksti@raksti.org");
-            sendEmail(token, email);
-            notification.addThemeVariants(NotificationVariant.LUMO_SUCCESS);
-            notification.setDuration(30000);
-            notification.setPosition(Notification.Position.TOP_STRETCH);
-            notification.open();
-            getUI().ifPresent(ui -> ui.navigate("about"));
-        }
     }
 
 }

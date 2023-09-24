@@ -3,7 +3,7 @@ package org.raksti.web.views.createUser;
 import com.vaadin.flow.component.notification.NotificationVariant;
 import org.raksti.web.emailSender.EmailSenderService;
 import org.raksti.web.security.UserDetailsServiceImpl;
-import org.raksti.web.views.registration.EmailAndPasswordValidation;
+import org.raksti.web.views.registration.EmailAndPasswordValidator;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.textfield.EmailField;
 import org.springframework.stereotype.Controller;
@@ -16,10 +16,10 @@ import java.util.UUID;
 public class CreateUserController {
 
     private final EmailSenderService emailSenderService;
-    private final EmailAndPasswordValidation emailAndPasswordValidation;
+    private final EmailAndPasswordValidator emailAndPasswordValidation;
     private final UserDetailsServiceImpl userService;
 
-    public CreateUserController(EmailSenderService emailSenderService, EmailAndPasswordValidation emailAndPasswordValidation, UserDetailsServiceImpl userService) {
+    public CreateUserController(EmailSenderService emailSenderService, EmailAndPasswordValidator emailAndPasswordValidation, UserDetailsServiceImpl userService) {
         this.emailSenderService = emailSenderService;
         this.emailAndPasswordValidation = emailAndPasswordValidation;
         this.userService = userService;
@@ -59,7 +59,7 @@ public class CreateUserController {
             Notification.show("Tāds lietotājs jau pastāv!");
         } else {
             emailSenderService.sendEmail(emailText, content, subject);
-            userService.register(emailText.toLowerCase(Locale.ROOT), firstName, lastName, password, birthday, telNumber, language, country, city, age, education, gender);
+            userService.register(emailText.toLowerCase(Locale.ROOT), firstName, lastName, password, birthday, telNumber, language, country, city, age, education, gender, true);
             Notification.show("Lietotājs izveidots", 5000, Notification.Position.TOP_START).addThemeVariants(NotificationVariant.LUMO_SUCCESS);
         }
     }

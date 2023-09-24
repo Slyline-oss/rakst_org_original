@@ -7,7 +7,7 @@ import org.jetbrains.annotations.NotNull;
 import org.raksti.web.data.entity.User;
 import org.raksti.web.data.service.UserRepository;
 import org.raksti.web.emailSender.EmailSenderService;
-import org.raksti.web.views.registration.EmailAndPasswordValidation;
+import org.raksti.web.views.registration.EmailAndPasswordValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
@@ -16,12 +16,12 @@ import java.util.UUID;
 @Controller
 public class ForgotPasswordController {
 
-    private final EmailAndPasswordValidation emailAndPasswordValidation;
+    private final EmailAndPasswordValidator emailAndPasswordValidation;
     private final UserRepository userRepository;
     private final EmailSenderService emailSenderService;
 
     @Autowired
-    public ForgotPasswordController(@NotNull EmailAndPasswordValidation emailAndPasswordValidation,
+    public ForgotPasswordController(@NotNull EmailAndPasswordValidator emailAndPasswordValidation,
                                     @NotNull UserRepository userRepository,
                                     @NotNull EmailSenderService emailSenderService) {
         this.emailAndPasswordValidation = emailAndPasswordValidation;

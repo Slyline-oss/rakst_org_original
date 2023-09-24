@@ -1,5 +1,6 @@
 package org.raksti.web.security;
 
+import org.jetbrains.annotations.NotNull;
 import org.raksti.web.data.Role;
 import org.raksti.web.data.entity.User;
 import org.raksti.web.data.service.UserRepository;
@@ -20,15 +21,13 @@ import java.util.stream.Collectors;
 
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
-
-    @Autowired
-    private PasswordEncoder passwordEncoder;
-
+    private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
 
     @Autowired
-    public UserDetailsServiceImpl(UserRepository userRepository) {
+    public UserDetailsServiceImpl(@NotNull UserRepository userRepository, @NotNull PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
@@ -45,7 +44,6 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         }
     }
 
-
     private static List<GrantedAuthority> getAuthorities(User user) {
         return user.getRoles().stream().map(role -> new SimpleGrantedAuthority("ROLE_" + role))
                 .collect(Collectors.toList());
@@ -56,29 +54,17 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         return userRepository.findAll();
     }
 
-    public void saveUser(User user) {
-        userRepository.save(user);
-    }
-
-    public void register(String firstName, String lastName, String email, String password1, String emailConfirmationToken) {
-        userRepository.save(new User(firstName, firstName, lastName, passwordEncoder.encode(password1), email, Set.of(Role.USER), emailConfirmationToken));
-    }
-
-    public void register(String email, String password, String emailConfirmationToken) {
-        userRepository.save(new User(email, passwordEncoder.encode(password), emailConfirmationToken));
-    }
-
-    public void register(String email, String firstName, String lastName, String password, LocalDate birthday, String telNumber, String language) {
-        userRepository.save(new User(email, firstName, lastName, passwordEncoder.encode(password), birthday, telNumber, language, Set.of(Role.USER)));
+    public void register(String firstName, String lastName, String email, String password1, String emailConfirmationToken, boolean allowEmails) {
+        userRepository.save(new User(firstName, firstName, lastName, passwordEncoder.encode(password1), email, Set.of(Role.USER), emailConfirmationToken, allowEmails));
     }
 
     public void register(String email, String firstName, String lastName, String password, LocalDate birthday, String telNumber, String language, String
-                         country, String city, String age, String education, String gender) {
-        userRepository.save(new User(email, firstName, lastName, passwordEncoder.encode(password), Set.of(Role.USER), birthday, telNumber, language, age, country, city, education, gender));
+                         country, String city, String age, String education, String gender, boolean allowEmails) {
+        userRepository.save(new User(email, firstName, lastName, passwordEncoder.encode(password), Set.of(Role.USER), birthday, telNumber, language, age, country, city, education, gender, allowEmails));
     }
 
     public void registerAdmin(String email, String password) {
-        userRepository.save(new User("","","",  passwordEncoder.encode(password), email, Set.of(Role.ADMIN)));
+        userRepository.save(new User("","","",  passwordEncoder.encode(password), email, Set.of(Role.ADMIN), true));
     }
 
     public User findUserByEmail(String email) {

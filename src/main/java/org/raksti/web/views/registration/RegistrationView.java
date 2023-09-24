@@ -17,7 +17,7 @@ public class RegistrationView extends VerticalLayout {
 
     @Autowired
     public RegistrationView(UserDetailsServiceImpl userDetailsService, UserRepository userRepository,
-                            EmailAndPasswordValidation emailAndPasswordValidation, EmailSenderService emailSenderService) {
+                            EmailAndPasswordValidator emailAndPasswordValidation, EmailSenderService emailSenderService) {
         RegistrationForm registrationForm = new RegistrationForm(
                 userDetailsService, userRepository, emailAndPasswordValidation, emailSenderService);
 

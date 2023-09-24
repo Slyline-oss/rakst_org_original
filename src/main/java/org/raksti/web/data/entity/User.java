@@ -42,9 +42,10 @@ public class User extends AbstractEntity {
     private OfflineLocation offlineLocation = null;
 
     private String offlineNote;
+    private boolean allowEmails;
 
     //registration not anonymous
-    public User(String username, String firstName, String lastName, String hashedPassword, String email, Set<Role> roles, String emailConfirmationToken) {
+    public User(String username, String firstName, String lastName, String hashedPassword, String email, Set<Role> roles, String emailConfirmationToken, boolean allowEmails) {
         this.username = username;
         this.hashedPassword = hashedPassword;
         this.email = email;
@@ -54,10 +55,11 @@ public class User extends AbstractEntity {
         this.anonymous = false;
         this.emailConfirmationToken = emailConfirmationToken;
         this.confirmed = false;
+        this.allowEmails = allowEmails;
     }
 
     //admin registration
-    public User(String username, String firstName, String lastName, String hashedPassword, String email, Set<Role> roles) {
+    public User(String username, String firstName, String lastName, String hashedPassword, String email, Set<Role> roles, boolean allowEmails) {
         this.email = email;
         this.username = username;
         this.firstName = firstName;
@@ -65,9 +67,10 @@ public class User extends AbstractEntity {
         this.hashedPassword = hashedPassword;
         this.roles = roles;
         this.confirmed = true;
+        this.allowEmails = allowEmails;
     }
 
-    public User(String email, String firstName, String lastName, String hashedPassword, LocalDate birthday, String telNumber, String language, Set<Role> roles) {
+    public User(String email, String firstName, String lastName, String hashedPassword, LocalDate birthday, String telNumber, String language, Set<Role> roles, boolean allowEmails) {
         this.email = email;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -78,10 +81,11 @@ public class User extends AbstractEntity {
         this.roles = roles;
         this.anonymous = false;
         this.confirmed = true;
+        this.allowEmails = allowEmails;
     }
 
     //manual user creation
-    public User(String email, String firstName, String lastName, String hashedPassword, Set<Role> roles, LocalDate birthday, String telNumber, String language, String age, String country, String city, String education, String gender) {
+    public User(String email, String firstName, String lastName, String hashedPassword, Set<Role> roles, LocalDate birthday, String telNumber, String language, String age, String country, String city, String education, String gender, boolean allowEmails) {
         this.email = email;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -97,18 +101,7 @@ public class User extends AbstractEntity {
         this.gender = gender;
         this.anonymous = false;
         this.confirmed = true;
-    }
-
-    //Registration anonymous
-    public User(String email, String hashedPassword, String emailConfirmationToken) {
-        this.email = email;
-        this.hashedPassword = hashedPassword;
-        this.anonymous = true;
-        this.roles = Set.of(Role.USER);
-        this.firstName = "Anonims";
-        this.lastName = "Anonims";
-        this.emailConfirmationToken = emailConfirmationToken;
-        this.confirmed = false;
+        this.allowEmails = allowEmails;
     }
 
     public User() {}
@@ -289,4 +282,11 @@ public class User extends AbstractEntity {
         this.offlineNote = offlineNote;
     }
 
+    public boolean isAllowEmails() {
+        return allowEmails;
+    }
+
+    public void setAllowEmails(boolean allowEmails) {
+        this.allowEmails = allowEmails;
+    }
 }

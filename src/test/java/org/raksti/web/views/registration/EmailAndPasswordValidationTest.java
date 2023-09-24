@@ -8,7 +8,7 @@ public class EmailAndPasswordValidationTest {
 
     @Test
     public void testValidatePassword() {
-        EmailAndPasswordValidation emailAndPasswordValidation = new EmailAndPasswordValidation();
+        EmailAndPasswordValidator emailAndPasswordValidation = new EmailAndPasswordValidator();
 
         assertFalse(emailAndPasswordValidation.validatePassword("12345678"));
         assertFalse(emailAndPasswordValidation.validatePassword("ABCDEFGH"));

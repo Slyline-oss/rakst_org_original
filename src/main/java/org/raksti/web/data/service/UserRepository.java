@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.UUID;
 
 @Transactional
@@ -14,6 +15,8 @@ import java.util.UUID;
 public interface UserRepository extends JpaRepository<User, UUID> {
 
     User findByEmail(String email);
+
+    List<User> findByAllowEmailsTrue();
 
     @Modifying
     @Query("update User u set u.hashedPassword = ?1 where u.email = ?2")

@@ -8,10 +8,8 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class EmailSenderService {
-
-
     private final JavaMailSender mailSender;
-    private final String SENDER = "no-reply@raksti.org";
+    private final static String SENDER = "no-reply@raksti.org";
 
     @Autowired
     public EmailSenderService(@NotNull JavaMailSender mailSender) {

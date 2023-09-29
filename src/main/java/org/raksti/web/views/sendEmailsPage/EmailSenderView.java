@@ -64,6 +64,7 @@ public class EmailSenderView extends VerticalLayout {
     }
 
     private void sendEmail(List<User> users) {
+        logger.info("Sending e-mail to " + users.size() + " users");
         int count = 0;
         for (User user: users) {
             String email = user.getEmail();
@@ -76,6 +77,7 @@ public class EmailSenderView extends VerticalLayout {
                 }
             }
         }
+        logger.info("Sent " + count + " e-mails");
         Notification.show("Veiksmīgi nosutīti " + count + " e-pasti");
     }
 

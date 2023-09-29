@@ -16,7 +16,7 @@ public class EmailAndPasswordValidator {
 
     public boolean validateEmail(String email) {
         Matcher matcher = EMAIL_PATTERN.matcher(email);
-        return !matcher.matches();
+        return matcher.matches();
     }
 
     public boolean validatePassword(String password) {

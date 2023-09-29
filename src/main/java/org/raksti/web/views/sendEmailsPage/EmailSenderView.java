@@ -75,6 +75,8 @@ public class EmailSenderView extends VerticalLayout {
                 } catch (Exception e) {
                     logger.warn("Failed to send e-mail to " + email + " : " + e.getMessage());
                 }
+            } else {
+                logger.info(email + " is not a valid e-mail address, skipping");
             }
         }
         logger.info("Sent " + count + " e-mails");

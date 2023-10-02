@@ -79,8 +79,6 @@ public class RestorePasswordView extends VerticalLayout implements BeforeEnterOb
         }
     }
 
-
-
     @SuppressWarnings("OptionalGetWithoutIsPresent")
     @Override
     public void beforeEnter(BeforeEnterEvent beforeEnterEvent) {

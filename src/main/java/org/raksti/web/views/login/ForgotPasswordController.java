@@ -36,7 +36,7 @@ public class ForgotPasswordController {
         String content = "Klikšķiniet uz saites, lai mainītu paroli. " +
                 "Ignorējiet šo e-pastu, ja atceraties savu paroli, vai arī neesat veikuši šo pieprasījumu. " +
                 "https://raksti.org/reset-password/" + link;
-        if (emailAndPasswordValidation.isValidEmailAddress(emailText)) {
+        if (!emailAndPasswordValidation.isValidEmailAddress(emailText)) {
             Notification.show("Nepareizi ievadīts e-pasts!").setPosition(Notification.Position.TOP_START);
         } else {
             User user = userRepository.findByEmail(emailText);

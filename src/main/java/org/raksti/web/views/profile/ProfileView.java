@@ -316,7 +316,7 @@ public class ProfileView extends VerticalLayout {
             Notification.show("Lūdzu aizpildiet visus laukus!", 5000, Notification.Position.TOP_START).addThemeVariants(NotificationVariant.LUMO_ERROR);
         } else if(!passwordEncoder.matches(password, user.getHashedPassword())) {
             Notification.show("Jūs ievadījāt nepareizu esošo paroli", 5000, Notification.Position.TOP_START).addThemeVariants(NotificationVariant.LUMO_ERROR);
-        } else if(!emailAndPasswordValidation.validatePassword(newPassword)) {
+        } else if(!emailAndPasswordValidation.isValidPassword(newPassword)) {
             Notification.show("Parolei jābūt vismāz 8 simbolu garai, iekļaujot lielus, mazus burtus un ciparus", 5000, Notification.Position.TOP_START);
         } else {
             userDetailsService.updatePassword(user.getEmail(), newPassword);

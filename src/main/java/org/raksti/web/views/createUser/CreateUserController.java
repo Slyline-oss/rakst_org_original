@@ -33,7 +33,7 @@ public class CreateUserController {
                 "Jūsu pagaidu parole ir: " + password + ". " +
                 "Lūdzu, pamainiet paroli pēc pieslēgšanas." +
                 "Paldies!";
-        if (emailAndPasswordValidation.validateEmail(emailText)) {
+        if (!emailAndPasswordValidation.isValidEmailAddress(emailText)) {
             Notification.show("Nepareizi ievadīts e-pasts!");
         } else if (userService.findUserByEmail(emailText) != null) {
             Notification.show("Tāds lietotājs jau pastāv!");
@@ -53,7 +53,7 @@ public class CreateUserController {
                 "Jūsu pagaidu parole ir: " + password + " . " +
                 "Lūdzu, pamainiet paroli pēc pieslēgšanas." +
                 "Paldies!";
-        if (emailAndPasswordValidation.validateEmail(emailText)) {
+        if (!emailAndPasswordValidation.isValidEmailAddress(emailText)) {
             Notification.show("Nepareizi ievadīts e-pasts!");
         } else if (userService.findUserByEmail(emailText) != null) {
             Notification.show("Tāds lietotājs jau pastāv!");

@@ -68,7 +68,7 @@ public class EmailSenderView extends VerticalLayout {
         int count = 0;
         for (User user: users) {
             String email = user.getEmail();
-            if (validator.validateEmail(email)) {
+            if (validator.isValidEmailAddress(email)) {
                 try {
                     emailSenderService.sendEmail(email, textArea.getValue(), subject.getValue());
                     count++;

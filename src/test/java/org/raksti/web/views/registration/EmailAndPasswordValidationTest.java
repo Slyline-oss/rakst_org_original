@@ -10,15 +10,15 @@ public class EmailAndPasswordValidationTest {
     public void testValidatePassword() {
         EmailAndPasswordValidator emailAndPasswordValidation = new EmailAndPasswordValidator();
 
-        assertFalse(emailAndPasswordValidation.validatePassword("12345678"));
-        assertFalse(emailAndPasswordValidation.validatePassword("ABCDEFGH"));
-        assertFalse(emailAndPasswordValidation.validatePassword("abcdefgh"));
+        assertFalse(emailAndPasswordValidation.isValidPassword("12345678"));
+        assertFalse(emailAndPasswordValidation.isValidPassword("ABCDEFGH"));
+        assertFalse(emailAndPasswordValidation.isValidPassword("abcdefgh"));
 
-        assertTrue(emailAndPasswordValidation.validatePassword("Abc6!fgh"));
-        assertTrue(emailAndPasswordValidation.validatePassword("Parole88"));
-        assertTrue(emailAndPasswordValidation.validatePassword("666Parole"));
+        assertTrue(emailAndPasswordValidation.isValidPassword("Abc6!fgh"));
+        assertTrue(emailAndPasswordValidation.isValidPassword("Parole88"));
+        assertTrue(emailAndPasswordValidation.isValidPassword("666Parole"));
 
-        assertFalse(emailAndPasswordValidation.validatePassword("ParoleAB"));
+        assertFalse(emailAndPasswordValidation.isValidPassword("ParoleAB"));
 
     }
 }

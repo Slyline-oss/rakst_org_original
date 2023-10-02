@@ -14,12 +14,12 @@ public class EmailAndPasswordValidator {
     private final static Pattern EMAIL_PATTERN = Pattern.compile(EMAIL_REGEX);
     private final static Pattern PASSWORD_PATTERN = Pattern.compile(PASSWORD_REGEX);
 
-    public boolean validateEmail(String email) {
+    public boolean isValidEmailAddress(String email) {
         Matcher matcher = EMAIL_PATTERN.matcher(email);
         return matcher.matches();
     }
 
-    public boolean validatePassword(String password) {
+    public boolean isValidPassword(String password) {
         Matcher matcher = PASSWORD_PATTERN.matcher(password);
         return matcher.matches();
     }

@@ -5,27 +5,10 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+@SuppressWarnings("unused")
 @Entity
 @Table(name = "edit_table")
 public class Text {
-
-    public Text(String id, String content_1, String content_2, String content_3) {
-        this.id = id;
-        this.content_1 = content_1;
-        this.content_2 = content_2;
-        this.content_3 = content_3;
-    }
-
-    public Text(String content_1, String content_2, String content_3) {
-        this.content_1 = content_1;
-        this.content_2 = content_2;
-        this.content_3 = content_3;
-    }
-
-    public Text(String id) {
-        this.id = id;
-    }
-
     @Id
     private String id;
 
@@ -36,10 +19,18 @@ public class Text {
     @Column(columnDefinition = "TEXT")
     private String content_3;
 
-    public Text() {
+    public Text() {}
 
+    public Text(String id) {
+        this.id = id;
     }
 
+    public Text(String id, String content_1, String content_2, String content_3) {
+        this.id = id;
+        this.content_1 = content_1;
+        this.content_2 = content_2;
+        this.content_3 = content_3;
+    }
 
     public String getId() {
         return id;
@@ -52,7 +43,6 @@ public class Text {
     public String getContent_1() {
         return content_1;
     }
-
     public void setContent_1(String content_1) {
         this.content_1 = content_1;
     }

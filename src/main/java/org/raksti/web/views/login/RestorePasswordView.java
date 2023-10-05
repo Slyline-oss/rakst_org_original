@@ -84,11 +84,8 @@ public class RestorePasswordView extends VerticalLayout implements BeforeEnterOb
     public void beforeEnter(BeforeEnterEvent beforeEnterEvent) {
         token = beforeEnterEvent.getRouteParameters().get("token").get();
         User user = userDetailsService.getByResetPasswordToken(token);
-        if (user != null) {
-            System.out.println("User found");
-        } else {
+        if (user == null) {
             beforeEnterEvent.forwardTo("about");
-            System.out.println("User not found");
         }
     }
 }

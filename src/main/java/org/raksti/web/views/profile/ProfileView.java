@@ -202,12 +202,6 @@ public class ProfileView extends VerticalLayout {
         //getStyle().set("text-align", "center");
 
         completeProfileNotification();
-
-        try {
-            throw new NullPointerException();
-        } catch(Exception e) {
-            System.out.println("Error occurred");
-        }
     }
 
     @NotNull

@@ -10,8 +10,6 @@ import com.vaadin.flow.server.auth.AnonymousAllowed;
 import org.raksti.web.data.entity.FAQ;
 import org.raksti.web.data.service.FAQService;
 import org.raksti.web.views.MainLayout;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
@@ -19,9 +17,6 @@ import java.util.List;
 @Route(value = "buj", layout = MainLayout.class)
 @AnonymousAllowed
 public class FAQView extends VerticalLayout {
-
-    private final static Logger logger = LoggerFactory.getLogger(FAQView.class);
-
     private final List<FAQ> faqList;
 
     public FAQView(FAQService faqService) {
@@ -30,7 +25,6 @@ public class FAQView extends VerticalLayout {
         getStyle().set("padding-top", "30px");
         landing();
     }
-
 
     private void landing() {
 
@@ -57,8 +51,6 @@ public class FAQView extends VerticalLayout {
             answer.addClassNames("faq-entry-answer");
             question.setText(value.getQuestion());
             answer.setText(value.getAnswer());
-            logger.info("Content added " + value.getQuestion());
-
             wrapper.add(assignClass(new Div(question, answer)));
         }
         hl.add(wrapper, image);

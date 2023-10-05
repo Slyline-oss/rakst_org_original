@@ -39,11 +39,9 @@ public class CreateUser extends VerticalLayout {
     private final Select<String> country = new Select<>();
     private final Select<String> education = new Select<>();
 
-    private final CreateUserController createUserController;
     private final CountriesAndLanguages countriesAndLanguages;
 
     public CreateUser(CreateUserController createUserController, CountriesAndLanguages countriesAndLanguages) {
-        this.createUserController = createUserController;
         this.countriesAndLanguages = countriesAndLanguages;
         Text adminText = new Text("Izveidot jaunu adminu");
         Text userText = new Text("Izveidot jaunu lietotāju");

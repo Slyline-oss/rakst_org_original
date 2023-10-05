@@ -11,6 +11,7 @@ import com.vaadin.flow.component.notification.NotificationVariant;
 import com.vaadin.flow.component.textfield.EmailField;
 import com.vaadin.flow.component.textfield.PasswordField;
 import com.vaadin.flow.component.textfield.TextField;
+import org.apache.commons.lang3.StringUtils;
 import org.raksti.web.data.entity.User;
 import org.raksti.web.data.service.UserRepository;
 import org.raksti.web.emailSender.EmailSenderService;
@@ -58,7 +59,6 @@ public class RegistrationForm extends FormLayout {
         Button submitButton = new Button("Pievienoties");
         submitButton.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
 
-
         add(title, firstName, lastName, email, password, passwordConfirm, allowMarketing, anonymous,
                 errorMessageField, submitButton);
 
@@ -86,7 +86,6 @@ public class RegistrationForm extends FormLayout {
            }
         });
 
-
         submitButton.addClickListener(e -> {
             if (anonymous.getValue()) {
                 register("Anonims", "Anonims", email.getValue(),
@@ -99,6 +98,7 @@ public class RegistrationForm extends FormLayout {
     }
 
     public void register(String firstName, String lastName, String email, String password1, String password2, boolean allowMarketing) {
+        email = StringUtils.lowerCase(email);
         User user = userRepository.findByEmail(email);
         if (firstName.trim().isEmpty() || lastName.trim().isEmpty() || email.trim().isEmpty())  {
             Notification.show("Lūdzu aizpildiet visus laukus!", 5000, Notification.Position.TOP_START).addThemeVariants(NotificationVariant.LUMO_ERROR);
@@ -106,11 +106,11 @@ public class RegistrationForm extends FormLayout {
             Notification.show("Parole ir tukša", 5000, Notification.Position.TOP_START).addThemeVariants(NotificationVariant.LUMO_ERROR);
         } else if (!password1.equals(password2)) {
             Notification.show("Paroles nesakrīt!", 5000, Notification.Position.TOP_START).addThemeVariants(NotificationVariant.LUMO_ERROR);
-        } else if(user != null) {
+        } else if (user != null) {
             Notification.show("Tāds lietotājs jau pastāv", 5000, Notification.Position.TOP_START).addThemeVariants(NotificationVariant.LUMO_ERROR);
-        } else if(!emailAndPasswordValidation.isValidEmailAddress(email)) {
+        } else if (!emailAndPasswordValidation.isValidEmailAddress(email)) {
             Notification.show("Ievadiet pareizo e-pastu", 5000, Notification.Position.TOP_START);
-        } else if(!emailAndPasswordValidation.isValidPassword(password1)) {
+        } else if (!emailAndPasswordValidation.isValidPassword(password1)) {
             Notification.show("Parolei jābūt vismāz 8 simbolu garai, iekļaujot lielus, mazus burtus un ciparus",
                     5000, Notification.Position.TOP_START);
         } else {

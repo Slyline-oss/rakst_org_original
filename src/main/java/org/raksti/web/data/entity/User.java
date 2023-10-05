@@ -1,6 +1,7 @@
 package org.raksti.web.data.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.apache.commons.lang3.StringUtils;
 import org.raksti.web.data.Role;
 
 import javax.persistence.*;
@@ -147,11 +148,11 @@ public class User extends AbstractEntity {
     }
 
     public String getEmail() {
-        return email;
+        return StringUtils.lowerCase(email);
     }
 
     public void setEmail(String email) {
-        this.email = email;
+        this.email = StringUtils.lowerCase(email);
     }
 
     public String getFirstName() {

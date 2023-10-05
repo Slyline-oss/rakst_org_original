@@ -33,24 +33,24 @@ public class ForgotPasswordController {
         this.emailSenderService = emailSenderService;
     }
 
-    public void sendEmail(EmailField email) {
-        String emailText = email.getValue();
+    public void sendEmail(EmailField emailField) {
+        String email = StringUtils.trim(StringUtils.lowerCase(emailField.getValue()));
         String subject = "Raksti.org - paroles atjaunošana";
         String link = UUID.randomUUID().toString();
         String content = "Klikšķiniet uz saites, lai mainītu paroli. " +
                 "Ignorējiet šo e-pastu, ja atceraties savu paroli vai arī neesat veikuši šo pieprasījumu. " +
                 "https://raksti.org/reset-password/" + link;
-        if (!emailAndPasswordValidation.isValidEmailAddress(StringUtils.trim(emailText))) {
+        if (!emailAndPasswordValidation.isValidEmailAddress(email)) {
             Notification.show("Nepareizi ievadīts e-pasts!").setPosition(Notification.Position.TOP_START);
-            logger.info("Unsuccessful attempt to restore non-existent user: " + emailText);
+            logger.info("Unsuccessful attempt to restore non-existent user: " + email);
         } else {
-            User user = userRepository.findByEmail(emailText);
+            User user = userRepository.findByEmail(email);
             if (user == null) {
                 showNotification("Nav tāda lietotāja", NotificationVariant.LUMO_ERROR);
             } else {
                 user.setResetPasswordToken(link);
                 userRepository.save(user);
-                emailSenderService.sendEmail(emailText, content, subject);
+                emailSenderService.sendEmail(email, content, subject);
                 showNotification("Vēstule nosūtīta uz e-pastu!", NotificationVariant.LUMO_SUCCESS);
             }
         }

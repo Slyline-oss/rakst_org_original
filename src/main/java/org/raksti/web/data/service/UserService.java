@@ -1,15 +1,13 @@
 package org.raksti.web.data.service;
 
 import org.raksti.web.data.entity.User;
-import java.util.Optional;
-import java.util.UUID;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
+
+import java.util.Optional;
+import java.util.UUID;
 
 @Service("userService")
 public class UserService {
@@ -36,14 +34,5 @@ public class UserService {
     public Page<User> list(Pageable pageable) {
         return userRepository.findAll(pageable);
     }
-
-    public int count() {
-        return (int) userRepository.count();
-    }
-
-    public User getCurrentUser() {
-        final Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        return (User) authentication.getPrincipal();
-    }
-
+    
 }

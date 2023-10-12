@@ -1,5 +1,7 @@
 package org.raksti.web.security;
 
+import com.vaadin.flow.component.notification.Notification;
+import com.vaadin.flow.component.notification.NotificationVariant;
 import org.jetbrains.annotations.NotNull;
 import org.raksti.web.data.Role;
 import org.raksti.web.data.entity.User;
@@ -34,10 +36,14 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         User user = userRepository.findByEmail(email.toLowerCase(Locale.ROOT));
         if (user == null) {
+            Notification.show("Šāds lietotājs nav atrasts", 5000, Notification.Position.TOP_CENTER)
+                    .addThemeVariants(NotificationVariant.LUMO_ERROR);
             throw new UsernameNotFoundException("No user present with email: " + email);
         } else {
             if (!user.isConfirmed()) {
-                throw new Error("Email is not confirmed " + email);
+                Notification.show("Jūsu e-pasta adrese nav apstiprināta", 5000, Notification.Position.TOP_CENTER)
+                        .addThemeVariants(NotificationVariant.LUMO_ERROR);
+                throw new UsernameNotFoundException("Email is not confirmed " + email);
             }
             return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getHashedPassword(),
                     getAuthorities(user));

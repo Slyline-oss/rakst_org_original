@@ -1,5 +1,7 @@
 package org.raksti.web.views.allExams;
 
+import com.vaadin.flow.component.Text;
+import com.vaadin.flow.component.button.Button;
 import org.raksti.web.data.service.ExamService;
 import org.raksti.web.views.MainLayout;
 import org.raksti.web.views.newExam.Exam;
@@ -24,16 +26,13 @@ import java.util.function.Consumer;
 @RolesAllowed("ADMIN")
 public class CreatedExams extends VerticalLayout {
 
-    private final ExamService examService;
-
     private Grid<Exam> grid = new Grid<>(Exam.class, false);
 
     public CreatedExams(ExamService examService) {
-        this.examService = examService;
 
         Grid.Column<Exam> idColumn = grid.addColumn(Exam::getId).setAutoWidth(true).setSortable(true);
         Grid.Column<Exam> namingColumn = grid.addColumn(Exam::getNaming).setAutoWidth(true).setSortable(true);
-        Grid.Column<Exam> linkColumn = grid.addColumn(Exam::getLink).setAutoWidth(true);
+        Grid.Column<Exam> linkColumn = grid.addColumn(Exam::getNewLink).setAutoWidth(true);
 
         List<Exam> exams = examService.get();
         GridListDataView<Exam> dataView = grid.setItems(exams);
@@ -49,6 +48,18 @@ public class CreatedExams extends VerticalLayout {
         headerRow.getCell(idColumn).setText("Diktāta id");
 
         add(grid);
+
+        Button transferLinks = new Button("Transef Links - DONT CLICK");
+        transferLinks.addClickListener(e -> {
+           List<Exam> list = examService.get();
+            list.forEach((exam -> {
+                exam.setNewLink(exam.getEmbedLink());
+                examService.save(exam);
+                add(new Text(exam.getNewLink()));
+            }));
+        });
+
+        add(transferLinks);
     }
 
     private static Component createFilterHeader(String labelText,

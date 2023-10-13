@@ -26,8 +26,8 @@ public class ExamService {
         return examRepository.findById(id);
     }
 
-    public void save(String naming, String link, String embedLink, boolean finished, boolean allowToShow, boolean allowToWrite) {
-        examRepository.save(new Exam(naming, link, embedLink, finished, allowToShow, allowToWrite));
+    public void save(String naming, String link, boolean finished, boolean allowToShow, boolean allowToWrite) {
+        examRepository.save(new Exam(naming, link, finished, allowToShow, allowToWrite));
     }
 
     public void save(Exam exam) {

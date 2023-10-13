@@ -11,17 +11,21 @@ public class Exam {
     @Column(nullable = false)
     private Long id;
 
+
     private String naming;
+
     private String link;
     private String embedLink;
+
+    @Column(columnDefinition = "TEXT")
+    private String newLink;
     private boolean finished;
     private boolean allowToShow;
     private boolean allowToWrite;
 
-    public Exam(String naming, String link, String embedLink, boolean finished, boolean allowToShow, boolean allowToWrite) {
+    public Exam(String naming, String link, boolean finished, boolean allowToShow, boolean allowToWrite) {
         this.naming = naming;
-        this.link = link;
-        this.embedLink = embedLink;
+        this.newLink = link;
         this.finished = finished;
         this.allowToShow = allowToShow;
         this.allowToWrite = allowToWrite;
@@ -30,6 +34,18 @@ public class Exam {
 
     public Exam() {
 
+    }
+
+    public String getEmbedLink() {
+        return embedLink;
+    }
+
+    public String getNewLink() {
+        return newLink;
+    }
+
+    public void setNewLink(String newLink) {
+        this.newLink = newLink;
     }
 
     public boolean isAllowToWrite() {
@@ -62,14 +78,6 @@ public class Exam {
 
     public void setFinished(boolean finished) {
         this.finished = finished;
-    }
-
-    public String getEmbedLink() {
-        return embedLink;
-    }
-
-    public void setEmbedLink(String embedLink) {
-        this.embedLink = embedLink;
     }
 
     public Long getId() {

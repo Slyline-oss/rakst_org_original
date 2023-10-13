@@ -72,7 +72,7 @@ public class CreatedExamView extends VerticalLayout implements BeforeEnterObserv
         restoreContent();
 
         Exam exam = examService.getByFinished(false);
-        String link = exam.getEmbedLink();
+        String link = exam.getNewLink();
         String naming = exam.getNaming();
         H1 title = new H1(naming);
 
@@ -105,7 +105,7 @@ public class CreatedExamView extends VerticalLayout implements BeforeEnterObserv
         IFrame iFrame = new IFrame();
         iFrame.setSrc(link);
         frame.add(iFrame);
-        iFrame.setAllow("autoplay;picture-in-picture;xr-spatial-tracking;encrypted-media");
+        iFrame.setAllow("autoplay;picture-in-picture;xr-spatial-tracking;encrypted-media;gyroscope;accelerometer;");
 
         wrapper.add(frame, text);
 

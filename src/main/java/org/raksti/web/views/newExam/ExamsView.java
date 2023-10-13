@@ -161,8 +161,7 @@ public class ExamsView extends VerticalLayout {
 
 
     private void createExam() {
-        String modifiedLink = this.link.getValue();
-        examService.save(naming.getValue(), link.getValue(), modifiedLink, false, false, false);
+        examService.save(naming.getValue(), link.getValue(), false, false, false);
         goToExam.setEnabled(true);
         finishExam.setEnabled(true);
         submitBut.setEnabled(false);

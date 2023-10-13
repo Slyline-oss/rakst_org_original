@@ -190,7 +190,7 @@ public class OriginalTextView extends VerticalLayout implements BeforeEnterObser
             Pages pages = maybePages.get();
             if (!pages.isPowerOn()) {
                 beforeEnterEvent.forwardTo("about");
-                Notification.show("Būs pieejāms pēc diktāta", 7000, Notification.Position.TOP_START).addThemeVariants(NotificationVariant.LUMO_PRIMARY);
+                Notification.show("Būs pieejams pēc diktāta", 7000, Notification.Position.TOP_START).addThemeVariants(NotificationVariant.LUMO_PRIMARY);
             }
         }
     }

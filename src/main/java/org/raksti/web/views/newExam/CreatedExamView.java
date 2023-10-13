@@ -122,9 +122,7 @@ public class CreatedExamView extends VerticalLayout implements BeforeEnterObserv
 
         textArea.setValueChangeTimeout(60000);
         textArea.setValueChangeMode(ValueChangeMode.TIMEOUT);
-        textArea.addValueChangeListener(e -> {
-           autoSaveContent();
-        });
+        textArea.addValueChangeListener(e -> autoSaveContent());
 
     }
 
@@ -192,7 +190,7 @@ public class CreatedExamView extends VerticalLayout implements BeforeEnterObserv
             examData.setTextData(textArea.getValue());
             examDataService.save(examData);
             logger.info("Results saved in DB");
-            resultSaver.saveResultIntoFile(user.getEmail(),textArea.getValue());
+            resultSaver.saveResultIntoFile(user.getEmail(), textArea.getValue());
         } else logger.warn("Error saving results in DB");
 
     }
@@ -201,7 +199,7 @@ public class CreatedExamView extends VerticalLayout implements BeforeEnterObserv
     public void beforeEnter(BeforeEnterEvent beforeEnterEvent) {
         Exam exam = examService.getByFinished(false);
         String email = null;
-        boolean finished;
+
         Optional<User> maybeUser = authenticatedUser.get();
         if (maybeUser.isPresent()) {
             User user = maybeUser.get();

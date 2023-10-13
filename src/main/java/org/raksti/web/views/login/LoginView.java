@@ -1,5 +1,6 @@
 package org.raksti.web.views.login;
 
+import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.dialog.Dialog;
@@ -10,6 +11,8 @@ import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.textfield.EmailField;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
+import org.jetbrains.annotations.NotNull;
+import org.springframework.beans.factory.annotation.Autowired;
 
 @PageTitle("Login")
 @Route(value = "login")
@@ -17,7 +20,8 @@ public class LoginView extends LoginOverlay {
 
     private final ForgotPasswordController forgotPasswordController;
 
-    public LoginView(ForgotPasswordController forgotPasswordController) {
+    @Autowired
+    public LoginView(@NotNull ForgotPasswordController forgotPasswordController) {
         this.forgotPasswordController = forgotPasswordController;
 
         setAction("login");
@@ -39,16 +43,18 @@ public class LoginView extends LoginOverlay {
         addForgotPasswordListener(e -> forgotPasswordPopUp());
 
         i18n.setForm(form);
-        setOpened(true);
         LoginI18n.ErrorMessage i18nErrorMessage = i18n.getErrorMessage();
-        i18n.setAdditionalInformation("");
+        i18nErrorMessage.setTitle("Pieslēgšanas kļuda");
+        i18nErrorMessage.setMessage("Šāds lietotājs nav atrasts vai nepareiza parole");
         i18n.setErrorMessage(i18nErrorMessage);
         setI18n(i18n);
 
+        UI.getCurrent().getPage()
+                .executeJs("return window.location.href")
+                .then(jsonValue -> setError(jsonValue.asString().contains("login?error")));
 
+        setOpened(true);
     }
-
-
 
     private void forgotPasswordPopUp() {
         Dialog dialog = new Dialog();
@@ -60,7 +66,6 @@ public class LoginView extends LoginOverlay {
         //Email Field
         EmailField email = new EmailField();
         email.setLabel("Ievadiet e-pastu");
-        email.setPlaceholder("example@email.com");
         email.setErrorMessage("Lūdzu, ievadiet pareizo e-pastu");
         email.setClearButtonVisible(true);
         email.setPattern("^[\\w!#$%&'*+/=?`{|}~^-]+(?:\\.[\\w!#$%&'*+/=?`{|}~^-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,6}$");

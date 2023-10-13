@@ -49,17 +49,6 @@ public class CreatedExams extends VerticalLayout {
 
         add(grid);
 
-        Button transferLinks = new Button("Transef Links - DONT CLICK");
-        transferLinks.addClickListener(e -> {
-           List<Exam> list = examService.get();
-            list.forEach((exam -> {
-                exam.setNewLink(exam.getEmbedLink());
-                examService.save(exam);
-                add(new Text(exam.getNewLink()));
-            }));
-        });
-
-        add(transferLinks);
     }
 
     private static Component createFilterHeader(String labelText,

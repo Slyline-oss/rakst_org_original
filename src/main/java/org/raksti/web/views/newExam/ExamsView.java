@@ -155,7 +155,7 @@ public class ExamsView extends VerticalLayout {
         Exam exam = examService.getByFinished(false);
         if (exam != null) {
             naming.setValue(exam.getNaming());
-            link.setValue(exam.getLink());
+            link.setValue(exam.getNewLink());
         }
     }
 

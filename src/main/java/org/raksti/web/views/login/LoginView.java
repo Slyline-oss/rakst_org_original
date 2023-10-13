@@ -44,8 +44,8 @@ public class LoginView extends LoginOverlay {
 
         i18n.setForm(form);
         LoginI18n.ErrorMessage i18nErrorMessage = i18n.getErrorMessage();
-        i18nErrorMessage.setTitle("Pieslēgšanas kļuda");
-        i18nErrorMessage.setMessage("Šāds lietotājs nav atrasts vai nepareiza parole");
+        i18nErrorMessage.setTitle("Pieslēgšanās kļuda");
+        i18nErrorMessage.setMessage("Šāds lietotājs nav atrasts vai arī ievadīta nepareiza parole");
         i18n.setErrorMessage(i18nErrorMessage);
         setI18n(i18n);
 

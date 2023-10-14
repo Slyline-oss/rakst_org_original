@@ -180,9 +180,6 @@ public class OriginalTextView extends VerticalLayout implements BeforeEnterObser
         add(new Paragraph("Pēc tam – atsevišķi rakstāmi divi vārdi (prievārds un vietniekvārds)"));
     }
 
-
-
-
     @Override
     public void beforeEnter(BeforeEnterEvent beforeEnterEvent) {
         Optional<Pages> maybePages = pagesService.findById("original-text");

@@ -26,6 +26,10 @@ public class ExamDataService {
         return examDataRepository.findAllByFinished(finished);
     }
 
+    public List<ExamData> get(Long examId) {
+        return examDataRepository.findAllByExamId(examId);
+    }
+
     public void save(String email, String textData, Long examId) {
         examDataRepository.save(new ExamData(email, textData, examId));
     }

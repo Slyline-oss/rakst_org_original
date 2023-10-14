@@ -71,7 +71,7 @@ public class ExamResultsView extends VerticalLayout {
 
         add(grid);
         countByCountries();
-        writeToCSV(examDataService.get(true));
+        writeToCSV(examDataService.get(1568L));
 
     }
 

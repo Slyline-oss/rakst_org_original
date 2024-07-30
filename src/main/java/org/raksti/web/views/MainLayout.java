@@ -201,8 +201,6 @@ public class MainLayout extends AppLayout {
 
                 new MenuItemInfo("Par iniciatīvu", "la la-bell", SponsorView.class),
 
-//                new MenuItemInfo("Instrukcija", "", InstructionView.class),
-
                 new MenuItemInfo("Lietotāju saraksts", "la la-columns", ListofparticipantsView.class),
 
                 new MenuItemInfo("Piedalīties diktātā tiešsaistē", "la la-edit", ParticipateInExamView.class),

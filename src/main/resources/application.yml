@@ -10,10 +10,11 @@ server:
 
 spring:
   mail:
-    host: vh3.makonix.com
+#    host: vh3.makonix.com
+    host: google.com
     port: 587
     username: no-reply@raksti.org
-    password: gXiucM12yVVH
+    password: --gXiucM12yVVH
     properties:
       mail:
         smtp:
@@ -46,4 +47,4 @@ logging:
     org:
       atmosphere: warn
 
-
+result.save.directory: /home/ubuntu/Documents

@@ -64,7 +64,7 @@ public class DonationView extends VerticalLayout {
         //Content for contacts description
         Paragraph one = new Paragraph();
         one.setText("Latviešu valodas cienītāji! Lai Pasaules diktāts latviešu valodā notiktu arī šoruden, lūdzam sniegt finansiālu atbalstu, " +
-                "jo mūsu nesavtīgā entuziasma un personīgo ieguldījumu iespējas astoņu gadu garumā ir izsmeltas:");
+                "jo mūsu nesavtīgā entuziasma un personīgo ieguldījumu iespējas deviņu gadu garumā ir izsmeltas:");
         //Paragraph for mobilly
         Paragraph mobilly = new Paragraph();
         Anchor mobillySrc = new Anchor("https://mobilly.lv/ziedojumi/#/katalogs/7/9/1265");

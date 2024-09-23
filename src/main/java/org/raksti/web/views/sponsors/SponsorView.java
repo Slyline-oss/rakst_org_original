@@ -82,7 +82,7 @@ public class SponsorView extends VerticalLayout {
         aboutExam.addClassNames("aboutExam");
         aboutExam.setText("Nodibinājums “Pasaules valoda”, kam ir sabiedriskā labuma organizācijas statuss, piedāvā iespēju ikvienam interesentam katru gadu rudenī piedalīties Pasaules diktātā latviešu valodā un " +
                 "rakstīt kāda mūsdienu latviešu autora īpaši šim notikumam radītu tekstu, ko diktē slavens latviešu aktieris. Diktāta rakstīšana ir brīvprātīgs bezmaksas pasākums, kas reizi gadā vienlaikus norisinās klātienē vairākās Latvijas pilsētās un " +
-                "tiešsaistē visā pasaulē. Šogad diktāts norisināsies 14. oktobrī pulksten 12.15 pēc Latvijas laika.\n" +
+                "tiešsaistē visā pasaulē. Šogad diktāts norisināsies 12. oktobrī pulksten 12.15 pēc Latvijas laika.\n" +
                 "Šīs iniciatīvas mērķi ir attīstīt latviešu valodas rakstītprasmi un interesi par to, audzināt cieņu pret dzimto valodu jau no bērnības, " +
                 "veidot ciešāku saikni ar ārzemēs dzīvojošiem latviešiem, saliedēt sabiedrību, kā arī rosināt cittautiešus labāk apgūt latviešu valodu.");
 

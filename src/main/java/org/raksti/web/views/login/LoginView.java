@@ -79,7 +79,7 @@ public class LoginView extends LoginOverlay {
            dialog.close();
         });
 
-        Button cancelButton = new Button("Aizvert");
+        Button cancelButton = new Button("Aizvērt");
         cancelButton.addThemeVariants(ButtonVariant.LUMO_ERROR);
         cancelButton.addClickListener(e -> dialog.close());
 

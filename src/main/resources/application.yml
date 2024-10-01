@@ -10,8 +10,8 @@ server:
 
 spring:
   mail:
-#    host: vh3.makonix.com
-    host: google.com
+    host: vh3.makonix.com
+#    host: google.com
     port: 587
     username: no-reply@raksti.org
     password: --gXiucM12yVVH

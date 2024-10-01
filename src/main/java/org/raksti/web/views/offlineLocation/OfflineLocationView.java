@@ -64,9 +64,7 @@ public class OfflineLocationView extends VerticalLayout {
             add(addOfflineLocationButton);
         }
         Div infoText = new Div();
-        infoText.setText("Klātienes reģistrācijas mājaslapā noslēgsies piektdien, 13. oktrobrī, pulksten 12.00." +
-                " Tie, kuri nebūs paspējuši reģistrēties mājaslapā, to varēs izdarīt diktāta rakstīšanas vietā." +
-                " Lai gan vietu skaits ir ierobežots, vēl nav bijusi reize, kurā kāds rakstīt gribētājs būtu aizsūtīts mājās.");
+        infoText.setText("Klātienes reģistrācija mājaslapā noslēgsies piektdien, 11. oktrobrī, pulksten 12.00. Tie, kuri nebūs paspējuši reģistrēties mājaslapā, to varēs izdarīt diktāta rakstīšanas vietā. Lai gan vietu skaits ir ierobežots, vēl nav bijusi reize, kurā kāds rakstīt gribētājs būtu aizsūtīts mājās");
         add(offlineExamGrid, infoText);
     }
 

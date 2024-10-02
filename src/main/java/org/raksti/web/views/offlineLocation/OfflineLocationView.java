@@ -196,7 +196,7 @@ public class OfflineLocationView extends VerticalLayout {
         String address = offlineLocation.getAddress();
         return "Sveicināti!\n\n" +
                 "Paldies, Jūsu pieteikums ir saņemts!\n" +
-                "Gaidīsim Jūs 2023. gada 14. oktobrī plkst. 12.15 izvēlētajā rakstīšanas vietā!\n\n" +
+                "Gaidīsim Jūs 2024. gada 12. oktobrī plkst. 12.15 izvēlētajā rakstīšanas vietā!\n\n" +
                 "Vārds: " + user.getFirstName() + "\n" +
                 "Uzvārds: " + user.getLastName() + "\n" +
                 (StringUtils.isNotBlank(user.getOfflineNote()) ? "Informācija organizatoram: " + user.getOfflineNote() + "\n" : "") +

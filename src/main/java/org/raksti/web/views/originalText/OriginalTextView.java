@@ -34,150 +34,135 @@ public class OriginalTextView extends VerticalLayout implements BeforeEnterObser
 
     private void textWithoutComments() {
         H1 author = new H1();
-        author.setText("Māris Bērziņš");
+        author.setText("Aiva Kanepone");
 
         H2 title = new H2();
-        title.setText("Izdomāt diktātu");
+        title.setText("Putni brīnās par Liepāju");
 
         Div paragraphs = new Div();
-        paragraphs.add(new Paragraph("Pamostos ar nemierīgu sajūtu, it kā kaut ko būtu aizmirsis izdarīt. Ak, man taču ir jāizdomā pasaules diktāts latviešu valodā! Gribēju to paveikt pagājušajā rudenī, taču atliku citu darbu dēļ. Tuvojoties pavasarim, atkal iedomājos par diktātu, bet vēlreiz atliku, gandrīz pavisam to aizmirsdams."));
-        paragraphs.add(new Paragraph("Nu gan pietiks prokrastinēt, jāizdara darbs, lai vienreiz ir miers. Diktātam jābūt aptuveni trīssimt vārdu garam. Droši vien tīrais nieks, ja pacenstos, varbūt pa dienu vai divām dabūtu gatavu. Tematikas ziņā ierobežojumu nav, galvenais nosacījums, lai tekstā būtu salikti visādi klupšanas akmeņi."));
-        paragraphs.add(new Paragraph("Jāpaskatās, kādi tie diktāta veidošanas nosacījumi īsti bija. Meklēdams pērn atsūtīto vēstuli, pamanu, ka neesmu savlaicīgi reaģējis uz vairākiem citiem sūtījumiem un ka tie nevar gaidīt. Vēlāk paredzētas citas neatliekamas darīšanas, diktātam varēšu pievērsties tikai rīt vai parīt. Tomēr vēstuli izlasu, un, maigi sakot, tā mani saviļņo."));
-        paragraphs.add(new Paragraph("Tekstā jāizmanto dažādas sintaktiskās konstrukcijas, jāiemāna iespraudumi, partikulas, divdabja teicieni un kas tik vēl ne. Tā vien izskatās, ka diktātā jāieliek pilnīgi visi gramatiskie stiķi, kādi vien Latvijas dabā atrodami. Jābūt ne tikvien saliktiem teikumiem ar vienlīdzīgiem palīgteikumiem, bet arī teikumiem, kuros kādu no daļām ievada saiklis vai kāds cits no pakārtojuma vārdiem, pēc kura tūlīt seko divdabja teiciens. Tad vēl vajadzīgas plašākas obligāti savrupināmas grupas ar divdabi pamatā. Kas tie par brīnumiem, un kā tie izskatās?"));
-        paragraphs.add(new Paragraph("No terminoloģijas vien mati ceļas stāvus gaisā, kaut gan tie ir nogriezti uz nullīti. Bet tas vēl nav viss. Diktātā jāiekļauj vairāki vārdi, kuru rakstība īpaši iegaumējama vai pārbaudāma ar konkrētiem likumiem, pāris plaši izmantojamu svešvārdu, vārda “lūzt” formas. Jā, ar to laušanu un lūšanu visādi gājis. Skolotāja skaitīja: “Vētrā visi koki lūst, bet resnais ozols negrib lūzt.” Diez kas nav."));
-        paragraphs.add(new Paragraph("Laikam prātīgāk būtu vispirms izveidot pašu tekstu, cerot, ka visus šos gramatiskos āķus iestrādāšu pēc tam. Tagad tikai jāizdomā, par ko rakstīt, taču par to es domāšu rīt."));
+        paragraphs.add(new Paragraph("Kurš liepājnieks gan nezina, ka Liepājā, Zirgu salā, ir putnu vērošanas tornis? Bet kurš ir pamanījis, ka arī putni vēro Liepāju? Brīnās, bola acis un groza galvas, un bezkaunīgi planē pāri kafejnīcu galdiņiem, lai ieskatītos nelidojošo divkāju šķīvjos. Liepājā ir daudz noslēpumaina, par ko brīnīties. Piemēram, naktīs, kad ne tikvien mēness piesprausts pie debesu samta kā zelta ananass, bet arī zvaigznes izbārstītas no Dieva atvilktnēm. Tad tur, lejā, zīriņiem par brīnumu, kaut kas iekvēlojas kā milzīgs ugunskurs, un tam viducī vītero kanārijputniņu bars. „Kas tas ir? Kas tas ir?” sakliedzas kaijas. Tām neviens nav izstāstījis par koncertzāli „Lielais dzintars” un simfonisko orķestri. Vēl viņi nesaprot, kāpēc jaukie Liepājas baznīcu torņi ik pa laikam sajūk prātā un pēkšņi sākas tāda dārdoņa, it kā tajos būtu ielauzušies kazuāri: „Bom! Bom! Bom!”"));
+        paragraphs.add(new Paragraph("Un kas notiek Graudu ielas smalkāko namu augstumos? Tur nometas estēti baloži, kas dievina jūgendstilu. Ak, tie lieliskie izciļņi, kur dūdojot griezt mīlas dejas, un iedobumi, kur sastiept liepās salauztos zariņus minimālisma stilā ieturētajām ligzdām!"));
+        paragraphs.add(new Paragraph("Kormorāni, viltnieki, jau trešo gadu perina bruņotu laupīšanas uzbrukumu Zivju tirgum Liepājas promenādē, tikai nevar sagaidīt, kad to atkal atvērs. Čurkstes slepeni skatās Liepājas teātra izrādes, bet pēc tam sajūsmā savidžinās. Bet zivju gārņi sapņo, garās kājas cilājot, pastaigāt pa Rožu laukuma dobēm. Diemžēl gārņi kautrējas. Toties vārnai Liepājā ir piemineklis. Karr!"));
+        paragraphs.add(new Paragraph("Visskaistākajos vakaros, spārnus plivinādami, putni plecu pie pleca salaižas uz Ziemeļu mola vērot saulrietu. Kormorāns blakus paugurknābja zosij, cekulpīle blakus purva ķauķim, un pašā galā tārtiņš, no Līvu krasta atlaidies, klusiņām purpina lībiešu valodā."));
+        paragraphs.add(new Paragraph("Rudenī viņi lūr pa Liepājas skolu logiem. Ieraugot gramatiskās kļūdas, saķer apaļās galveles un spalgi čiepst priekšā: „Stulbs nav stūlbs, albums nav albūms, mobilais nav nekāds mobīlais! Čiv!”"));
+        paragraphs.add(new Paragraph("Klau, vai tagad arī uz palodzes negrabinās viena zilzīlīte? Ko, ko viņa tur čiepst?"));
 
         add(author, title, paragraphs);
     }
 
     private void textWithComments() {
-        H1 author = new H1("Māris Bērziņš");
-        H2 title = new H2("Izdomāt diktātu");
+        H1 author = new H1("Aiva Kanepone");
+        H2 title = new H2("Putni brīnās par Liepāju");
         H3 comments = new H3("Teksts ar komentāriem");
 
         Div paragraphs = new Div();
-        paragraphs.add(new Paragraph("Pamostos ar nemierīgu sajūtu,(1) it kā kaut ko būtu aizmirsis izdarīt.(2) Ak,(3) man taču ir jāizdomā pasaules diktāts latviešu valodā!(4) Gribēju to paveikt pagājušajā rudenī,(5) taču atliku citu darbu dēļ.(6) Tuvojoties pavasarim,(7) atkal iedomājos par diktātu,(8) bet vēlreiz atliku,(9) gandrīz pavisam to aizmirsdams.(10)"));
-        paragraphs.add(new Paragraph("Nu gan pietiks prokrastinēt,(11) jāizdara darbs,(12) lai vienreiz ir miers.(13) Diktātam jābūt aptuveni trīssimt vārdu garam.(14) Droši vien tīrais nieks,(15) ja pacenstos,(16) varbūt pa dienu vai divām dabūtu gatavu.(17) Tematikas ziņā ierobežojumu nav,(18) galvenais nosacījums,(19) lai tekstā būtu salikti visādi klupšanas akmeņi.(20)"));
-        paragraphs.add(new Paragraph("Jāpaskatās,(21) kādi tie diktāta veidošanas nosacījumi īsti bija.(22) Meklēdams pērn atsūtīto vēstuli,(23) pamanu,(24) ka neesmu savlaicīgi reaģējis uz vairākiem citiem sūtījumiem un ka tie nevar gaidīt.(25) Vēlāk paredzētas citas neatliekamas darīšanas,(26) diktātam varēšu pievērsties tikai rīt vai parīt.(27) Tomēr vēstuli izlasu,(28) un,(29) maigi sakot,(30) tā mani saviļņo.(31)"));
-        paragraphs.add(new Paragraph("Tekstā jāizmanto dažādas sintaktiskās konstrukcijas,(32) jāiemāna iespraudumi,(33) partikulas,(34) divdabja teicieni un kas tik vēl ne.(35) Tā vien izskatās,(36) ka diktātā jāieliek pilnīgi visi gramatiskie stiķi,(37) kādi vien Latvijas dabā atrodami.(38) Jābūt ne tikvien saliktiem teikumiem ar vienlīdzīgiem palīgteikumiem,(39) bet arī teikumiem,(40) kuros kādu no daļām ievada saiklis vai kāds cits no pakārtojuma vārdiem,(41) pēc kura tūlīt seko divdabja teiciens.(42) Tad vēl vajadzīgas plašākas obligāti savrupināmas grupas ar divdabi pamatā.(43) Kas tie par brīnumiem,(44) un kā tie izskatās?(45)"));
-        paragraphs.add(new Paragraph("No terminoloģijas vien mati ceļas stāvus gaisā,(46) kaut gan tie ir nogriezti uz nullīti.(47) Bet tas vēl nav viss.(48) Diktātā jāiekļauj vairāki vārdi,(49) kuru rakstība īpaši iegaumējama vai pārbaudāma ar konkrētiem likumiem,(50) pāris plaši izmantojamu svešvārdu,(51) vārda ‘lūzt’(52) formas.(53) Jā,(54) ar to laušanu un lūšanu visādi gājis.(55) Skolotāja skaitīja:(56) “(57)Vētrā visi koki lūst,(58) bet resnais ozols negrib lūzt.(59)”(60) Diez kas nav.(61)"));
-        paragraphs.add(new Paragraph("Laikam prātīgāk būtu vispirms izveidot pašu tekstu,(62) cerot,(63) ka visus šos gramatiskos āķus iestrādāšu pēc tam.(64) Tagad tikai jāizdomā,(65) par ko rakstīt,(66) taču par to es domāšu rīt.(67)"));
+        paragraphs.add(new Paragraph("Kurš liepājnieks gan nezina,(1) ka Liepājā,(2) Zirgu salā,(3) ir putnu vērošanas tornis?(4) Bet kurš ir pamanījis,(5) ka arī putni vēro Liepāju?(6) Brīnās,(7) bola acis un groza galvas,(8) un bezkaunīgi planē pāri kafejnīcu galdiņiem,(9) lai ieskatītos nelidojošo divkāju šķīvjos.(10) Liepājā ir daudz noslēpumaina,(11) par ko brīnīties.(12) Piemēram,(13) naktīs,(14) kad ne tikvien mēness piesprausts pie debesu samta kā zelta ananass,(15) bet arī zvaigznes izbārstītas no Dieva atvilktnēm.(16) Tad tur,(17) lejā,(18) zīriņiem par brīnumu,(19) kaut kas iekvēlojas kā milzīgs ugunskurs,(20) un tam viducī vītero kanārijputniņu bars.(21) „(22)Kas tas ir?(23) Kas tas ir?(24)”(25) sakliedzas kaijas.(26) Tām neviens nav izstāstījis par koncertzāli „(27)Lielais dzintars”(28) un simfonisko orķestri.(29) Vēl viņi nesaprot,(30) kāpēc jaukie Liepājas baznīcu torņi ik pa laikam sajūk prātā un pēkšņi sākas tāda dārdoņa,(31) it kā tajos būtu ielauzušies kazuāri:(32) „(33)Bom!(34) Bom!(35) Bom!(36)”(37)"));
+        paragraphs.add(new Paragraph("Un kas notiek Graudu ielas smalkāko namu augstumos?(38) Tur nometas estēti baloži,(39) kas dievina jūgendstilu.(40) Ak,(41) tie lieliskie izciļņi,(42) kur dūdojot griezt mīlas dejas,(43) un iedobumi,(44) kur sastiept liepās salauztos zariņus minimālisma stilā ieturētajām ligzdām!(45)"));
+        paragraphs.add(new Paragraph("Kormorāni,(46) viltnieki,(47) jau trešo gadu perina bruņotu laupīšanas uzbrukumu Zivju tirgum Liepājas promenādē,(48) tikai nevar sagaidīt(49), kad to atkal atvērs.(50) Čurkstes slepeni skatās Liepājas teātra izrādes,(51) bet pēc tam sajūsmā savidžinās.(52) Bet zivju gārņi sapņo,(53) garās kājas cilājot,(54) pastaigāt pa Rožu laukuma dobēm.(55) Diemžēl gārņi kautrējas.(56) Toties vārnai Liepājā ir piemineklis.(57) Karr!(58)"));
+        paragraphs.add(new Paragraph("Visskaistākajos vakaros,(59) spārnus plivinādami,(60) putni plecu pie pleca salaižas uz Ziemeļu mola vērot saulrietu.(61) Kormorāns blakus paugurknābja zosij,(62) cekulpīle blakus purva ķauķim,(63) un pašā galā tārtiņš,(64) no Līvu krasta atlaidies,(65) klusiņām purpina lībiešu valodā.(66)"));
+        paragraphs.add(new Paragraph("Rudenī viņi lūr pa Liepājas skolu logiem.(67) Ieraugot gramatiskās kļūdas,(68) saķer apaļās galveles un spalgi čiepst priekšā:(69) „(70)Stulbs nav stūlbs,(71) albums nav albūms,(72) mobilais nav nekāds mobīlais!(73) Čiv!(74)”(75)"));
+        paragraphs.add(new Paragraph("Klau,(76) vai tagad arī uz palodzes negrabinās viena zilzīlīte?(77) Ko,(78) ko viņa tur čiepst?(79)"));
 
         add(author, title, comments, paragraphs);
     }
 
     private void comments() {
         add(new H1("Komentāri"));
-        add(new H2("Interpunkcija"));
+        add(new H2("Ortogrāfija"));
 
+        add(new Paragraph("Zirgu sala, Zivju tirgus, Rožu laukums, Ziemeļu mols, Līvu krasts \n" +
+                "ananass (sic!)"));
+        add(new Paragraph("atvilktne"));
+
+        add(new H2("Interpunkcija"));
         add(new H3("I rindkopa"));
         Div d1 = new Div();
-        d1.add(new Paragraph("1. Komats atdala palīgteikumu. Komata vietā ir iespējama arī domuzīme, jo palīgteikumam paskaidrojuma nozīme pie “sajūtu”."));
-        d1.add(new Paragraph("2. Punkts stāstījuma teikuma beigās."));
-        d1.add(new Paragraph("3. Komats atdala izsauksmes vārdu."));
-        d1.add(new Paragraph("4. Izsaukuma zīme vai daudzpunkte teikuma beigās."));
-        d1.add(new Paragraph("5. Komats atdala vienlīdzīgus teikuma locekļus."));
-        d1.add(new Paragraph("6. Punkts stāstījuma teikuma beigās."));
-        d1.add(new Paragraph("7. Komats atdala divdabja teicienu."));
-        d1.add(new Paragraph("8. Komats atdala vienlīdzīgus teikuma locekļus."));
-        d1.add(new Paragraph("9. Komats atdala divdabja teicienu."));
-        d1.add(new Paragraph("10. Punkts stāstījuma teikuma beigās."));
+        d1.add("1. Sākas palīgteikums");
+        d1.add("2., 3. Atdala savrupinājumu. Fakultatīvi komati (Blinkena 290.lpp.)");
+        d1.add("4. Jautājuma teikums");
+        d1.add("5. Sākas palīgteikums");
+        d1.add("6. Jautājuma teikums");
+        d1.add("7., 8. Vienlīdzīgi teikuma locekļi");
+        d1.add("9. Sākas palīgteikums");
+        d1.add("10. Stāstījuma teikums");
+        d1.add("11. Sākas palīgteikums");
+        d1.add("12. Stāstījuma teikums");
+        d1.add("13. Iespraudums");
+        d1.add("14. Sākas palīgteikums");
+        d1.add("15. Vienlīdzīgi palīgteikumi");
+        d1.add("16. Stāstījuma teikums");
+        d1.add("17., 18. Savrupinājums. Fakultatīvi komati (Blinkena 290.lpp.)");
+        d1.add("19. Beidzas iespraudums. Var paredzēt fakultatīvu pieturzīmi (Blinkena 257.lpp.)");
+        d1.add("20. Salikta teikuma daļa. Cilvēki var interpretēt, ka sākuma laika apstāklis “Tad” attiecas uz abām teikuma daļām. Tādā gadījumā komatu neliek");
+        d1.add("21. Stāstījuma teikums");
+        d1.add("22., 25. Tiešā runa");
+        d1.add("23., 24. Jautājuma teikumi");
+        d1.add("26. Stāstījuma teikums");
+        d1.add("27., 28. Nosaukums ar īpašvārdisku nozīmi pēdiņās");
+        d1.add("29. Stāstījuma teikums");
+        d1.add("30. Sākas palīgteikums");
+        d1.add("31. Sākas palīgteikums");
+        d1.add("32. Kols pirms tiešās runas");
+        d1.add("33., 37. Tiešā runa pēdiņās");
+        d1.add("34., 35., 36. BS: Izsaukuma teikumi. (Blinkena 347.lpp.)");
         add(d1);
 
         add(new H3("II rindkopa"));
         Div d2 = new Div();
-        d2.add(new Paragraph("11. Komats atdala neatkarīgas teikuma daļas."));
-        d2.add(new Paragraph("12. Komats atdala palīgteikumu."));
-        d2.add(new Paragraph("13. Punkts stāstījuma teikuma beigās."));
-        d2.add(new Paragraph("14. Punkts stāstījuma teikuma beigās."));
-        d2.add(new Paragraph("15., 16. Komati atdala palīgteikumu. 15. komata vietā iespējama arī domuzīme, jo īpaši uzsvērta nosacījuma attieksme (sk. arī Blinkena 2009, 206)"));
-        d2.add(new Paragraph("17. Punkts stāstījuma teikuma beigās."));
-        d2.add(new Paragraph("18. Komats atdala neatkarīgas teikuma daļas."));
-        d2.add(new Paragraph("19. Palīgteikumu drīkst atdalīt gan ar kolu, gan domuzīmi, gan komatu."));
-        d2.add(new Paragraph("20. Punkts stāstījuma teikuma beigās."));
+        d2.add("38. Jautājuma teikums");
+        d2.add("39. Sākas palīgteikums");
+        d2.add("40. Stāstījuma teikums");
+        d2.add("41. Atdalīts  izsauksmes vārds");
+        d2.add("42., 43. Atdala palīgteikumu");
+        d2.add("44. Sākas palīgteikums");
+        d2.add("45. Izsaukuma teikuma beigas");
         add(d2);
 
         add(new H3("III rindkopa"));
         Div d3 = new Div();
-        d3.add(new Paragraph("21. Komats atdala palīgteikumu."));
-        d3.add(new Paragraph("22. Punkts stāstījuma teikuma beigās."));
-        d3.add(new Paragraph("23. Komats atdala divdabja teicienu."));
-        d3.add(new Paragraph("24. Komats atdala palīgteikumu."));
-        d3.add(new Paragraph("25. Punkts stāstījuma teikuma beigās."));
-        d3.add(new Paragraph("26. Komats atdala neatkarīgas teikuma daļas."));
-        d3.add(new Paragraph("27. Punkts stāstījuma teikuma beigās."));
-        d3.add(new Paragraph("28. Komats atdala neatkarīgas teikuma daļas. Kāds rakstītājs var iebilst, ka “tomēr” attiecas uz abām neatkarīgajām teikuma daļām un ka komatu nevajag, bet pēc nozīmes “tomēr” attiecas tikai uz pirmo daļu."));
-        d3.add(new Paragraph("29., 30. Komati atdala divdabja teicienu."));
-        d3.add(new Paragraph("31. Punkts stāstījuma teikuma beigās."));
+        d3.add("46., 47. Atdalīts savrupinājums");
+        d3.add("48. Atdala vienlīdzīgus teikuma locekļus");
+        d3.add("49. Sākas palīgteikums");
+        d3.add("50. Stāstījuma teikums");
+        d3.add("51. Vienlīdzīgi teikuma locekļi");
+        d3.add("52. Stāstījuma teikums");
+        d3.add("53., 54. Atdala divdabja teicienu");
+        d3.add("55. Stāstījuma teikums");
+        d3.add("56. Stāstījuma teikums");
+        d3.add("57. Stāstījuma teikums");
+        d3.add("58. Izsaukuma teikums");
         add(d3);
 
         add(new H3("IV rindkopa"));
         Div d4 = new Div();
-        d4.add(new Paragraph("32. Komats atdala vienlīdzīgus teikuma locekļus."));
-        d4.add(new Paragraph("33. Komats atdala vienlīdzīgus teikuma locekļus."));
-        d4.add(new Paragraph("34. Komats atdala vienlīdzīgus teikuma locekļus."));
-        d4.add(new Paragraph("35. Punkts stāstījuma teikuma beigās."));
-        d4.add(new Paragraph("36. Komats atdala palīgteikumu."));
-        d4.add(new Paragraph("37. Komats atdala palīgteikumu."));
-        d4.add(new Paragraph("38. Punkts stāstījuma teikuma beigās."));
-        d4.add(new Paragraph("39. Komats atdala vienlīdzīgus teikuma locekļus."));
-        d4.add(new Paragraph("40. Komats atdala palīgteikumu."));
-        d4.add(new Paragraph("41. Komats atdala palīgteikumu."));
-        d4.add(new Paragraph("42. Punkts stāstījuma teikuma beigās."));
-        d4.add(new Paragraph("43. Punkts stāstījuma teikuma beigās."));
-        d4.add(new Paragraph("44. Komats atdala neatkarīgas teikuma daļas."));
-        d4.add(new Paragraph("45. Jautājuma zīme jautājuma teikuma beigās."));
+        d4.add("59., 60. Atdala divdabja teicienu");
+        d4.add("61. Stāstījuma teikums");
+        d4.add("62. Salikta teikuma daļa. Var paredzēt fakultatīvu domuzīmi");
+        d4.add("63. Salikta teikuma daļa");
+        d4.add("64., 65. Atdala divdabja teicienu");
+        d4.add("66. Stāstījuma teikums");
         add(d4);
 
         add(new H3("V rindkopa"));
         Div d5 = new Div();
-        d5.add(new Paragraph("46. Komats atdala palīgteikumu."));
-        d5.add(new Paragraph("47. Punkts stāstījuma teikuma beigās."));
-        d5.add(new Paragraph("48. Punkts stāstījuma teikuma beigās. Pieļaujama izsaukuma zīme punkta vietā."));
-        d5.add(new Paragraph("49., 50. Komati atdala palīgteikumu."));
-        d5.add(new Paragraph("51. Komats atdala vienlīdzīgus teikuma locekļus."));
-        d5.add(new Paragraph("52. Izceļams vārds, atdalāms ar pēdiņām vai vienpēdiņām."));
-        d5.add(new Paragraph("53. Punkts stāstījuma teikuma beigās."));
-        d5.add(new Paragraph("54. Komats atdala apgalvojuma partikulu."));
-        d5.add(new Paragraph("55. Punkts stāstījuma teikuma beigās."));
-        d5.add(new Paragraph("56. Kols pirms tiešās runas."));
-        d5.add(new Paragraph("57., 60. Tiešā runa pēdiņās."));
-        d5.add(new Paragraph("58. Komats atdala neatkarīgas teikuma daļas."));
-        d5.add(new Paragraph("59. Punkts stāstījuma teikuma beigās.(Noteikti pirms pēdiņām)"));
-        d5.add(new Paragraph("61. Punkts stāstījuma teikuma beigās."));
+        d5.add("67. Stāstījuma teikums");
+        d5.add("68. Atdala divdabja teicienu");
+        d5.add("69. Kols aiz piebildes");
+        d5.add("70., 75. Tiešā runa pēdiņās");
+        d5.add("71. Teikuma daļas");
+        d5.add("72. Teikuma daļas");
+        d5.add("73. Izsaukuma teikums");
+        d5.add("74. Izsaukuma teikums");
         add(d5);
 
         add(new H3("VI rindkopa"));
         Div d6 = new Div();
-        d6.add(new Paragraph("62. Komats atdala divdabi, no kura atkarīgs palīgteikums."));
-        d6.add(new Paragraph("63. Komats atdala palīgteikumu."));
-        d6.add(new Paragraph("64. Punkts stāstījuma teikuma beigās."));
-        d6.add(new Paragraph("65., 66. Komati atdala palīgteikumu."));
-        d6.add(new Paragraph("67. Punkts stāstījuma teikuma beigās."));
+        d6.add("76. Izsauksmes vārds");
+        d6.add("77. Jautājuma teikums");
+        d6.add("78. Atkārtoti teikuma locekļi");
+        d6.add("79. Jautājuma teikums");
         add(d6);
 
-        add(new H2("Ortogrāfija"));
-
-        add(new Paragraph("Ja nav uzrakstīts rakstnieka vārds – tā nav kļūda."));
-        add(new Paragraph("Punktu aiz virsraksta nevērtējam."));
-        add(new Paragraph("pasaules diktāts/Pasaules diktāts – abas formas ir pareizas."));
-        add(new Paragraph("Skaitļa vārdu drīkst rakstīt gan ar vārdiem, gan cipariem – trīssimt/ 300 (bez punkta)."));
-        add(new Paragraph("Prokrastinēt – svešvārda pareizrakstība"));
-        add(new Paragraph("Droši vien – partikulas pareizrakstība"));
-        add(new Paragraph("Tikai – partikulas pareizrakstība"));
-        add(new Paragraph("It kā -  partikulas pareizrakstība"));
-        add(new Paragraph("Vēl/vēlreiz – apstākļa vārdu pareizrakstība"));
-        add(new Paragraph("Tūlīt – apstākļa vārda pareizrakstība."));
-        add(new Paragraph(".. un kas tik vēl ne – katra atsevišķa vārda pareizrakstība."));
-        add(new Paragraph("Ne tikvien – bet arī – saikļa pareizrakstība."));
-        add(new Paragraph("Aizmirsdams – pārbaudes forma aizmirsa."));
-        add(new Paragraph("Izskatās – jāievēro likums par a/ā darbības vārda tagadnes formās."));
-        add(new Paragraph("Ceļas - jāievēro likums par a/ā darbības vārda tagadnes formās."));
-        add(new Paragraph("Lūzt/lūst – nenoteiksmi pārbauda ar pagātnes formu lūza, bet tagadnē noticis vēsturiskais līdzskaņa z zudums pirms piedēkļa -st-."));
-        add(new Paragraph("Lūšana – vēsturiskais līdzskaņa z zudums pirms izskaņas -šana."));
-        add(new Paragraph("Laušana - vēsturiskais līdzskaņa z zudums pirms izskaņas -šana."));
-        add(new Paragraph("Savlaicīgi – salikteņa pareizrakstība."));
-        add(new Paragraph("Pēc tam – atsevišķi rakstāmi divi vārdi (prievārds un vietniekvārds)"));
     }
 
     @Override
